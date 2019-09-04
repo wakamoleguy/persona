@@ -13,25 +13,27 @@
     "url": "https://github.com/mozilla/persona.git"
   },
   "bugs": "https://github.com/mozilla/persona/issues",
-  "licenses" : [{
-    "type": "MPL 2.0",
-    "url": "https://mozilla.org/MPL/2.0/"
-  }],
+  "licenses": [
+    {
+      "type": "MPL 2.0",
+      "url": "https://mozilla.org/MPL/2.0/"
+    }
+  ],
   "dependencies": {
     "JSONSelect": "0.4.0",
     "async": "0.2.9",
     "bcrypt": "0.7.7",
     "cef": "0.3.3",
-    "compute-cluster": "0.0.6",
-    "connect": "1.7.2",
-    "convict": "0.4.1",
     "cjson": "0.2.1",
     "client-sessions": "0.6.0",
+    "compute-cluster": "0.0.6",
+    "connect": "1.7.2",
     "connect-cachify": "0.0.15",
     "connect-fonts": "0.0.11",
-    "connect-fonts-opensans": "0.0.5",
     "connect-fonts-feurasans": "0.0.3",
+    "connect-fonts-opensans": "0.0.5",
     "connect-logger-statsd": "0.0.1",
+    "convict": "0.4.1",
     "cover": "0.2.9",
     "ejs": "0.8.4",
     "etagify": "0.0.2",
@@ -39,12 +41,11 @@
     "gobbledygook": "0.0.3",
     "hood": "0.2.1",
     "i18n-abide": "0.0.14",
-    "lockdown": "0.0.5",
     "jwcrypto": "0.4.4",
     "mkdirp": "0.3.5",
     "mysql": "0.9.6",
-    "nodemailer": "0.5.3",
     "node-statsd": "0.0.7",
+    "nodemailer": "0.5.3",
     "optimist": "0.6.0",
     "postprocess": "0.2.4",
     "rimraf": "2.2.2",
@@ -68,7 +69,6 @@
     "htmlparser": "1.7.6"
   },
   "scripts": {
-    "preinstall": "node ./scripts/lockdown",
     "postinstall": "node ./scripts/postinstall.js",
     "postupdate": "node ./scripts/postinstall.js",
     "test": "./scripts/test",
