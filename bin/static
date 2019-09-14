@@ -29,9 +29,7 @@ const httputils = require('../lib/httputils.js');
 const i18n_check = require('../lib/i18n_client_check');
 const logger = require('../lib/logging/logging.js').logger;
 const proxySecure = require('../lib/proxy-secure');
-const shutdown = require('../lib/shutdown.js');
 const statsd = require("../lib/logging/middleware/statsd");
-const toobusy = require('../lib/busy_middleware.js');
 const wsapi = require('../lib/wsapi.js');
 const views = require('../lib/static/views.js');
 
@@ -47,9 +45,6 @@ if (config.get('env') === 'production') {
 // Setup health check / heartbeat middleware.
 // This is in front of logging on purpose.  see issue #537
 heartbeat.setup(app);
-
-// block requests when overloaded
-app.use(toobusy);
 
 // cover our head
 app.use(proxySecure());
@@ -140,5 +135,3 @@ var bindTo = config.get('bind_to');
 app.listen(bindTo.port, bindTo.host, function() {
   logger.info("running on http://" + app.address().address + ":" + app.address().port);
 });
-
-shutdown.handleTerminationSignals(app, toobusy.shutdown);

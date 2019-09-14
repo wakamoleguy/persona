@@ -20,7 +20,6 @@ heartbeat = require('../lib/heartbeat'),
 shutdown = require('../lib/shutdown'),
 computecluster = require('compute-cluster'),
 urlparse = require('urlparse'),
-toobusy = require('../lib/busy_middleware.js'),
 certKey = require('../lib/wsapi/cert_key.js'),
 statsd = require('../lib/logging/middleware/statsd.js');
 
@@ -39,9 +38,6 @@ var app = express.createServer();
 
 // respond to health checks (before logging)
 heartbeat.setup(app);
-
-// block requests when overloaded
-app.use(toobusy);
 
 // our server will log
 app.use(express.logger({
@@ -121,7 +117,6 @@ app.post('/wsapi/cert_key', validate({ 'email': 'email', 'pubkey': 'pubkey', 'ep
 // shutdown nicely on signals
 shutdown.handleTerminationSignals(app, function() {
   cc.exit();
-  toobusy.shutdown();
 });
 
 var bindTo = config.get('bind_to');

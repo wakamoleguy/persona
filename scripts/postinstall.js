@@ -16,7 +16,7 @@ function copy(src, dest) {
   fs.writeFileSync(dest, fs.readFileSync(src));
 }
 
-copy('../node_modules/jwcrypto/bidbundle.js', '../resources/static/common/js/lib/bidbundle.js');
+copy('../node_modules/browserid-crypto/bidbundle.js', '../resources/static/common/js/lib/bidbundle.js');
 copy('../node_modules/gobbledygook/gobbledygook.js', '../resources/static/common/js/lib/gobbledygook.js');
 
 

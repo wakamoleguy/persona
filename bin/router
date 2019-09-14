@@ -22,9 +22,7 @@ const heartbeat = require('../lib/heartbeat.js');
 const logger = require('../lib/logging/logging.js').logger;
 const metrics = require('../lib/logging/middleware/metrics.js');
 const proxySecure = require('../lib/proxy-secure');
-const shutdown = require('../lib/shutdown.js');
 const statsd = require('../lib/logging/middleware/statsd.js');
-const toobusy = require('../lib/busy_middleware.js');
 const wsapi = require('../lib/wsapi.js');
 
 var app = express.createServer();
@@ -65,8 +63,6 @@ var static_url = urlparse(config.get('static_url')).validate().normalize().origi
 heartbeat.setup(app, {
   dependencies: [browserid_url, static_url]
 });
-
-app.use(toobusy);
 
 // #2 - logging!  all requests other than __heartbeat__ are logged
 app.use(express.logger({
@@ -161,11 +157,6 @@ app.use(function(req, res, next) {
         logger.error("error forwarding request:", err);
       }
     });
-});
-
-// shutdown nicely on signals
-shutdown.handleTerminationSignals(app, function() {
-  toobusy.shutdown();
 });
 
 var bindTo = config.get('bind_to');
