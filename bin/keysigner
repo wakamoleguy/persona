@@ -21,7 +21,8 @@ shutdown = require('../lib/shutdown'),
 computecluster = require('compute-cluster'),
 urlparse = require('urlparse'),
 certKey = require('../lib/wsapi/cert_key.js'),
-statsd = require('../lib/logging/middleware/statsd.js');
+statsd = require('../lib/logging/middleware/statsd.js'),
+morgan = require('../lib/logging/custom_logger');
 
 logger.info("keysigner starting up");
 
@@ -40,8 +41,7 @@ var app = express.createServer();
 heartbeat.setup(app);
 
 // our server will log
-app.use(express.logger({
-  format: config.get('express_log_format'),
+app.use(morgan(config.get('express_log_format'), {
   stream: {
     write: function(x) {
       logger.info(typeof x === 'string' ? x.trim() : x);

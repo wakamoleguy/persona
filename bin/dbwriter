@@ -26,6 +26,7 @@ const primary = require('../lib/primary');
 const proxySecure = require('../lib/proxy-secure');
 const shutdown = require('../lib/shutdown');
 const statsd = require('../lib/logging/middleware/statsd.js');
+const morgan = require('../lib/logging/custom_logger');
 
 // dbwriter needs cachify to properly render emails with cachified URLs,
 // but it serves no cachified content, so it's not necc to register it as
@@ -58,8 +59,7 @@ heartbeat.setup(app, function(cb) {
 });
 
 // logging!  all requests other than __heartbeat__ are logged
-app.use(express.logger({
-  format: config.get('express_log_format'),
+app.use(morgan(config.get('express_log_format'), {
   stream: {
     write: function(x) {
       logger.info(typeof x === 'string' ? x.trim() : x);

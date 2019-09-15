@@ -24,6 +24,7 @@ const metrics = require('../lib/logging/middleware/metrics.js');
 const proxySecure = require('../lib/proxy-secure');
 const statsd = require('../lib/logging/middleware/statsd.js');
 const wsapi = require('../lib/wsapi.js');
+const morgan = require('../lib/logging/custom_logger');
 
 var app = express.createServer();
 
@@ -65,8 +66,7 @@ heartbeat.setup(app, {
 });
 
 // #2 - logging!  all requests other than __heartbeat__ are logged
-app.use(express.logger({
-  format: config.get('express_log_format'),
+app.use(morgan(config.get('express_log_format'), {
   stream: {
     write: function(x) {
       logger.info(typeof x === 'string' ? x.trim() : x);

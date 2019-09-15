@@ -19,7 +19,8 @@ logger = require('../lib/logging/logging').logger,
 config = require('../lib/configuration'),
 shutdown = require('../lib/shutdown'),
 booleanQuery = require('../lib/boolean-query'),
-statsd = require("../lib/logging/middleware/statsd");
+statsd = require("../lib/logging/middleware/statsd"),
+morgan = require("../lib/logging/custom_logger");
 
 logger.info("verifier server starting up");
 
@@ -34,8 +35,7 @@ var app = express.createServer();
 heartbeat.setup(app);
 
 // request to logger, dev formatted which omits personal data in the requests
-app.use(express.logger({
-  format: config.get('express_log_format'),
+app.use(morgan(config.get('express_log_format'), {
   stream: {
     write: function(x) {
       logger.info(typeof x === 'string' ? x.trim() : x);
