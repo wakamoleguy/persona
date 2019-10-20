@@ -6,7 +6,7 @@
 
 const
 fs = require('fs'),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 optimist = require('optimist'),
 path = require('path'),
 urlparse = require('urlparse'),

@@ -9,7 +9,7 @@ require('./lib/test_env.js');
 const assert = require('assert'),
 db = require('../lib/db.js'),
 email = require('../lib/email.js'),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 primary = require('./lib/primary.js'),
 start_stop = require('./lib/start-stop.js'),
 vows = require('vows'),
@@ -18,8 +18,8 @@ wsapi = require('./lib/wsapi.js');
 var suite = vows.describe('forgotten-email');
 
 // algs
-require("jwcrypto/lib/algs/ds");
-require("jwcrypto/lib/algs/rs");
+require('browserid-crypto/lib/algs/ds');
+require('browserid-crypto/lib/algs/rs');
 
 start_stop.addStartupBatches(suite);
 

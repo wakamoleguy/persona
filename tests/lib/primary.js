@@ -3,11 +3,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 path = require("path");
 
-require("jwcrypto/lib/algs/rs");
-require("jwcrypto/lib/algs/ds");
+require('browserid-crypto/lib/algs/rs');
+require('browserid-crypto/lib/algs/ds');
 
 // the private secret of our built-in primary
 const g_privKey = jwcrypto.loadSecretKey(

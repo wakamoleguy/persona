@@ -12,7 +12,7 @@ start_stop = require('./lib/start-stop.js'),
 wsapi = require('./lib/wsapi.js'),
 ca = require('../lib/keysigner/ca.js'),
 db = require('../lib/db.js'),
-jwcrypto = require("jwcrypto"),
+jwcrypto = require('browserid-crypto'),
 secondary = require('./lib/secondary.js'),
 primary = require('./lib/primary.js');
 

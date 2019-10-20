@@ -15,7 +15,7 @@ wsapi = require('./lib/wsapi.js'),
 config = require('../lib/configuration.js'),
 primary = require('./lib/primary.js'),
 ca = require('../lib/keysigner/ca.js'),
-jwcrypto = require('jwcrypto');
+jwcrypto = require('browserid-crypto');
 
 var suite = vows.describe('session-context');
 

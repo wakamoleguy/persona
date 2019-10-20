@@ -39,7 +39,7 @@ cachify.setup(
     root: path.join(__dirname, "..", "resources", "static")
   });
 
-var app = express.createServer();
+var app = express();
 
 logger.info("dbwriter starting up");
 
@@ -120,11 +120,11 @@ db.open(config.get('database'), function (error) {
     });
   });
 
-  // shut down express gracefully on SIGINT
-  shutdown.handleTerminationSignals(app, doShutdown);
-
   var bindTo = config.get('bind_to');
-  app.listen(bindTo.port, bindTo.host, function() {
-    logger.info("running on http://" + app.address().address + ":" + app.address().port);
+  var httpServer = app.listen(bindTo.port, bindTo.host, function() {
+    logger.info("running on http://" + httpServer.address().address + ":" + httpServer.address().port);
   });
+
+  // shut down express gracefully on SIGINT
+  shutdown.handleTerminationSignals(httpServer, doShutdown);
 });

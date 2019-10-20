@@ -16,7 +16,7 @@ start_stop = require('./lib/start-stop.js'),
 wsapi = require('./lib/wsapi.js'),
 db = require('../lib/db.js'),
 config = require('../lib/configuration.js'),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 http = require('http'),
 querystring = require('querystring'),
 logger = require('../lib/logging/logging.js').logger,
@@ -24,8 +24,8 @@ path = require('path');
 
 var suite = vows.describe('unverified-email-test');
 
-require("jwcrypto/lib/algs/rs");
-require("jwcrypto/lib/algs/ds");
+require('browserid-crypto/lib/algs/rs');
+require('browserid-crypto/lib/algs/ds');
 
 // disable vows (often flakey?) async error behavior
 suite.options.error = false;

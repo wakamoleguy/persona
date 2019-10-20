@@ -11,6 +11,7 @@ require('../lib/baseExceptions').addExceptionHandler();
 const
 path = require('path'),
 express = require('express'),
+bodyParser = require('body-parser'),
 _ = require('underscore'),
 config = require('../lib/configuration.js'),
 httputils = require('../lib/httputils.js'),
@@ -35,7 +36,7 @@ const HOSTNAME = urlparse(config.get('public_url')).host;
 logger.info("Certs will be issued from: " + HOSTNAME);
 
 // create an express server
-var app = express.createServer();
+var app = express();
 
 // respond to health checks (before logging)
 heartbeat.setup(app);
@@ -52,7 +53,7 @@ app.use(morgan(config.get('express_log_format'), {
 app.use(statsd());
 
 // parse POST bodies
-app.use(express.bodyParser());
+app.use(bodyParser.json());
 
 try {
   // explicitly relay VAR_PATH to children
@@ -114,12 +115,13 @@ app.post('/wsapi/cert_key', validate({ 'email': 'email', 'pubkey': 'pubkey', 'ep
   });
 });
 
-// shutdown nicely on signals
-shutdown.handleTerminationSignals(app, function() {
-  cc.exit();
-});
 
 var bindTo = config.get('bind_to');
-app.listen(bindTo.port, bindTo.host, function() {
-  logger.info("running on http://" + app.address().address + ":" + app.address().port);
+var httpServer = app.listen(bindTo.port, bindTo.host, function() {
+  logger.info("running on http://" + httpServer.address().address + ":" + httpServer.address().port);
+});
+
+// shutdown nicely on signals
+shutdown.handleTerminationSignals(httpServer, function() {
+  cc.exit();
 });

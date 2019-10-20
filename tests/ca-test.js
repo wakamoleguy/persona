@@ -9,10 +9,10 @@ require('./lib/test_env.js');
 const assert = require('assert'),
 vows = require('vows'),
 ca = require('../lib/keysigner/ca.js'),
-jwcrypto = require('jwcrypto');
+jwcrypto = require('browserid-crypto');
 
 // algorithms
-require("jwcrypto/lib/algs/rs");
+require('browserid-crypto/lib/algs/rs');
 
 var suite = vows.describe('ca');
 

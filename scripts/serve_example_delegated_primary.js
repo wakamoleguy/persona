@@ -7,18 +7,19 @@
 // A tiny webserver for the delegation of authority
 const
 express = require('express'),
+morgan = require('morgan'),
 path = require('path');
 
-var exampleServer = express.createServer();
+var exampleServer = express();
 
-exampleServer.use(express.logger({ format: 'dev' }));
+exampleServer.use(morgan('dev'));
 
 exampleServer.use(express.static(path.join(__dirname, "..", "example", "delegated_primary"), { redirect: false }));
 
-exampleServer.listen(
+const httpServer = exampleServer.listen(
   process.env.PORT || 10011,
   process.env.HOST || process.env.IP_ADDRESS || "127.0.0.1",
   function() {
-    var addy = exampleServer.address();
+    var addy = httpServer.address();
     console.log("running on http://" + addy.address + ":" + addy.port);
   });

@@ -11,14 +11,14 @@ vows = require('vows'),
 start_stop = require('./lib/start-stop.js'),
 wsapi = require('./lib/wsapi.js'),
 email = require('../lib/email.js'),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 secondary = require('./lib/secondary.js');
 
 var suite = vows.describe('forgotten-email');
 
 // algs
-require("jwcrypto/lib/algs/ds");
-require("jwcrypto/lib/algs/rs");
+require('browserid-crypto/lib/algs/ds');
+require('browserid-crypto/lib/algs/rs');
 
 start_stop.addStartupBatches(suite);
 

@@ -34,7 +34,7 @@ const wsapi = require('../lib/wsapi.js');
 const views = require('../lib/static/views.js');
 const morgan = require('../lib/logging/custom_logger');
 
-var app = express.createServer();
+var app = express();
 
 logger.info("static starting up");
 
@@ -132,6 +132,6 @@ app.use(function(req, res, next) {
 app.use(express.static(static_root, { redirect: false }));
 
 var bindTo = config.get('bind_to');
-app.listen(bindTo.port, bindTo.host, function() {
-  logger.info("running on http://" + app.address().address + ":" + app.address().port);
+var httpServer = app.listen(bindTo.port, bindTo.host, function() {
+  logger.info("running on http://" + httpServer.address().address + ":" + httpServer.address().port);
 });

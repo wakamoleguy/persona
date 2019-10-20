@@ -6,13 +6,13 @@
 
 const
 wcli = require("../lib/wsapi_client.js"),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 assert = require('assert'),
 https = require('https'),
 querystring = require('querystring'),
 urlparse = require('urlparse');
 
-require("jwcrypto/lib/algs/ds");
+require('browserid-crypto/lib/algs/ds');
 
 var argv = require('optimist')
 .usage('Given a username, password, and audience, get an assertion.\nUsage: $0')

@@ -7,22 +7,25 @@
 // finally, let's run a tiny webserver for the example code.
 const
 express = require('express'),
+morgan = require('morgan'),
+bodyParser = require('body-parser'),
 path = require('path'),
 urlparse = require('urlparse'),
 postprocess = require('postprocess'),
 querystring = require('querystring'),
 sessions = require('client-sessions'),
-jwcrypto = require("jwcrypto");
+jwcrypto = require('browserid-crypto'),
+cookieParser = require('cookie-parser');
 
 // alg
-require("jwcrypto/lib/algs/rs");
-require("jwcrypto/lib/algs/ds");
+require('browserid-crypto/lib/algs/rs');
+require('browserid-crypto/lib/algs/ds');
 
-var exampleServer = express.createServer();
+var exampleServer = express();
 const API_PREFIX = '/api';
 const SESSION_DURATION_MS = 1 * 60 * 60 * 1000;
 
-exampleServer.use(express.cookieParser());
+exampleServer.use(cookieParser());
 
 exampleServer.use(API_PREFIX, sessions({
   secret: "this secret, isn't very secret",
@@ -37,7 +40,7 @@ exampleServer.use(API_PREFIX, sessions({
   }
 }));
 
-exampleServer.use(express.logger({ format: 'dev' }));
+exampleServer.use(morgan('dev'));
 
 if (process.env['PUBLIC_URL']) {
   var burl = urlparse(process.env['PUBLIC_URL']).validate().normalize().originOnly().toString();
@@ -50,7 +53,7 @@ if (process.env['PUBLIC_URL']) {
 
 exampleServer.use(express.static(path.join(__dirname, "..", "example", "primary"), { redirect: false }));
 
-exampleServer.use(express.bodyParser());
+exampleServer.use(bodyParser.json());
 
 exampleServer.use(API_PREFIX, function(req, resp, next) {
   resp.setHeader('Cache-Control', 'no-store, max-age=0');
@@ -92,10 +95,10 @@ exampleServer.post("/api/cert_key", function (req, res) {
 });
 
 
-exampleServer.listen(
+const httpServer = exampleServer.listen(
   process.env['PORT'] || 10001,
   process.env['HOST'] || process.env['IP_ADDRESS'] || "127.0.0.1",
   function() {
-    var addy = exampleServer.address();
+    var addy = httpServer.address();
     console.log("running on http://" + addy.address + ":" + addy.port);
   });

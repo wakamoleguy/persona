@@ -14,13 +14,13 @@ start_stop = require('./lib/start-stop.js'),
 wsapi = require('./lib/wsapi.js'),
 temp = require('temp'),
 fs = require('fs'),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 path = require('path');
 
 var suite = vows.describe('forgotten-email');
 
-require("jwcrypto/lib/algs/ds");
-require("jwcrypto/lib/algs/rs");
+require('browserid-crypto/lib/algs/ds');
+require('browserid-crypto/lib/algs/rs');
 
 // disable vows (often flakey?) async error behavior
 suite.options.error = false;

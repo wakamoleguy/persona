@@ -14,10 +14,10 @@ start_stop = require('./lib/start-stop.js'),
 wsapi = require('./lib/wsapi.js'),
 primary = require('./lib/primary.js'),
 util = require('util'),
-jwcrypto = require('jwcrypto');
+jwcrypto = require('browserid-crypto');
 
-require("jwcrypto/lib/algs/rs");
-require("jwcrypto/lib/algs/ds");
+require('browserid-crypto/lib/algs/rs');
+require('browserid-crypto/lib/algs/ds');
 
 var suite = vows.describe('delegated-primary');
 

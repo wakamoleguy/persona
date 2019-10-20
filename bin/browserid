@@ -31,7 +31,7 @@ const statsd = require('../lib/logging/middleware/statsd.js');
 const wsapi = require('../lib/wsapi.js');
 const morgan = require('../lib/logging/custom_logger');
 
-var app = express.createServer();
+var app = express();
 
 logger.info("browserid server starting up");
 
@@ -149,15 +149,9 @@ db.open(config.get('database'), function (error) {
     });
   });
 
-  // shut down express gracefully on SIGINT
-  shutdown.handleTerminationSignals(app, function(readyForShutdownCB) {
-    require('../lib/bcrypt.js').shutdown();
-    db.close(readyForShutdownCB);
-  });
-
   var bindTo = config.get('bind_to');
-  app.listen(bindTo.port, bindTo.host, function() {
-    logger.info("running on http://" + app.address().address + ":" + app.address().port);
+  var httpServer = app.listen(bindTo.port, bindTo.host, function() {
+    logger.info("running on http://" + httpServer.address().address + ":" + httpServer.address().port);
 
     // #13 if the CREATE_TEST_USERS env var is defined, we'll try to create
     // some test users
@@ -181,4 +175,11 @@ db.open(config.get('database'), function (error) {
         });
     }
   });
+
+  // shut down express gracefully on SIGINT
+  shutdown.handleTerminationSignals(httpServer, function(readyForShutdownCB) {
+    require('../lib/bcrypt.js').shutdown();
+    db.close(readyForShutdownCB);
+  });
+
 });

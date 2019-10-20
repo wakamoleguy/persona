@@ -26,8 +26,7 @@ const statsd = require('../lib/logging/middleware/statsd.js');
 const wsapi = require('../lib/wsapi.js');
 const morgan = require('../lib/logging/custom_logger');
 
-var app = express.createServer();
-
+var app = express();
 logger.info("router server starting up");
 
 if (config.get('env') === 'production') {

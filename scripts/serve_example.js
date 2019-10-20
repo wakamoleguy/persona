@@ -7,14 +7,16 @@
 // finally, let's run a tiny webserver for the example code.
 const
 express = require('express'),
+morgan = require('morgan'),
 path = require('path'),
 urlparse = require('urlparse'),
 postprocess = require('postprocess'),
+bodyParser = require('body-parser'),
 querystring = require('querystring');
 
-var exampleServer = express.createServer();
+var exampleServer = express();
 
-exampleServer.use(express.logger({ format: 'dev' }));
+exampleServer.use(morgan('dev'));
 
 if (process.env['PUBLIC_URL']) {
   var burl = urlparse(process.env['PUBLIC_URL']).validate().normalize().originOnly().toString();
@@ -25,9 +27,16 @@ if (process.env['PUBLIC_URL']) {
   }));
 }
 
-exampleServer.use(express.static(path.join(__dirname, "..", "example", "rp"),  { redirect: false }));
+exampleServer.use(express.static(path.join(__dirname, "..", "example", "rp"),  {
+  redirect: false,
+  setHeaders: function (res, path, stat) {
+    if (/\.js$/.test(path)) {
+      res.setHeader('content-type', 'application/javascript')
+    }
+  }
+}));
 
-exampleServer.use(express.bodyParser());
+exampleServer.use(bodyParser.json());
 
 exampleServer.post('/process_assertion', function(req, res, next) {
   var verifier = urlparse(process.env['VERIFIER_URL']);
@@ -42,7 +51,6 @@ exampleServer.post('/process_assertion', function(req, res, next) {
     vres.on('data', function(chunk) { body+=chunk; } )
         .on('end', function() {
           try {
-            console.log(body);
             var verifierResp = JSON.parse(body);
             var valid = verifierResp && verifierResp.status === "okay";
             var email = valid ? verifierResp.email : null;
@@ -80,10 +88,10 @@ exampleServer.post('/process_assertion', function(req, res, next) {
 
 });
 
-exampleServer.listen(
+const httpServer = exampleServer.listen(
   process.env['PORT'] || 10001,
   process.env['HOST'] || process.env['IP_ADDRESS'] || "127.0.0.1",
   function() {
-    var addy = exampleServer.address();
+    var addy = httpServer.address();
     console.log("running on http://" + addy.address + ":" + addy.port);
   });

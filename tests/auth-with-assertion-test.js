@@ -19,7 +19,7 @@ http = require('http'),
 querystring = require('querystring'),
 path = require('path'),
 primary = require('./lib/primary.js'),
-jwcrypto = require('jwcrypto');
+jwcrypto = require('browserid-crypto');
 
 var suite = vows.describe('auth-with-assertion');
 

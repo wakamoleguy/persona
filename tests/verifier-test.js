@@ -12,7 +12,7 @@ vows = require('vows'),
 start_stop = require('./lib/start-stop.js'),
 wsapi = require('./lib/wsapi.js'),
 config = require('../lib/configuration.js'),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 http = require('http'),
 querystring = require('querystring'),
 path = require('path'),
@@ -34,8 +34,8 @@ process.env['SHIMMED_PRIMARIES'] =
 
 var suite = vows.describe('verifier');
 
-require("jwcrypto/lib/algs/rs");
-require("jwcrypto/lib/algs/ds");
+require('browserid-crypto/lib/algs/rs');
+require('browserid-crypto/lib/algs/ds');
 
 // disable vows (often flakey?) async error behavior
 suite.options.error = false;

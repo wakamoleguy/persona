@@ -7,10 +7,10 @@ const
 vows = require('vows'),
 assert = require('assert'),
 path = require('path'),
-jwcrypto = require('jwcrypto');
+jwcrypto = require('browserid-crypto');
 
-require("jwcrypto/lib/algs/rs");
-require("jwcrypto/lib/algs/ds");
+require('browserid-crypto/lib/algs/rs');
+require('browserid-crypto/lib/algs/ds');
 
 var suite = vows.describe('Conformance Tests');
 

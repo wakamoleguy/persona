@@ -13,7 +13,7 @@ start_stop = require('./lib/start-stop.js'),
 wsapi = require('./lib/wsapi.js'),
 db = require('../lib/db.js'),
 config = require('../lib/configuration.js'),
-jwcrypto = require('jwcrypto'),
+jwcrypto = require('browserid-crypto'),
 http = require('http'),
 querystring = require('querystring'),
 path = require("path"),
@@ -22,8 +22,8 @@ secondary = require("./lib/secondary");
 var suite = vows.describe('auth-with-assertion');
 
 // algs
-require("jwcrypto/lib/algs/ds");
-require("jwcrypto/lib/algs/rs");
+require('browserid-crypto/lib/algs/ds');
+require('browserid-crypto/lib/algs/rs');
 
 // disable vows (often flakey?) async error behavior
 suite.options.error = false;

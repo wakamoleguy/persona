@@ -122,7 +122,7 @@ function runDaemon(daemon, cb) {
   var args = [ pathToScript ];
 
   if (process.env.PERSONA_DEBUG_MODE) {
-    args.unshift('--debug=' + debugPort++);
+    args.unshift('--inspect=' + debugPort++);
   } else if (process.env.PERSONA_WITH_COVER) {
     var pathToCover = path.join(__dirname, "..", "node_modules", ".bin", "cover");
     if (path.existsSync(pathToCover)) {
@@ -139,7 +139,7 @@ function runDaemon(daemon, cb) {
 
       // when we find a line that looks like 'running on <url>' then we've
       // fully started up and can run the next daemon.  see issue #556
-      if (cb && /^.*running on http:\/\/.*:[0-9]+$/.test(d)) {
+      if (cb && /^.*running on http:\/\/.*:[0-9]+/.test(d)) {
         cb();
         cb = undefined;
       }
