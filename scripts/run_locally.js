@@ -180,7 +180,7 @@ daemonNames.forEach(function(dn) {
       runDaemon('router', function() {
         if (process.env.PERSONA_DEBUG_MODE) {
           var inspectPath = path.join(__dirname, "..", "node_modules", ".bin", "node-inspector");
-          inspectorProc = spawn(inspectPath, []);
+          // inspectorProc = spawn(inspectPath, []);
         }
       });
     }

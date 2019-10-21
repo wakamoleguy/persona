@@ -25,6 +25,7 @@ const proxySecure = require('../lib/proxy-secure');
 const statsd = require('../lib/logging/middleware/statsd.js');
 const wsapi = require('../lib/wsapi.js');
 const morgan = require('../lib/logging/custom_logger');
+const getRawBody = require('raw-body');
 
 var app = express();
 logger.info("router server starting up");
@@ -75,8 +76,13 @@ app.use(morgan(config.get('express_log_format'), {
 
 // limit all content bodies to 10kb, at which point we'll forcefully
 // close down the connection. 
-app.use(express.limit("10kb"));
-
+app.use(function (req, res, next) {
+  getRawBody(req, { limit: "10kb" }, function (err, string) {
+    if (err) return next(err);
+    req.text = string;
+    next();
+  })
+});
 app.use(statsd());
 
 // cover our head
@@ -159,6 +165,6 @@ app.use(function(req, res, next) {
 });
 
 var bindTo = config.get('bind_to');
-app.listen(bindTo.port, bindTo.host, function(conn) {
-  logger.info("running on http://" + app.address().address + ":" + app.address().port);
+var httpServer = app.listen(bindTo.port, bindTo.host, function(conn) {
+  logger.info("running on http://" + httpServer.address().address + ":" + httpServer.address().port);
 });
