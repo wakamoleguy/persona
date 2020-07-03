@@ -166,5 +166,5 @@ app.use(function(req, res, next) {
 
 var bindTo = config.get('bind_to');
 var httpServer = app.listen(bindTo.port, bindTo.host, function(conn) {
-  logger.info("running on http://" + httpServer.address().address + ":" + httpServer.address().port);
+  logger.info("router running on http://" + httpServer.address().address + ":" + httpServer.address().port);
 });

@@ -54,7 +54,7 @@ function setupProc(proc) {
       var tokenRegex = new RegExp('token=([A-Za-z0-9]+)$', 'm');
       var pidRegex = new RegExp('^spawned (\\w+) \\(.*\\) with pid ([0-9]+)$');
 
-      if (!sentReady && /^router.*127\.0\.0\.1:10002$/.test(x)) {
+      if (!sentReady && /"router.*127\.0\.0\.1:10002"/.test(x)) {
         exports.browserid.emit('ready');
         sentReady = true;
       } else if (!sentReady && (m = pidRegex.exec(x))) {
