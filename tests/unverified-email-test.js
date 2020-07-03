@@ -157,7 +157,7 @@ suite.addBatch({
     "provides the unverified cert": function(err, r) {
       unverified_cert = r.body;
       assert.lengthOf(unverified_cert.split('.'), 3);
-      var principal = JSON.parse(new Buffer(unverified_cert.split('.')[1], 'base64').toString()).principal;
+      var principal = JSON.parse(Buffer.from(unverified_cert.split('.')[1], 'base64').toString()).principal;
       // should not be an email property, only unverified-email
       assert.strictEqual(principal['unverified-email'], UNVERIFIED_EMAIL);
       assert.isUndefined(principal.email);

@@ -45,7 +45,7 @@ suite.addBatch({
  * some functions to do b64url encoding/decoding
  */
 function base64urlencode(arg) {
-  var s = new Buffer(arg).toString('base64'); // window.btoa(arg);
+  var s = Buffer.from(arg).toString('base64'); // window.btoa(arg);
   s = s.split('=')[0]; // Remove any trailing '='s
   s = s.replace(/\+/g, '-'); // 62nd char of encoding
   s = s.replace(/\//g, '_'); // 63rd char of encoding
@@ -64,7 +64,7 @@ function base64urldecode(arg) {
   case 3: s += "="; break; // One pad char
   default: throw new InputException("Illegal base64url string!");
   }
-  return new Buffer(s,'base64').toString('ascii'); // window.atob(s); // Standard base64 decoder
+  return Buffer.from(s,'base64').toString('ascii'); // window.atob(s); // Standard base64 decoder
 }
 
 var BI_RM = "0123456789abcdefghijklmnopqrstuvwxyz";
