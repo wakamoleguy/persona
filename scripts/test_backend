@@ -21,7 +21,7 @@ $SCRIPT_DIR/test_db_connectivity.js
 if [ $? = 0 ] ; then
     for file in tests/*.js ; do
         echo $file
-        vows $file
+        vows --spec $file
         if [ $? != 0 ] ; then
             exit 1
         fi

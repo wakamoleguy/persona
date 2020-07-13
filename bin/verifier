@@ -21,9 +21,9 @@ shutdown = require('../lib/shutdown'),
 booleanQuery = require('../lib/boolean-query'),
 statsd = require("../lib/logging/middleware/statsd"),
 morgan = require("../lib/logging/custom_logger"),
-bodyParser = require('body-parser'),
-getRawBody = require('raw-body');
+bodyParser = require('body-parser');
 
+logger.info = console.log
 logger.info("verifier server starting up");
 
 if (config.get('env') === 'production') {
@@ -44,16 +44,6 @@ app.use(morgan(config.get('express_log_format'), {
     }
   }
 }));
-
-// limit all content bodies to 10kb, at which point we'll forcefully
-// close down the connection.
-app.use(function (req, res, next) {
-  getRawBody(req, { limit: "10kb" }, function (err, string) {
-    if (err) return next(err);
-    req.text = string;
-    next();
-  })
-});
 
 app.use(statsd());
 app.use(bodyParser.json());
@@ -83,6 +73,7 @@ try {
 function doVerification(req, resp, next) {
   req.query = req.query || {};
   req.body = req.body || {};
+  logger.info('got request')
 
   var assertion = req.query.assertion ? req.query.assertion : req.body.assertion;
   var audience = req.query.audience ? req.query.audience : req.body.audience;

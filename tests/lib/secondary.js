@@ -16,9 +16,10 @@ exports.create = function(opts, cb) {
     backgroundColor: opts.backgroundColor,
     siteLogo: opts.siteLogo
   }, function(err, r) {
+    console.log('client cli callback called');
     if (err) return cb("cannot stage: " + err);
     if (r.code !== 200) return cb("cannot stage: " + r.body);
-
+    console.log('First part down')
     opts.fetchVerificationLinkCallback(opts.email, function(err, t) {
       if (err) return cb("no verification token could be fetched: " + err);
       wcli.post(wsapi.configuration, '/wsapi/complete_user_creation', wsapi.context, {

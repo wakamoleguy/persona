@@ -38,7 +38,7 @@
     "convict": "0.4.1",
     "cookie-parser": "^1.4.4",
     "cover": "0.2.9",
-    "ejs": "0.8.4",
+    "ejs": "^2.7.1",
     "etagify": "0.0.2",
     "express": "4.17.1",
     "gobbledygook": "0.0.3",

@@ -11,7 +11,6 @@ const http = require('http');
 const path = require('path');
 const url = require('url');
 
-const cachify = require('connect-cachify');
 const express = require('express');
 const hood = require('hood');
 const urlparse = require('urlparse');
@@ -27,17 +26,6 @@ const proxySecure = require('../lib/proxy-secure');
 const shutdown = require('../lib/shutdown');
 const statsd = require('../lib/logging/middleware/statsd.js');
 const morgan = require('../lib/logging/custom_logger');
-
-// dbwriter needs cachify to properly render emails with cachified URLs,
-// but it serves no cachified content, so it's not necc to register it as
-// a handler of any sort.
-cachify.setup(
-  assets(config.get('supported_languages')),
-  {
-    prefix: config.get('cachify_prefix'),
-    production: config.get('use_minified_resources'),
-    root: path.join(__dirname, "..", "resources", "static")
-  });
 
 var app = express();
 
