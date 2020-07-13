@@ -5,12 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 require('../lib/baseExceptions.js').addExceptionHandler();
-
-const fs = require('fs');
-const http = require('http');
-const path = require('path');
-const url = require('url');
-
 const express = require('express');
 const hood = require('hood');
 const i18n = require('i18n-abide');
@@ -19,7 +13,6 @@ const urlparse = require('urlparse');
 const addP3PHeader = require('../lib/p3p.js');
 const config = require('../lib/configuration.js');
 const db = require('../lib/db.js');
-const forward = require('../lib/http_forward.js');
 const heartbeat = require('../lib/heartbeat.js');
 const httputils = require('../lib/httputils.js');
 const i18n_check = require('../lib/i18n_client_check');
@@ -31,9 +24,9 @@ const statsd = require('../lib/logging/middleware/statsd.js');
 const wsapi = require('../lib/wsapi.js');
 const morgan = require('../lib/logging/custom_logger');
 
-var app = express();
+const app = express();
 
-logger.info("browserid server starting up");
+logger.info('browserid server starting up');
 
 if (config.get('env') === 'production') {
   logger.info('node.js version: ' + process.version + ' at ' + process.execPath);
@@ -45,32 +38,36 @@ if (config.get('env') === 'production') {
 
 // #1 - Setup health check / heartbeat middleware.
 // This is in front of logging on purpose.  see issue #537
-heartbeat.setup(app, function(cb) {
+heartbeat.setup(app, function (cb) {
   // ping the database to verify we're really healthy.
-  db.ping(function(e) {
-    if (e) logger.error("database ping error: " + e);
+  db.ping(function (e) {
+    if (e) logger.error('database ping error: ' + e);
     cb(!e);
   });
 });
 
 // #2 - logging!  all requests other than __heartbeat__ are logged
-app.use(morgan(config.get('express_log_format'), {
-  stream: {
-    write: function(x) {
-      logger.info(typeof x === 'string' ? x.trim() : x);
-    }
-  }
-}));
+app.use(
+  morgan(config.get('express_log_format'), {
+    stream: {
+      write: function (x) {
+        logger.info(typeof x === 'string' ? x.trim() : x);
+      },
+    },
+  })
+);
 
 // #2.1 - localization
-app.use(i18n.abide({
-  supported_languages: config.get('supported_languages'),
-  default_lang: config.get('default_lang'),
-  debug_lang: config.get('debug_lang'),
-  translation_directory: config.get('translation_directory'),
-  disable_locale_check: config.get('disable_locale_check'),
-  logger: logger
-}));
+app.use(
+  i18n.abide({
+    supported_languages: config.get('supported_languages'),
+    default_lang: config.get('default_lang'),
+    debug_lang: config.get('debug_lang'),
+    translation_directory: config.get('translation_directory'),
+    disable_locale_check: config.get('disable_locale_check'),
+    logger: logger,
+  })
+);
 
 i18n_check();
 
@@ -78,35 +75,35 @@ app.use(statsd());
 
 // #3 - Add Strict-Transport-Security headers if we're serving over SSL
 if (config.get('scheme') == 'https') {
-  app.use(function(req, resp, next) {
+  app.use(function (req, resp, next) {
     // expires in 30 days, include subdomains like www
-    resp.setHeader("Strict-Transport-Security", "max-age=10886400; includeSubdomains");
+    resp.setHeader('Strict-Transport-Security', 'max-age=10886400; includeSubdomains');
     next();
-    });
+  });
 }
 
 // Add P3P headers to please IE8
 app.use(addP3PHeader);
 
-
 // #4 - prevent framing of everything.  content underneath that needs to be
 // framed must explicitly remove the x-frame-options
 // cover our head
 app.use(proxySecure());
-app.use(hood({
-  csp: false, // CSP breaks FxOS, see bug #4144
-  hsts: config.get('hsts'),
-  xframe: config.get('x_frame_options')
-}));
-
+app.use(
+  hood({
+    csp: false, // CSP breaks FxOS, see bug #4144
+    hsts: config.get('hsts'),
+    xframe: config.get('x_frame_options'),
+  })
+);
 
 // #6 - verify all JSON responses are objects - prevents regression on issue #217
-app.use(function(req, resp, next) {
+app.use(function (req, resp, next) {
   var realRespJSON = resp.json;
-  resp.json = function(obj) {
+  resp.json = function (obj) {
     if (!obj || typeof obj !== 'object') {
-      logger.error("INTERNAL ERROR!  *all* json responses must be objects");
-      return httputils.serverError(resp, "broken internal API implementation");
+      logger.error('INTERNAL ERROR!  *all* json responses must be objects');
+      return httputils.serverError(resp, 'broken internal API implementation');
     }
     realRespJSON.call(resp, obj);
   };
@@ -119,9 +116,12 @@ app.use(function(req, resp, next) {
 config.performSubstitution(app);
 
 // #8 - handle /wsapi requests
-wsapi.setup({
-  forward_writes: urlparse(config.get('dbwriter_url')).validate().normalize().originOnly()
-}, app);
+wsapi.setup(
+  {
+    forward_writes: urlparse(config.get('dbwriter_url')).validate().normalize().originOnly(),
+  },
+  app
+);
 
 // #9 if the BROWSERID_FAKE_VERIFICATION env var is defined, we'll include
 // fake_verification.js.  This is used during testing only and should
@@ -135,51 +135,59 @@ db.open(config.get('database'), function (error) {
   if (error) {
     logger.error("can't open database: " + error);
     // let async logging flush, then exit 1
-    return setTimeout(function() { process.exit(1); }, 0);
+    return setTimeout(function () {
+      process.exit(1);
+    }, 0);
   }
 
   // As we detect primaries are online in the browserid process,
   // we must record this.  This allows us to handle cases where
   // IdP's transition online or off.
-  primary.events.on('idp_seen', function(domain) {
-    wsapi.requestToDBWriter({
-      path: '/wsapi/saw_idp?domain=' + encodeURIComponent(domain)
-    }, function(err, r) {
-      if (err) logger.warn("failed to note IDP seen for domain " + domain + ": " + err);
-    });
+  primary.events.on('idp_seen', function (domain) {
+    wsapi.requestToDBWriter(
+      {
+        path: '/wsapi/saw_idp?domain=' + encodeURIComponent(domain),
+      },
+      function (err, r) {
+        if (err) logger.warn('failed to note IDP seen for domain ' + domain + ': ' + err);
+      }
+    );
   });
 
   var bindTo = config.get('bind_to');
-  var httpServer = app.listen(bindTo.port, bindTo.host, function() {
-    logger.info("running on http://" + httpServer.address().address + ":" + httpServer.address().port);
+  var httpServer = app.listen(bindTo.port, bindTo.host, function () {
+    logger.info(
+      'running on http://' + httpServer.address().address + ':' + httpServer.address().port
+    );
 
     // #13 if the CREATE_TEST_USERS env var is defined, we'll try to create
     // some test users
     if (process.env['CREATE_TEST_USERS']) {
-      logger.warn("creating test users... this can take a while...");
-      require('../lib/bcrypt').encrypt(
-        config.get('bcrypt_work_factor'), "THE PASSWORD", function(err, hash) {
-          if (err) {
-            logger.error("error creating test users - bcrypt encrypt pass: " + err);
-            process.exit(1);
-          }
-          var want = parseInt(process.env['CREATE_TEST_USERS'], 10);
-          var have = 0;
-          for (var i = 1; i <= want; i++) {
-            db.addTestUser(i + "@loadtest.domain", hash, function(err, email) {
-              if (++have == want) {
-                logger.warn("created " + want + " test users");
-              }
-            });
-          }
-        });
+      logger.warn('creating test users... this can take a while...');
+      require('../lib/bcrypt').encrypt(config.get('bcrypt_work_factor'), 'THE PASSWORD', function (
+        err,
+        hash
+      ) {
+        if (err) {
+          logger.error('error creating test users - bcrypt encrypt pass: ' + err);
+          process.exit(1);
+        }
+        var want = parseInt(process.env['CREATE_TEST_USERS'], 10);
+        var have = 0;
+        for (var i = 1; i <= want; i++) {
+          db.addTestUser(i + '@loadtest.domain', hash, function (err, email) {
+            if (++have == want) {
+              logger.warn('created ' + want + ' test users');
+            }
+          });
+        }
+      });
     }
   });
 
   // shut down express gracefully on SIGINT
-  shutdown.handleTerminationSignals(httpServer, function(readyForShutdownCB) {
+  shutdown.handleTerminationSignals(httpServer, function (readyForShutdownCB) {
     require('../lib/bcrypt.js').shutdown();
     db.close(readyForShutdownCB);
   });
-
 });

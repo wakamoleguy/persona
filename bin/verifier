@@ -20,8 +20,8 @@ config = require('../lib/configuration'),
 shutdown = require('../lib/shutdown'),
 booleanQuery = require('../lib/boolean-query'),
 statsd = require("../lib/logging/middleware/statsd"),
-morgan = require("../lib/logging/custom_logger"),
-bodyParser = require('body-parser');
+morgan = require("../lib/logging/custom_logger");
+//bodyParser = require('body-parser');
 
 logger.info = console.log
 logger.info("verifier server starting up");
@@ -46,7 +46,7 @@ app.use(morgan(config.get('express_log_format'), {
 }));
 
 app.use(statsd());
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(booleanQuery);
 
 try {

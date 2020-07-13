@@ -33,6 +33,7 @@ TEST_SITE = 'http://fakesite.com';
 suite.addBatch({
   "creating a secondary account": {
     topic: function() {
+      console.log('topic');
       secondary.create({
         email: TEST_EMAIL,
         pass:  TEST_PASS,

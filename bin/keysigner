@@ -11,7 +11,6 @@ require('../lib/baseExceptions').addExceptionHandler();
 const
 path = require('path'),
 express = require('express'),
-bodyParser = require('body-parser'),
 _ = require('underscore'),
 config = require('../lib/configuration.js'),
 httputils = require('../lib/httputils.js'),
@@ -53,7 +52,7 @@ app.use(morgan(config.get('express_log_format'), {
 app.use(statsd());
 
 // parse POST bodies
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 try {
   // explicitly relay VAR_PATH to children
