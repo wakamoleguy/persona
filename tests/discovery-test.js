@@ -9,28 +9,28 @@
 
 require('./lib/test_env.js');
 
-const
-assert = require('assert'),
-vows = require('vows'),
-start_stop = require('./lib/start-stop.js'),
-wsapi = require('./lib/wsapi.js'),
-config = require('../lib/configuration.js'),
-util = require('util'),
-path = require('path');
+const assert = require('assert'),
+  vows = require('vows'),
+  start_stop = require('./lib/start-stop.js'),
+  wsapi = require('./lib/wsapi.js'),
+  config = require('../lib/configuration.js'),
+  util = require('util'),
+  path = require('path');
 
 var suite = vows.describe('discovery');
 
-const TEST_DISABLED_DOMAIN = "disabled.domain";
-      TEST_DOMAIN = "example.domain",
-      TEST_EMAIL = "test@" + TEST_DOMAIN,
-      TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_DISABLED_DOMAIN = 'disabled.domain';
+(TEST_DOMAIN = 'example.domain'),
+  (TEST_EMAIL = 'test@' + TEST_DOMAIN),
+  (TEST_ORIGIN = 'http://127.0.0.1:10002');
 
-const SECONDARY_TEST_DOMAIN = "example.com";
+const SECONDARY_TEST_DOMAIN = 'example.com';
 
 // an explicitly disabled domain
-process.env['SHIMMED_PRIMARIES'] =
-  util.format("disabled.domain|http://127.0.0.1:10005|%s", path.join(__dirname, 'data',
-    'disabled.domain', '.well-known', 'browserid'));
+process.env['SHIMMED_PRIMARIES'] = util.format(
+  'disabled.domain|http://127.0.0.1:10005|%s',
+  path.join(__dirname, 'data', 'disabled.domain', '.well-known', 'browserid')
+);
 
 // disable vows (often flakey?) async error behavior
 suite.options.error = false;
@@ -38,60 +38,60 @@ suite.options.error = false;
 start_stop.addStartupBatches(suite);
 
 suite.addBatch({
-  "discovery for a primary IdP": {
+  'discovery for a primary IdP': {
     topic: wsapi.get('/wsapi/discovery', {
-      domain: TEST_DOMAIN
+      domain: TEST_DOMAIN,
     }),
-    "returns well known": function(e, r) {
+    'returns well known': function (e, r) {
       assert.isNull(e);
       var res = JSON.parse(r.body);
-      assert.equal(res.authentication, "http://127.0.0.1:10005/sign_in.html");
-      assert.equal(res.provisioning, "http://127.0.0.1:10005/provision.html");
+      assert.equal(res.authentication, 'http://127.0.0.1:10005/sign_in.html');
+      assert.equal(res.provisioning, 'http://127.0.0.1:10005/provision.html');
       assert.isNotNull(res['public-key']);
-    }
-  }
+    },
+  },
 });
 
 suite.addBatch({
-  "discovery for the fallback IdP": {
-     topic: wsapi.get('/wsapi/discovery', {
-     domain: SECONDARY_TEST_DOMAIN
-     }),
-    "returns a well known": function(e, r) {
+  'discovery for the fallback IdP': {
+    topic: wsapi.get('/wsapi/discovery', {
+      domain: SECONDARY_TEST_DOMAIN,
+    }),
+    'returns a well known': function (e, r) {
       assert.isNull(e);
       var res = JSON.parse(r.body);
-      assert.equal(res.authentication, "http://127.0.0.1:10002/auth#NATIVE");
-      assert.equal(res.provisioning, "http://127.0.0.1:10002/provision");
+      assert.equal(res.authentication, 'http://127.0.0.1:10002/auth#NATIVE');
+      assert.equal(res.provisioning, 'http://127.0.0.1:10002/provision');
       assert.isNotNull(res['public-key']);
-    }
-  }
+    },
+  },
 });
 
 suite.addBatch({
-  "discovery for a disabled IdP": {
-     topic: wsapi.get('/wsapi/discovery', {
-     domain: TEST_DISABLED_DOMAIN
-     }),
-    "returns the secondary well known": function(e, r) {
+  'discovery for a disabled IdP': {
+    topic: wsapi.get('/wsapi/discovery', {
+      domain: TEST_DISABLED_DOMAIN,
+    }),
+    'returns the secondary well known': function (e, r) {
       assert.isNull(e);
       var res = JSON.parse(r.body);
-      assert.equal(res.authentication, "http://127.0.0.1:10002/auth#NATIVE");
-      assert.equal(res.provisioning, "http://127.0.0.1:10002/provision");
+      assert.equal(res.authentication, 'http://127.0.0.1:10002/auth#NATIVE');
+      assert.equal(res.provisioning, 'http://127.0.0.1:10002/provision');
       assert.isNotNull(res['public-key']);
-    }
-  }
+    },
+  },
 });
 
 suite.addBatch({
-  "Bad usage of discovery": {
-     topic: wsapi.get('/wsapi/discovery', {}),
-    "gives an error": function(e, r) {
-        assert.isNull(e);
-        assert.equal(r.code, 400);
-        var res = JSON.parse(r.body);
-	assert.equal(res.success, false);
-    }
-  }
+  'Bad usage of discovery': {
+    topic: wsapi.get('/wsapi/discovery', {}),
+    'gives an error': function (e, r) {
+      assert.isNull(e);
+      assert.equal(r.code, 400);
+      var res = JSON.parse(r.body);
+      assert.equal(res.success, false);
+    },
+  },
 });
 
 start_stop.addShutdownBatches(suite);

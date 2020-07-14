@@ -13,33 +13,44 @@
  *        ~root/resources/static/i18n
  */
 
-
-const mkdirp         = require('mkdirp'),
-      fs             = require('fs'),
-      path           = require('path'),
-      child_process  = require('child_process');
+const mkdirp = require('mkdirp'),
+  fs = require('fs'),
+  path = require('path'),
+  child_process = require('child_process');
 
 const existsSync = fs.existsSync || path.existsSync;
 
 const svnRepo =
-        'https://svn.mozilla.org/projects/l10n-misc/trunk/browserid/locale/';
+  'https://svn.mozilla.org/projects/l10n-misc/trunk/browserid/locale/';
 
 // where locale svn repo is located.
 const localePath = path.join(__dirname, '..', 'locale');
 
 // where compile script is located.
-const compileScriptPath = path.join(__dirname, '..', 'node_modules', '.bin', 'compile-json');
+const compileScriptPath = path.join(
+  __dirname,
+  '..',
+  'node_modules',
+  '.bin',
+  'compile-json'
+);
 
 // where to place the json files.
-const jsonOutputPath = path.join(__dirname, '..', 'resources', 'static', 'i18n');
+const jsonOutputPath = path.join(
+  __dirname,
+  '..',
+  'resources',
+  'static',
+  'i18n'
+);
 
-var spawn = function(command, args, opts, done) {
+var spawn = function (command, args, opts, done) {
   var cp = child_process.spawn(command, args, opts);
 
   cp.stdout.pipe(process.stdout);
   cp.stderr.pipe(process.stderr);
 
-  cp.on('exit', function(code) {
+  cp.on('exit', function (code) {
     if (code) return quit(code);
     done && done(code);
   });
@@ -47,17 +58,16 @@ var spawn = function(command, args, opts, done) {
   return cp;
 };
 
-var logStage = function(msg) {
-  console.log("=>", msg);
-}
+var logStage = function (msg) {
+  console.log('=>', msg);
+};
 
 if (!existsSync(localePath)) {
-  logStage("checking out svn repo");
+  logStage('checking out svn repo');
   mkdirp.sync(localePath);
   spawn('svn', ['co', svnRepo, localePath], null, compileJSON);
-}
-else {
-  logStage("updating svn repo");
+} else {
+  logStage('updating svn repo');
   spawn('svn', ['up'], { cwd: localePath }, compileJSON);
 }
 
@@ -66,15 +76,19 @@ function compileJSON() {
     mkdirp.sync(jsonOutputPath);
   }
 
-  logStage("compiling json files");
+  logStage('compiling json files');
   // the compile script expects its cwd to be the root directory of the repo.
-  spawn(compileScriptPath, [localePath, jsonOutputPath], {
-    cwd: path.join(__dirname, '..')
-  }, quit);
+  spawn(
+    compileScriptPath,
+    [localePath, jsonOutputPath],
+    {
+      cwd: path.join(__dirname, '..'),
+    },
+    quit
+  );
 }
 
 function quit(code) {
-  console.log("exiting with code: ", code);
+  console.log('exiting with code: ', code);
   process.exit(code);
 }
-

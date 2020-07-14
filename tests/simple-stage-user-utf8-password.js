@@ -6,11 +6,10 @@
 
 require('./lib/test_env.js');
 
-const
-assert = require('assert'),
-vows = require('vows'),
-start_stop = require('./lib/start-stop.js'),
-wsapi = require('./lib/wsapi.js');
+const assert = require('assert'),
+  vows = require('vows'),
+  start_stop = require('./lib/start-stop.js'),
+  wsapi = require('./lib/wsapi.js');
 
 var suite = vows.describe('simple-stage-user-utf8-password');
 
@@ -19,56 +18,58 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const
-TEST_DOMAIN = 'example.domain',
-TEST_ORIGIN = 'http://127.0.0.1:10002',
-TEST_SITE = 'http://dev.123done.org';
+const TEST_DOMAIN = 'example.domain',
+  TEST_ORIGIN = 'http://127.0.0.1:10002',
+  TEST_SITE = 'http://dev.123done.org';
 
 // This test simply stages a secondary user. It does so for two users,
 // one with a password that is only ascii, and the other with non-ascii
 // characters in the password (GH-1631).
 
-const test_users =
-  [{
+const test_users = [
+  {
     email: 'testuser1@' + TEST_DOMAIN,
     password: 'fakepass',
   },
   {
     email: 'testuser2@' + TEST_DOMAIN,
     password: 'поддельный пароль', // Russian 'fake password' (34 bytes UTF-8)
-  }];
+  },
+];
 
 function makeBatch(site, user) {
   var batch = {
-    "staging an account": {
+    'staging an account': {
       topic: wsapi.post('/wsapi/stage_user', {
         site: site,
         email: user.email,
         pass: user.password,
       }),
-      "is 200 OK": function(err, r) {
+      'is 200 OK': function (err, r) {
         assert.strictEqual(r.code, 200);
       },
-      "and a token": {
-        topic: function() {
+      'and a token': {
+        topic: function () {
           start_stop.waitForToken(this.callback);
         },
-        "is obtained": function (err, t) {
+        'is obtained': function (err, t) {
           assert.isNull(err);
           assert.strictEqual(typeof t, 'string');
         },
-        "and the token can be used": {
-          topic: function(err, token) {
-            wsapi.post('/wsapi/complete_user_creation', { token: token }).call(this);
+        'and the token can be used': {
+          topic: function (err, token) {
+            wsapi
+              .post('/wsapi/complete_user_creation', { token: token })
+              .call(this);
           },
-          "to verify email ownership": function(err, r) {
+          'to verify email ownership': function (err, r) {
             assert.equal(r.code, 200);
             assert.strictEqual(JSON.parse(r.body).success, true);
             token = undefined;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
   return batch;
 }

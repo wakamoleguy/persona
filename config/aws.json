@@ -5,16 +5,14 @@
     "enabled": false
   },
   "kpi": {
-    "backend_db_url" : "https://kpiggybank-dev.personatest.org/wsapi/interaction_data",
+    "backend_db_url": "https://kpiggybank-dev.personatest.org/wsapi/interaction_data",
     "backend_sample_rate": 1.0
   },
   // for amazon deployments, enable it-CH which is the trigger language
   // for localization tests db-LB (which is a testing language where chars
   // are inverted and reversed), and en.
   // This set can be overridden by adding more to config.json on the VM.
-  "supported_languages": [
-    "en", "it-CH"
-  ],
+  "supported_languages": ["en", "it-CH"],
   "debug_lang": "it-CH",
   "var_path": "/home/app/var",
 
@@ -26,9 +24,9 @@
   "router": { "bind_to": { "port": 8080 } },
   // whether to show the development menu.
   "enable_development_menu": true,
-  // explicitly undefine public_static_url and firefoxos_url, as the configuration will 
-  // then fallback to public_url.  Because these values are dynamic in ephemeral 
-  // deployments and because we serve static content from the same URL, this is 
+  // explicitly undefine public_static_url and firefoxos_url, as the configuration will
+  // then fallback to public_url.  Because these values are dynamic in ephemeral
+  // deployments and because we serve static content from the same URL, this is
   // exactly what we want.
   "public_static_url": "",
   "firefoxos_url": "",
@@ -37,6 +35,5 @@
   "measure_dom_loading": true,
 
   // enable experimental forceIssuer for this domain
-  "forcible_issuers": [
-  ]
+  "forcible_issuers": []
 }

@@ -12,12 +12,12 @@ const util = require('util');
 function HttpMock(responseOptions) {
   this.responseOptions = responseOptions;
 }
-HttpMock.prototype.request = function(requestOptions) {
+HttpMock.prototype.request = function (requestOptions) {
   this._request = new RequestMock(requestOptions, this.responseOptions);
   return this._request;
 };
 
-HttpMock.prototype.getRequest = function() {
+HttpMock.prototype.getRequest = function () {
   return this._request;
 };
 
@@ -29,15 +29,12 @@ function RequestMock(requestOptions, responseOptions) {
 }
 util.inherits(RequestMock, EventEmitter);
 
-RequestMock.prototype.write = function(data) {
+RequestMock.prototype.write = function (data) {
   this.data = data;
 };
 
-
-RequestMock.prototype.end = function() {
+RequestMock.prototype.end = function () {
   this.emit('response', {
-    statusCode: this.responseOptions.statusCode
+    statusCode: this.responseOptions.statusCode,
   });
 };
-
-

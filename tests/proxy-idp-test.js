@@ -6,90 +6,100 @@
 
 require('./lib/test_env.js');
 
-const
-assert = require('assert'),
-vows = require('vows'),
-path = require('path'),
-start_stop = require('./lib/start-stop.js'),
-wsapi = require('./lib/wsapi.js'),
-primary = require('./lib/primary.js'),
-util = require('util'),
-jwcrypto = require('browserid-crypto');
+const assert = require('assert'),
+  vows = require('vows'),
+  path = require('path'),
+  start_stop = require('./lib/start-stop.js'),
+  wsapi = require('./lib/wsapi.js'),
+  primary = require('./lib/primary.js'),
+  util = require('util'),
+  jwcrypto = require('browserid-crypto');
 
 require('browserid-crypto/lib/algs/rs');
 require('browserid-crypto/lib/algs/ds');
 
 var suite = vows.describe('delegated-primary');
 
-const TEST_DOMAIN_PATH =
-  path.join(__dirname, '..', 'example', 'primary', '.well-known', 'browserid');
+const TEST_DOMAIN_PATH = path.join(
+  __dirname,
+  '..',
+  'example',
+  'primary',
+  '.well-known',
+  'browserid'
+);
 
 process.env['PROXY_IDPS'] = JSON.stringify({
-  "yahoo.com": "example.domain",
-  "real.primary": "example.com", // this should be ignored, because real.primary is a shimmed real primary, below
-  "broken.primary": "example.com" // this should fallback to secondary, because example.com is not a real primary
+  'yahoo.com': 'example.domain',
+  'real.primary': 'example.com', // this should be ignored, because real.primary is a shimmed real primary, below
+  'broken.primary': 'example.com', // this should fallback to secondary, because example.com is not a real primary
 });
 
 process.env['SHIMMED_PRIMARIES'] =
-  'example.domain|http://127.0.0.1:10005|' + TEST_DOMAIN_PATH +
-  ',real.primary|http://127.0.0.1:10005|' + TEST_DOMAIN_PATH;
+  'example.domain|http://127.0.0.1:10005|' +
+  TEST_DOMAIN_PATH +
+  ',real.primary|http://127.0.0.1:10005|' +
+  TEST_DOMAIN_PATH;
 
 start_stop.addStartupBatches(suite);
 
 suite.addBatch({
-  "proxy_idp configuration": {
+  'proxy_idp configuration': {
     topic: wsapi.get('/wsapi/address_info', {
-      email: 'bartholomew@yahoo.com'
+      email: 'bartholomew@yahoo.com',
     }),
-    "acts as delegated authority": function(err, r) {
+    'acts as delegated authority': function (err, r) {
       assert.strictEqual(r.code, 200);
       var resp = JSON.parse(r.body);
-      assert.strictEqual(resp.auth, "http://127.0.0.1:10005/sign_in.html");
-      assert.strictEqual(resp.prov, "http://127.0.0.1:10005/provision.html");
-      assert.strictEqual(resp.type, "primary");
-      assert.strictEqual(resp.issuer, "example.domain");
-    }
+      assert.strictEqual(resp.auth, 'http://127.0.0.1:10005/sign_in.html');
+      assert.strictEqual(resp.prov, 'http://127.0.0.1:10005/provision.html');
+      assert.strictEqual(resp.type, 'primary');
+      assert.strictEqual(resp.issuer, 'example.domain');
+    },
   },
-  "proxy_idps with uppercase domains": {
+  'proxy_idps with uppercase domains': {
     topic: wsapi.get('/wsapi/address_info', {
-      email: 'bartholomew@YAHOO.COM'
+      email: 'bartholomew@YAHOO.COM',
     }),
-    "works": function(err, r) {
+    works: function (err, r) {
       var resp = JSON.parse(r.body);
       assert.strictEqual(resp.type, 'primary');
       assert.strictEqual(resp.issuer, 'example.domain');
-    }
-  }
+    },
+  },
 });
 
 suite.addBatch({
-  "if bigtent breaks": {
+  'if bigtent breaks': {
     topic: wsapi.get('/wsapi/address_info', {
-        email: 'bartholomew@broken.primary'
+      email: 'bartholomew@broken.primary',
     }),
-    "we fallback to secondary validation, just because that's how the protocol works": function(err, r) {
+    "we fallback to secondary validation, just because that's how the protocol works": function (
+      err,
+      r
+    ) {
       assert.strictEqual(r.code, 200);
       var resp = JSON.parse(r.body);
-      assert.strictEqual(resp.type, "secondary");
+      assert.strictEqual(resp.type, 'secondary');
       assert.strictEqual(resp.state, 'unknown');
-    }
-  }
+    },
+  },
 });
 
 suite.addBatch({
-  "real primaries always override proxy_idp configuration": {
+  'real primaries always override proxy_idp configuration': {
     topic: wsapi.get('/wsapi/address_info', {
-        email: 'bartholomew@real.primary'
+      email: 'bartholomew@real.primary',
     }),
-    "because we want real primaries to step up": function(err, r) {
+    'because we want real primaries to step up': function (err, r) {
       assert.strictEqual(r.code, 200);
       var resp = JSON.parse(r.body);
-      assert.strictEqual(resp.auth, "http://127.0.0.1:10005/sign_in.html");
-      assert.strictEqual(resp.prov, "http://127.0.0.1:10005/provision.html");
-      assert.strictEqual(resp.type, "primary");
-      assert.strictEqual(resp.issuer, "real.primary");
-    }
-  }
+      assert.strictEqual(resp.auth, 'http://127.0.0.1:10005/sign_in.html');
+      assert.strictEqual(resp.prov, 'http://127.0.0.1:10005/provision.html');
+      assert.strictEqual(resp.type, 'primary');
+      assert.strictEqual(resp.issuer, 'real.primary');
+    },
+  },
 });
 
 // Enable verifiers to lookup bigtent
@@ -97,11 +107,11 @@ suite.addBatch({
 suite.addBatch({
   'public key for /.well-known/browserid': {
     topic: function () {
-	wsapi.get('/.well-known/browserid').call(this);
+      wsapi.get('/.well-known/browserid').call(this);
     },
     'should respond with a public key': function (err, res) {
       assertSecondary(res);
-    }
+    },
   },
   'delegation of authority for /.well-known/browserid?domain=yahoo.com': {
     topic: function () {
@@ -112,16 +122,16 @@ suite.addBatch({
       assert.ok(wellKnown.authority);
       assert.equal(undefined, wellKnown['public-key']);
       assert.equal(wellKnown.authority, 'example.domain');
-    }
+    },
   },
   'public key for /.well-known/browserid?domain=unknown.com': {
     topic: function () {
-	wsapi.get('/.well-known/browserid?domain=unknown.com').call(this);
+      wsapi.get('/.well-known/browserid?domain=unknown.com').call(this);
     },
     'should respond with a public key': function (err, res) {
       assertSecondary(res);
-    }
-  }
+    },
+  },
 });
 
 var assertSecondary = function (res) {
@@ -141,47 +151,50 @@ var assertSecondary = function (res) {
 // Now let's test the other part of this puzzle - that users can log in with certs issued
 // by our proxy idp servers. (for which the issuer is login.persona.org).
 var primaryUser = new primary({
-  email: "bartholomew@YAHOO.COM",
-  domain: "example.domain",
+  email: 'bartholomew@YAHOO.COM',
+  domain: 'example.domain',
   privKey: jwcrypto.loadSecretKey(
     require('fs').readFileSync(
-      path.join(__dirname, '..', 'example',
-                'primary', 'sample.privatekey')))
+      path.join(__dirname, '..', 'example', 'primary', 'sample.privatekey')
+    )
+  ),
 });
 
 suite.addBatch({
-  "initializing a primary user": {
-    topic: function() {
+  'initializing a primary user': {
+    topic: function () {
       primaryUser.setup(this.callback);
     },
-    "works": function() {
+    works: function () {
       // nothing to do here
-    }
-  }
+    },
+  },
 });
 
 suite.addBatch({
-  "generating an assertion targeted at the persona service": {
-    topic: function() {
+  'generating an assertion targeted at the persona service': {
+    topic: function () {
       primaryUser.getAssertion('http://127.0.0.1:10002', this.callback);
     },
-    "succeeds": function(err, r) {
+    succeeds: function (err, r) {
       assert.isString(r);
     },
-    "and logging in with the assertion": {
-      topic: function(err, assertion)  {
-        wsapi.post('/wsapi/auth_with_assertion', {
-          assertion: assertion,
-          ephemeral: true
-        }).call(this);
+    'and logging in with the assertion': {
+      topic: function (err, assertion) {
+        wsapi
+          .post('/wsapi/auth_with_assertion', {
+            assertion: assertion,
+            ephemeral: true,
+          })
+          .call(this);
       },
-      "succeeds": function(err, r) {
+      succeeds: function (err, r) {
         var resp = JSON.parse(r.body);
         assert.isObject(resp);
         assert.isTrue(resp.success);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 start_stop.addShutdownBatches(suite);

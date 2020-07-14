@@ -4,16 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const
-fs = require('fs'),
-jwcrypto = require('browserid-crypto'),
-optimist = require('optimist'),
-path = require('path'),
-urlparse = require('urlparse'),
-util = require('util'),
-cp = require('child_process'),
-os = require('os'),
-async = require('async');
+const fs = require('fs'),
+  jwcrypto = require('browserid-crypto'),
+  optimist = require('optimist'),
+  path = require('path'),
+  urlparse = require('urlparse'),
+  util = require('util'),
+  cp = require('child_process'),
+  os = require('os'),
+  async = require('async');
 
 const WEBAPPSSTORE_SQLITE = 'webappsstore.sqlite';
 
@@ -21,7 +20,8 @@ function heredoc(fn) {
   return fn.toString().split('\n').slice(1, -1).join('\n');
 }
 
-const extendedHelp = heredoc(function() {/*
+const extendedHelp = heredoc(function () {
+  /*
   Formats Persona information in localStorage for Firefox, Chrome, Safari,
   Opera+Blink, and B2G localStorage sqlite databases for a given
   origin. Useful for various testing and development stuff.
@@ -66,52 +66,53 @@ const extendedHelp = heredoc(function() {/*
     opera   => ~/Library/Application\ Support/com.operasoftware.Opera
     b2g     => 'adb:/data/b2g/mozilla/<profile>/webappsstore.sqlite' (Hard coded in this script).
 
-*/});
+*/
+});
 
 var sqlite3, argv, args;
 try {
   sqlite3 = require('sqlite3');
-} catch(e) {
-  console.log("This tool requires you to first do `npm install sqlite3`.\n");
+} catch (e) {
+  console.log('This tool requires you to first do `npm install sqlite3`.\n');
   process.exit(1);
 }
 
 const USAGE =
-  ('Read and format localStorage databases sqlite on Firefox, Chrome,\n' +
-   'Safari, Opera Blink and FirefoxOS for a given origin.');
+  'Read and format localStorage databases sqlite on Firefox, Chrome,\n' +
+  'Safari, Opera Blink and FirefoxOS for a given origin.';
 
 const OPTIONS = {
   h: {
-    describe: 'display this usage message'
+    describe: 'display this usage message',
   },
   help: {
-    describe: 'Show extended help message'
+    describe: 'Show extended help message',
   },
   p: {
     describe: 'path to profile directory [default: process.env["INSPECT_LS"]]',
   },
   b: {
     describe: 'which browser? ["firefox", "chrome", "safari", "opera", "b2g"]',
-    'default': 'firefox'
+    default: 'firefox',
   },
   o: {
     describe: 'origin to query from sqlite',
-    'default': 'https://login.persona.org'
+    default: 'https://login.persona.org',
   },
   P: {
     describe: 'show full details for pub and priv keys; otherwise "{...}"',
-    'default': false
+    default: false,
   },
   i: {
     describe: 'show all details of interaction_data; otherwise "{...}"',
-    'default': false
+    default: false,
   },
   k: {
     describe: 'show only these keys from localStorage (csv)',
   },
   v: {
     describe: 'show a bit more detail about program operation',
-    'default': false
+    default: false,
   },
 };
 
@@ -122,11 +123,11 @@ function adbPullWebappsstore(dbfile, callerCb) {
     var glob = './data/b2g/mozilla/*/' + WEBAPPSSTORE_SQLITE;
     var cmd = "adb shell 'ls " + glob + "'";
 
-    cp.exec(cmd, function(err, stdout, stderr) {
+    cp.exec(cmd, function (err, stdout, stderr) {
       if (err) return callback(err);
       if (stderr && args.v) console.error(stderr);
 
-      var files = stdout.split(ADB_EOL).filter(function(item) {
+      var files = stdout.split(ADB_EOL).filter(function (item) {
         return item !== '';
       });
 
@@ -143,17 +144,17 @@ function adbPullWebappsstore(dbfile, callerCb) {
   }
 
   function adbPullSqlite(adbPath, callback) {
-    var cmd = "adb pull " + adbPath + " " + dbfile;
+    var cmd = 'adb pull ' + adbPath + ' ' + dbfile;
     if (args.v) console.error('Executing: `' + cmd + '`');
 
-    cp.exec(cmd, function(err, stdout, stderr) {
+    cp.exec(cmd, function (err, stdout, stderr) {
       if (err) return callback(err);
       if (stderr && args.v) console.error(stderr);
       callback(null);
     });
   }
 
-  async.waterfall([ findSqlitePath, adbPullSqlite ], callerCb);
+  async.waterfall([findSqlitePath, adbPullSqlite], callerCb);
 }
 
 function checkDbFileExists(dbfile) {
@@ -179,9 +180,10 @@ function databaseFilename(origin) {
     // i.e., https://login.persona.org -> https_login.persona.org_0.localstorage
     var url = urlparse(origin).normalize();
     var parts = [url.scheme, url.host, url.port || 0];
-    var subdir = (['chrome', 'opera'].indexOf(args.b) !== -1)
-      ? 'Local Storage'
-      : 'LocalStorage';
+    var subdir =
+      ['chrome', 'opera'].indexOf(args.b) !== -1
+        ? 'Local Storage'
+        : 'LocalStorage';
     dbfile = path.join(args.p, subdir, parts.join('_') + '.localstorage');
   }
 
@@ -200,7 +202,7 @@ function firefoxScopeKey(origin) {
   var host = url.host.split('').reverse().join('') + '.';
   var parts = [host, url.scheme];
   var port = url.port;
-  if (!port) port = (url.scheme === 'https') ? 443 : 80;
+  if (!port) port = url.scheme === 'https' ? 443 : 80;
   parts.push(port);
   return parts.join(':');
 }
@@ -265,30 +267,29 @@ function processOptions() {
   // we'll figure out the db filename for b2g later
   if (args.b !== 'b2g') {
     args.dbfile = databaseFilename(args.o);
-    if (args.v) console.error("Inspecting", args.dbfile);
+    if (args.v) console.error('Inspecting', args.dbfile);
   }
 }
 
 function processCertificate(cert) {
   var components = jwcrypto.extractComponents(cert);
   var payload = components.payload;
-  ['signature',
-   'headerSegment',
-   'payloadSegment',
-   'cryptoSegment'].forEach(function(key) {
-     delete components[key];
-   });
+  ['signature', 'headerSegment', 'payloadSegment', 'cryptoSegment'].forEach(
+    function (key) {
+      delete components[key];
+    }
+  );
   if (!args.P) {
-    payload["public-key"] = '{...}';
+    payload['public-key'] = '{...}';
   }
-  ['iat', 'exp'].forEach(function(key) {
+  ['iat', 'exp'].forEach(function (key) {
     payload[key] = new Date(payload[key]).toISOString();
   });
   return components;
 }
 
 function processEmail(elt) {
-  Object.keys(elt).forEach(function(emailKey) {
+  Object.keys(elt).forEach(function (emailKey) {
     if (emailKey === 'cert') {
       elt[emailKey] = processCertificate(elt[emailKey]);
     }
@@ -299,12 +300,12 @@ function processEmail(elt) {
 }
 
 function processEmails(obj) {
-  Object.keys(obj).forEach(function(email) {
+  Object.keys(obj).forEach(function (email) {
     var elt = obj[email];
     if (email.match(/@/)) {
       processEmail(elt);
     } else {
-      Object.keys(elt).forEach(function(emailKey) {
+      Object.keys(elt).forEach(function (emailKey) {
         processEmail(elt[emailKey]);
       });
     }
@@ -314,8 +315,9 @@ function processEmails(obj) {
 function processRows(err, rows) {
   if (err) throw err;
   var localStorage = {};
-  rows.forEach(function(row) {
-    var key = row.key, value = row.value;
+  rows.forEach(function (row) {
+    var key = row.key,
+      value = row.value;
     if (Buffer.isBuffer(value)) {
       value = value.toString('ucs2'); // Chrome/Safari store as BLOB
     }
@@ -335,7 +337,7 @@ function processRows(err, rows) {
   });
 
   if (args.k) {
-    Object.keys(localStorage).forEach(function(key) {
+    Object.keys(localStorage).forEach(function (key) {
       if (args.k.indexOf(key) === -1) {
         delete localStorage[key];
       }
@@ -347,13 +349,13 @@ function processRows(err, rows) {
 
 function queryDatabaseB2G() {
   args.dbfile = path.join(os.tmpDir(), WEBAPPSSTORE_SQLITE);
-  adbPullWebappsstore(args.dbfile, function(err) {
+  adbPullWebappsstore(args.dbfile, function (err) {
     if (err) {
       console.error('*** ERROR: Pulling from b2g: ', err.message || err);
       return process.exit(1);
     }
     checkDbFileExists(args.dbfile);
-    if (args.v) console.error("Inspecting", args.dbfile);
+    if (args.v) console.error('Inspecting', args.dbfile);
     queryDatabase();
   });
 }
@@ -366,13 +368,13 @@ function queryDatabase() {
     params = ['%:' + args.scopeKey];
   } else if (args.b === 'firefox') {
     query = 'SELECT key, value FROM webappsstore2 WHERE scope = ?';
-    params = [ args.scopeKey ];
+    params = [args.scopeKey];
   } else if (['chrome', 'safari', 'opera'].indexOf(args.b) !== -1) {
     query = 'SELECT key, value FROM ItemTable';
     params = [];
   }
 
-  new sqlite3.Database(args.dbfile, sqlite3.OPEN_READONLY, function(err) {
+  new sqlite3.Database(args.dbfile, sqlite3.OPEN_READONLY, function (err) {
     if (err) throw err;
   }).all(query, params, processRows);
 }
@@ -385,4 +387,4 @@ function queryDatabase() {
   } else {
     queryDatabase();
   }
-}());
+})();

@@ -5,16 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var path = require('path'),
-child_process = require('child_process');
+  child_process = require('child_process');
 
 /*
  * A thin wrapper around awsbox that expects certain env
  * vars and invokes awsbox for ya to deploy a VM.
  */
 
-if (!process.env['AWS_ID'] || ! process.env['AWS_SECRET']) {
+if (!process.env['AWS_ID'] || !process.env['AWS_SECRET']) {
   console.log("You haven't defined AWS_ID and AWS_SECRET in the environment");
-  console.log("Get these values from the amazon web console and try again.");
+  console.log('Get these values from the amazon web console and try again.');
   process.exit(1);
 }
 
@@ -40,7 +40,7 @@ if (['create', 'deploy'].indexOf(process.argv[2]) !== -1) {
   if (process.env['PERSONA_DEPLOYMENT_HOSTNAME']) {
     options.u = scheme + process.env['PERSONA_DEPLOYMENT_HOSTNAME'];
   } else if (options.n) {
-    var domain = process.env['PERSONA_DEPLOYMENT_DOMAIN'] || ".personatest.org";
+    var domain = process.env['PERSONA_DEPLOYMENT_DOMAIN'] || '.personatest.org';
     options.u = scheme + options.n + domain;
   }
 
@@ -56,19 +56,19 @@ if (['create', 'deploy'].indexOf(process.argv[2]) !== -1) {
     options.x = process.env['PERSONA_EPHEMERAL_CONFIG'];
   }
 
-  cmd += " create --ssl=force";
+  cmd += ' create --ssl=force';
 
-  Object.keys(options).forEach(function(opt) {
-    cmd += " -" + opt;
-    cmd += typeof options[opt] === 'string' ? " " + options[opt] : "";
+  Object.keys(options).forEach(function (opt) {
+    cmd += ' -' + opt;
+    cmd += typeof options[opt] === 'string' ? ' ' + options[opt] : '';
   });
 } else {
   // Otherwise, pass through args to awsbox
-  cmd += " " + process.argv.slice(2).join(' ');
+  cmd += ' ' + process.argv.slice(2).join(' ');
 }
 
-console.log("awsbox cmd: " + cmd);
-var cp = child_process.exec(cmd, function(err) {
+console.log('awsbox cmd: ' + cmd);
+var cp = child_process.exec(cmd, function (err) {
   if (err) process.exit(err.code);
   else process.exit(0);
 });

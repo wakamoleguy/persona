@@ -2,43 +2,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const
-wcli = require('../../lib/wsapi_client');
+const wcli = require('../../lib/wsapi_client');
 
 // the client "context"
-var context = exports.context = {};
+var context = (exports.context = {});
 
 // the configuration
-var configuration = exports.configuration = {
-  browserid: 'http://127.0.0.1:10002/'
+var configuration = (exports.configuration = {
+  browserid: 'http://127.0.0.1:10002/',
+});
+
+exports.clearCookies = function (ctx) {
+  wcli.clearCookies(ctx || context);
 };
 
-exports.clearCookies = function(ctx) {
-  wcli.clearCookies(ctx||context);
+exports.injectCookies = function (cookies, ctx) {
+  wcli.injectCookies({ cookieJar: cookies }, ctx || context);
 };
 
-exports.injectCookies = function(cookies, ctx) {
-  wcli.injectCookies({cookieJar: cookies}, ctx||context);
-};
-
-exports.getCookie = function(which, ctx) {
-  return wcli.getCookie(ctx||context, which);
+exports.getCookie = function (which, ctx) {
+  return wcli.getCookie(ctx || context, which);
 };
 
 exports.get = function (path, getArgs, ctx, done) {
   return function () {
-    wcli.get(configuration, path, ctx||context, getArgs, (done || this.callback).bind(this));
+    wcli.get(
+      configuration,
+      path,
+      ctx || context,
+      getArgs,
+      (done || this.callback).bind(this)
+    );
   };
 };
 
 exports.post = function (path, postArgs, ctx, done) {
   return function () {
-    wcli.post(configuration, path, ctx||context, postArgs, (done || this.callback).bind(this));
+    wcli.post(
+      configuration,
+      path,
+      ctx || context,
+      postArgs,
+      (done || this.callback).bind(this)
+    );
   };
 };
 
-exports.getCSRF = function(ctx) {
-  var context = ctx||context;
+exports.getCSRF = function (ctx) {
+  var context = ctx || context;
   if (context && context.session && context.session.csrf_token) {
     return context.session.csrf_token;
   }

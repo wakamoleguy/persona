@@ -4,22 +4,28 @@
 
 /* this zero-exports include file should be included by each of the tests.
  * if NODE_ENV was not explicitly set to a test environment it will set
- * NODE_ENV and issue a warning on the console to developers */ 
+ * NODE_ENV and issue a warning on the console to developers */
 
 if (undefined === process.env['NODE_ENV']) {
-  console.log("Setting NODE_ENV to test_json to test with the local JSON database");
-  console.log("To test with a local mysql database, setup mysql and set NODE_ENV to test_mysql");
+  console.log(
+    'Setting NODE_ENV to test_json to test with the local JSON database'
+  );
+  console.log(
+    'To test with a local mysql database, setup mysql and set NODE_ENV to test_mysql'
+  );
   process.env['NODE_ENV'] = 'test_json';
-} else if (process.env['NODE_ENV'].substr(0,5) !== 'test_') {
-  console.log("(Woah.  Running tests without a test_ configuration.  Is this *really* what you want?)");
+} else if (process.env['NODE_ENV'].substr(0, 5) !== 'test_') {
+  console.log(
+    '(Woah.  Running tests without a test_ configuration.  Is this *really* what you want?)'
+  );
   process.exit(1);
 }
 
 // if the environment is a 'test_' environment, then we'll use an
 // ephemeral database
 if (process.env['NODE_ENV'] === 'test_mysql') {
-  process.env['DATABASE_NAME'] = "browserid_tmp_" +
-    require('../../lib/secrets.js').generate(6);
+  process.env['DATABASE_NAME'] =
+    'browserid_tmp_' + require('../../lib/secrets.js').generate(6);
 } else if (process.env['NODE_ENV'] === 'test_json') {
-  process.env['DATABASE_NAME'] = require('temp').path({suffix: '.db'});
+  process.env['DATABASE_NAME'] = require('temp').path({ suffix: '.db' });
 }

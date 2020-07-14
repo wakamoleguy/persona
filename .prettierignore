@@ -12,3 +12,10 @@ Thumbs.db
 /locale
 /resources/email_templates
 /automation-tests
+
+.awsbox.json
+.jshintrc
+.travis.yml
+README.md
+/docs
+/example

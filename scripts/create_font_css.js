@@ -3,25 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
-const
-fs = require("fs"),
-path = require('path'),
-resources = require('../lib/static_resources.js'),
-templates = require('../lib/templates'),
-cachify = require('connect-cachify'),
-connect_fonts = require('connect-fonts'),
-connect_fonts_opensans = require('connect-fonts-opensans'),
-connect_fonts_feurasans = require('connect-fonts-feurasans'),
-config = require('../lib/configuration'),
-mkdirp = require('mkdirp');
+const fs = require('fs'),
+  path = require('path'),
+  resources = require('../lib/static_resources.js'),
+  templates = require('../lib/templates'),
+  cachify = require('connect-cachify'),
+  connect_fonts = require('connect-fonts'),
+  connect_fonts_opensans = require('connect-fonts-opensans'),
+  connect_fonts_feurasans = require('connect-fonts-feurasans'),
+  config = require('../lib/configuration'),
+  mkdirp = require('mkdirp');
 
 var dir = process.cwd();
 var output_dir = process.env.BUILD_DIR || dir;
 
 connect_fonts.setup({
-  fonts: [ connect_fonts_opensans, connect_fonts_feurasans ],
-  "allow-origin": config.get('public_url')
+  fonts: [connect_fonts_opensans, connect_fonts_feurasans],
+  'allow-origin': config.get('public_url'),
 });
 
 function generateCSS() {
@@ -32,14 +30,14 @@ function generateCSS() {
     if (/\.css$/.test(key)) {
       var deps = all[key];
 
-      deps.forEach(function(dep) {
+      deps.forEach(function (dep) {
         if (/fonts\.css$/.test(dep)) {
           var parts = dep.split('/');
           var lang = parts[1];
           var fonts = parts[2].split(',');
-          var ua = "all";
+          var ua = 'all';
 
-          connect_fonts.generate_css(ua, lang, fonts, function(err, css) {
+          connect_fonts.generate_css(ua, lang, fonts, function (err, css) {
             var css_output_path = path.join(output_dir, dep);
             var css_output_dir = path.dirname(css_output_path);
 
@@ -47,7 +45,7 @@ function generateCSS() {
             mkdirp.sync(css_output_dir);
 
             // finally, write out the file.
-            fs.writeFileSync(css_output_path, css.css, "utf8");
+            fs.writeFileSync(css_output_path, css.css, 'utf8');
           });
         }
       });

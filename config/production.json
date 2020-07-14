@@ -31,9 +31,7 @@
   //  * in staging or dev envs it depends, but should include at least
   //    testing locales:  "it-CH", "db-LB"
   //  * in production it's reviews locales that have been signed off
-  "supported_languages": [
-    "en"
-  ],
+  "supported_languages": ["en"],
   "debug_lang": "it-CH",
   // locale directory should be overridden
   "express_log_format": "default_bid",
@@ -65,14 +63,11 @@
   //  "port": 10006
   //},
 
-  // set to true to use an inline script in the dialog HEAD to measure the 
+  // set to true to use an inline script in the dialog HEAD to measure the
   // time it takes the window to open and the DOM to start loading.
-  // Enabling this will break CSP because of the extra inline script in the 
+  // Enabling this will break CSP because of the extra inline script in the
   // HEAD.
   "measure_dom_loading": false,
 
-  "forcible_issuers": [
-    "firefoxos.persona.org",
-    "login.persona.org"
-  ]
+  "forcible_issuers": ["firefoxos.persona.org", "login.persona.org"]
 }

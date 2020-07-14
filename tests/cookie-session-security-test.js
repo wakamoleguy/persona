@@ -7,10 +7,10 @@
 require('./lib/test_env.js');
 
 const assert = require('assert'),
-vows = require('vows'),
-start_stop = require('./lib/start-stop.js'),
-wsapi = require('./lib/wsapi.js'),
-email = require('../lib/email.js');
+  vows = require('vows'),
+  start_stop = require('./lib/start-stop.js'),
+  wsapi = require('./lib/wsapi.js'),
+  email = require('../lib/email.js');
 
 var suite = vows.describe('cookie-session-security');
 
@@ -30,43 +30,51 @@ function stripExpires(cookieString) {
 
 // certify a key
 suite.addBatch({
-  "get context": {
+  'get context': {
     topic: wsapi.get('/wsapi/session_context'),
-    "has a cookie because of CSRF setting" : function(err, r) {
+    'has a cookie because of CSRF setting': function (err, r) {
       // make sure there's NO cookie
-      var cookie = r.headers["set-cookie"];
+      var cookie = r.headers['set-cookie'];
       assert.isNotNull(cookie[0]);
       first_cookie = cookie[0];
     },
-    "and then session context again": {
+    'and then session context again': {
       topic: wsapi.get('/wsapi/logout'),
-      "should not set-cookie": function(err, r) {
-        var cookie = r.headers["set-cookie"];
+      'should not set-cookie': function (err, r) {
+        var cookie = r.headers['set-cookie'];
         assert.isUndefined(cookie);
       },
       "then let's screw it up": {
-        topic: function() {
+        topic: function () {
           wsapi.clearCookies();
 
           // mess up the cookie
-          var the_match = first_cookie.match(/browserid_state(?:_[a-z0-9]+)?=([^;]*);/);
+          var the_match = first_cookie.match(
+            /browserid_state(?:_[a-z0-9]+)?=([^;]*);/
+          );
           assert.isNotNull(the_match);
-          var new_cookie_val = the_match[1].substring(0, the_match[1].length - 1);
-          wsapi.injectCookies({browserid_state: new_cookie_val});
-          return "next";
+          var new_cookie_val = the_match[1].substring(
+            0,
+            the_match[1].length - 1
+          );
+          wsapi.injectCookies({ browserid_state: new_cookie_val });
+          return 'next';
         },
-        "and then get context": {
+        'and then get context': {
           topic: wsapi.get('/wsapi/session_context'),
-          "and result should have a new cookie for session reset": function(err, r) {
-            var cookie = r.headers["set-cookie"];
+          'and result should have a new cookie for session reset': function (
+            err,
+            r
+          ) {
+            var cookie = r.headers['set-cookie'];
             assert.isNotNull(cookie);
             assert.isNotNull(cookie[0]);
             assert.notEqual(first_cookie, cookie[0]);
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  },
 });
 
 start_stop.addShutdownBatches(suite);

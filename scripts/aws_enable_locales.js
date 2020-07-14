@@ -5,46 +5,44 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const exec = require('child_process').exec,
-fs = require('fs'),
-optimist = require('optimist'),
-path = require('path');
-
+  fs = require('fs'),
+  optimist = require('optimist'),
+  path = require('path');
 
 const argv = optimist
-  .usage('Usage: $0 path/to/anyfile_with_locales.json\n\n' +
-    ' -a, -c, -u are for development of this script outside of aws and ' +
-    'can be ignored.\n\n' +
-    'During development, create a sample config.json and ' +
-    'include var_path in it.')
+  .usage(
+    'Usage: $0 path/to/anyfile_with_locales.json\n\n' +
+      ' -a, -c, -u are for development of this script outside of aws and ' +
+      'can be ignored.\n\n' +
+      'During development, create a sample config.json and ' +
+      'include var_path in it.'
+  )
   .options('a', {
     alias: 'aws-config',
-    "default": '/home/app/code/config/aws.json',
-    describe: 'Path to aws.json config file'
+    default: '/home/app/code/config/aws.json',
+    describe: 'Path to aws.json config file',
   })
   .options('c', {
     alias: 'compress',
-    "default": '/home/app/code/scripts/compress',
-    describe: 'Path to compress script'
+    default: '/home/app/code/scripts/compress',
+    describe: 'Path to compress script',
   })
   .options('u', {
     alias: 'update-config',
-    "default": '/home/app/config.json',
-    describe: 'The config file we should update. ' +
-      'We will overrite any existing locale setting'
-  })
-  .argv;
+    default: '/home/app/config.json',
+    describe:
+      'The config file we should update. ' +
+      'We will overrite any existing locale setting',
+  }).argv;
 
-
-var updateConfig = argv.u[0] === '/' ?
-  argv.u : path.join(process.cwd(), argv.u);
-var awsConfig = argv.a[0] === '/' ?
-  argv.a : path.join(process.cwd(), argv.a);
-var compressPath = argv.c[0] === '/' ?
-  argv.c : path.join(process.cwd(), argv.c);
+var updateConfig =
+  argv.u[0] === '/' ? argv.u : path.join(process.cwd(), argv.u);
+var awsConfig = argv.a[0] === '/' ? argv.a : path.join(process.cwd(), argv.a);
+var compressPath =
+  argv.c[0] === '/' ? argv.c : path.join(process.cwd(), argv.c);
 
 console.log(argv._.length);
 if (argv._.length !== 1) {
-
   optimist.showHelp();
   process.exit(1);
 }
@@ -62,7 +60,7 @@ function readUpdateConfig(err, raw) {
 function readLocaleConfig(updateConfigValues) {
   var localeConfig = path.join(process.cwd(), argv._[0]);
   console.log('Pulling locales from', localeConfig);
-  fs.readFile(localeConfig, 'utf8', function(err, raw) {
+  fs.readFile(localeConfig, 'utf8', function (err, raw) {
     if (err) {
       optimist.showHelp();
       console.error(err);
@@ -74,7 +72,7 @@ function readLocaleConfig(updateConfigValues) {
 
     console.log('Writing', updateConfig);
     var newJson = JSON.stringify(updateConfigValues, null, 4);
-    fs.writeFile(updateConfig, newJson, 'utf8', function(err) {
+    fs.writeFile(updateConfig, newJson, 'utf8', function (err) {
       if (err) {
         console.error(err);
         process.exit(4);
@@ -87,26 +85,33 @@ function readLocaleConfig(updateConfigValues) {
 
 function compress() {
   console.log('Starting node', compressPath);
-  exec('node ' + compressPath, {
-    env: {
-      CONFIG_FILES: [awsConfig, updateConfig].join(',')
+  exec(
+    'node ' + compressPath,
+    {
+      env: {
+        CONFIG_FILES: [awsConfig, updateConfig].join(','),
+      },
+    },
+    function (err, stdout, stderr) {
+      console.log(stdout);
+      console.error(stderr);
+      if (err) {
+        console.error(err);
+        process.exit(5);
+      } else {
+        restartAll();
+      }
     }
-  }, function(err, stdout, stderr) {
-    console.log(stdout);
-    console.error(stderr);
-    if (err) {
-      console.error(err);
-      process.exit(5);
-    } else {
-      restartAll();
-    }
-  });
+  );
 }
 
 function restartAll() {
   console.log('forever restartall');
-  exec('/home/app/node_modules/.bin/forever restartall',
-       {}, function(err, stdout, stderr) {
+  exec('/home/app/node_modules/.bin/forever restartall', {}, function (
+    err,
+    stdout,
+    stderr
+  ) {
     console.log(stdout);
     console.error(stderr);
     if (err) {

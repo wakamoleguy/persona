@@ -6,25 +6,25 @@
 
 require('./lib/test_env.js');
 
-const
-assert = require('assert'),
-vows = require('vows'),
-fs = require('fs'),
-path = require('path'),
-version = require('../lib/version.js');
+const assert = require('assert'),
+  vows = require('vows'),
+  fs = require('fs'),
+  path = require('path'),
+  version = require('../lib/version.js');
 
 var suite = vows.describe('software-version');
 suite.options.error = false;
 
-
 suite.addBatch({
-  "version": {
-    topic: function() { version(this.callback); },
-    "works": function(r) {
+  version: {
+    topic: function () {
+      version(this.callback);
+    },
+    works: function (r) {
       assert.isString(r);
       assert.equal(r.length, 7);
-    }
-  }
+    },
+  },
 });
 
 // run or export the suite.

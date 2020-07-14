@@ -12,11 +12,10 @@ require('./lib/test_env.js');
 // disable email throttling so we can stage the same email twice without delay
 process.env['MIN_TIME_BETWEEN_EMAILS_MS'] = 0;
 
-const
-assert = require('assert'),
-vows = require('vows'),
-start_stop = require('./lib/start-stop.js'),
-wsapi = require('./lib/wsapi.js');
+const assert = require('assert'),
+  vows = require('vows'),
+  start_stop = require('./lib/start-stop.js'),
+  wsapi = require('./lib/wsapi.js');
 
 var suite = vows.describe('double-stage-updates-password');
 
@@ -26,93 +25,93 @@ suite.options.error = false;
 start_stop.addStartupBatches(suite);
 
 const EMAIL = 'test@example.com',
-       SITE = 'http://rp.example.com';
+  SITE = 'http://rp.example.com';
 
 var token;
 
 // stage with password 1
 suite.addBatch({
-  "staging an account": {
+  'staging an account': {
     topic: wsapi.post('/wsapi/stage_user', {
       email: EMAIL,
       pass: 'password1',
-      site: SITE
+      site: SITE,
     }),
-    "succeeds": function(err, r) {
+    succeeds: function (err, r) {
       assert.strictEqual(r.code, 200);
     },
-    "yields": {
-      topic: function() {
+    yields: {
+      topic: function () {
         start_stop.waitForToken(this.callback);
       },
-      "a verification token": function (err, t) {
+      'a verification token': function (err, t) {
         assert.isNull(err);
         assert.strictEqual(typeof t, 'string');
         token = t;
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // now stage again with password 2
 suite.addBatch({
-  "staging an account": {
+  'staging an account': {
     topic: wsapi.post('/wsapi/stage_user', {
       email: EMAIL,
       pass: 'password2',
-      site: SITE
+      site: SITE,
     }),
-    "succeeds": function(err, r) {
+    succeeds: function (err, r) {
       assert.strictEqual(r.code, 200);
     },
-    "yields": {
-      topic: function() {
+    yields: {
+      topic: function () {
         start_stop.waitForToken(this.callback);
       },
-      "a verification token": function (err, t) {
+      'a verification token': function (err, t) {
         assert.isNull(err);
         assert.strictEqual(typeof t, 'string');
         token = t;
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // verify with the most recent token (associated with password2)
 suite.addBatch({
-  "verifying account ownership": {
-    topic: function() {
+  'verifying account ownership': {
+    topic: function () {
       wsapi.post('/wsapi/complete_user_creation', { token: token }).call(this);
     },
-    "works": function(err, r) {
+    works: function (err, r) {
       assert.equal(r.code, 200);
       assert.strictEqual(true, JSON.parse(r.body).success);
-    }
-  }
+    },
+  },
 });
 
 // test that password2 works
 suite.addBatch({
-  "first password": {
+  'first password': {
     topic: wsapi.post('/wsapi/authenticate_user', {
       email: EMAIL,
       pass: 'password1',
-      ephemeral: false
+      ephemeral: false,
     }),
-    "fails": function(err, r) {
+    fails: function (err, r) {
       assert.strictEqual(JSON.parse(r.body).success, false);
-    }
+    },
   },
-  "second password": {
+  'second password': {
     topic: wsapi.post('/wsapi/authenticate_user', {
       email: EMAIL,
       pass: 'password2',
-      ephemeral: false
+      ephemeral: false,
     }),
-    "succeeds": function(err, r) {
+    succeeds: function (err, r) {
       assert.strictEqual(JSON.parse(r.body).success, true);
-    }
-  }
+    },
+  },
 });
 
 start_stop.addShutdownBatches(suite);

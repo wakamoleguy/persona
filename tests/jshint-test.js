@@ -8,12 +8,11 @@ require('./lib/test_env.js');
 
 // add lib/ to the require path
 
-const
-assert = require('assert'),
-vows = require('vows'),
-fs = require('fs'),
-path = require('path'),
-exec = require('child_process').exec;
+const assert = require('assert'),
+  vows = require('vows'),
+  fs = require('fs'),
+  path = require('path'),
+  exec = require('child_process').exec;
 
 var suite = vows.describe('jshint');
 var jshint = require('jshint').JSHINT;
@@ -22,23 +21,27 @@ var jshint = require('jshint').JSHINT;
 suite.options.error = false;
 
 function jshintFormatter(errors) {
-  return errors.map(function(e) {
+  return errors.map(function (e) {
     return e.error.reason + ' ' + e.file + ':' + e.error.line;
   });
 }
 
 suite.addBatch({
-  "run jshint on the lib directory": {
+  'run jshint on the lib directory': {
     topic: function () {
       var libPath = [path.join(__dirname, '../lib')];
-      var libRc = JSON.parse(fs.readFileSync(path.join(__dirname, '../.jshintrc')).toString());
-      return jshintFormatter(jshint(libPath, libRc, function noop_reporter(){}));
+      var libRc = JSON.parse(
+        fs.readFileSync(path.join(__dirname, '../.jshintrc')).toString()
+      );
+      return jshintFormatter(
+        jshint(libPath, libRc, function noop_reporter() {})
+      );
     },
-    "should have no jshint warnings" : function (errors) {
+    'should have no jshint warnings': function (errors) {
       assert.lengthOf(errors, 0);
-    }
+    },
   },
-/* We should DO this:
+  /* We should DO this:
   "run jshint on the tests directory": {
     topic: function () {
       var libPath = [path.join(__dirname, '../tests')];
@@ -50,11 +53,11 @@ suite.addBatch({
     }
   },
 */
-  "run jshint on the static directory": {
-    topic: function() {
+  'run jshint on the static directory': {
+    topic: function () {
       // we want most of the static js files, except for test, build,
       // production, and perhaps some of the lib files (jQuery?)
-      var paths = [ path.join(__dirname, '../resources/static') ];
+      var paths = [path.join(__dirname, '../resources/static')];
       var ignores = [
         path.join(__dirname, '../resources/static/test'),
         path.join(__dirname, '../resources/static/build'),
@@ -65,17 +68,22 @@ suite.addBatch({
 
         //XXX: these include WinChan, which we're not hinting yet
         path.join(__dirname, '../resources/static/include_js'),
-        path.join(__dirname, '../resources/static/provisioning_api.js')
+        path.join(__dirname, '../resources/static/provisioning_api.js'),
       ];
-      var staticRc = JSON.parse(fs.readFileSync(path.join(__dirname, '../resources/static/.jshintrc').toString()));
-      return jshintFormatter(jshint(paths, staticRc, function noop_reporter(){}, ignores));
+      var staticRc = JSON.parse(
+        fs.readFileSync(
+          path.join(__dirname, '../resources/static/.jshintrc').toString()
+        )
+      );
+      return jshintFormatter(
+        jshint(paths, staticRc, function noop_reporter() {}, ignores)
+      );
     },
-    "should have no jshint warnings": function(errors) {
+    'should have no jshint warnings': function (errors) {
       assert.lengthOf(errors, 0);
-    }
-  }
+    },
+  },
 });
-
 
 // run or export the suite.
 if (process.argv[1] === __filename) suite.run();

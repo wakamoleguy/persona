@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const fs = require('fs'),
-      // TODO: convert to vows based test (or introduce nodeunit dependency)
-      vows = require('vows'),
-      coarse = require('../lib/coarse_user_agent_parser'),
-      assert = require('assert'),
-      path = require('path');
+  // TODO: convert to vows based test (or introduce nodeunit dependency)
+  vows = require('vows'),
+  coarse = require('../lib/coarse_user_agent_parser'),
+  assert = require('assert'),
+  path = require('path');
 
 var suite = vows.describe('coarse-user-agent-parser');
 
@@ -19,19 +19,23 @@ suite.options.error = false;
 /* Update test data with https://gist.github.com/2590547 */
 
 suite.addBatch({
-  "UA parsing": {
-    topic: function() {
-      fs.readFile(path.join(__dirname, 'data/user_agents.json'), 'utf-8', this.callback);
+  'UA parsing': {
+    topic: function () {
+      fs.readFile(
+        path.join(__dirname, 'data/user_agents.json'),
+        'utf-8',
+        this.callback
+      );
     },
-    "data can be read": function(err, data) {
+    'data can be read': function (err, data) {
       assert.isNull(err);
     },
-    "with lots of data": {
-      topic: function(err, data) {
+    'with lots of data': {
+      topic: function (err, data) {
         this.callback(JSON.parse(data));
       },
-      "demonstrates proper functioning of coarse parser": function(test_data) {
-        for (var i=0; i < test_data.tests.length; i++) {
+      'demonstrates proper functioning of coarse parser': function (test_data) {
+        for (var i = 0; i < test_data.tests.length; i++) {
           var t = test_data.tests[i];
           if (t.ua) {
             var actual = coarse.parse(t.ua);
@@ -40,9 +44,9 @@ suite.addBatch({
             assert.strictEqual(t.version, actual.version, t.ua);
           }
         }
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // run or export the suite.
