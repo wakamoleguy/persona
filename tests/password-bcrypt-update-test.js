@@ -144,7 +144,7 @@ suite.addBatch({
       "its bcrypted with 8 rounds": function(err, r) {
         assert.isNull(err);
         assert.equal(typeof r, 'string');
-        assert.equal(8, bcrypt.getRounds(r));
+        assert.equal(bcrypt.getRounds(r), 8);
       }
     }
   }
