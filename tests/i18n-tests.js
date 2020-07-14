@@ -36,7 +36,7 @@ function getTestTemplate(langs, tp) {
       port: 10002,
       path: tp,
       method: "GET",
-      headers: { 'Accept-Language': langs }
+      headers: langs ? { 'Accept-Language': langs } : {}
     }, function (res) {
       var body = "";
       res.on('data', function(chunk) { body += chunk; })
