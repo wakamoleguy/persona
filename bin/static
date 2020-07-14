@@ -19,6 +19,7 @@ const express = require('express');
 const hood = require('hood');
 const i18n = require('i18n-abide');
 const urlparse = require('urlparse');
+const onHeaders = require('on-headers');
 
 const addP3PHeader = require('../lib/p3p.js');
 const assets = require('../lib/static_resources').all;
@@ -107,7 +108,7 @@ views.setup(app);
 // add 'Access-Control-Allow-Origin' headers to static resources that will be served
 // from the CDN.  We explicitly allow resources served from public_url to access these.
 app.use(function(req, res, next) {
-  res.on('header', function() {
+  onHeaders(res, function() {
     // this allows fonts to be requested cross domain
     res.setHeader("Access-Control-Allow-Origin", config.get('public_url'));
     // this makes sure caches properly consider language headers

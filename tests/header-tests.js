@@ -73,6 +73,7 @@ function hasProperCacheHeaders(path) {
       });
     },
     "returns 200 with content": function(err, r) {
+      assert.ifError(err);
       assert.strictEqual(r.statusCode, 200);
       // check X-Frame-Option headers
       hasProperFramingHeaders(r, path);

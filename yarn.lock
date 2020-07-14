@@ -656,10 +656,10 @@ concat-stream@~1.5.0, concat-stream@~1.5.1:
     readable-stream "~2.0.0"
     typedarray "~0.0.5"
 
-connect-cachify@0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/connect-cachify/-/connect-cachify-0.0.15.tgz#3a6d5329644e9303cff8a435c778732c5ed69396"
-  integrity sha1-Om1TKWROkwPP+KQ1x3hzLF7Wk5Y=
+connect-cachify@0.0.16:
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/connect-cachify/-/connect-cachify-0.0.16.tgz#e4e4b3132004a8e1104b1b146348f77ff0232fa2"
+  integrity sha1-5OSzEyAEqOEQSxsUY0j3f/AjL6I=
   dependencies:
     underscore ">=1.3.1"
 
@@ -2008,7 +2008,7 @@ on-finished@~2.3.0:
   dependencies:
     ee-first "1.1.1"
 
-on-headers@~1.0.1:
+on-headers@^1.0.2, on-headers@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/on-headers/-/on-headers-1.0.2.tgz#772b0ae6aaa525c399e489adfad90c403eb3c28f"
   integrity sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
@@ -2807,9 +2807,9 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-"uap-core@git://github.com/ua-parser/uap-core.git":
+"uap-core@git://github.com/ua-parser/uap-core":
   version "0.10.0"
-  resolved "git://github.com/ua-parser/uap-core.git#f21592418f6323f9ce32f10e231841cf8e782b43"
+  resolved "git://github.com/ua-parser/uap-core#f21592418f6323f9ce32f10e231841cf8e782b43"
 
 uap-ref-impl@0.2.0:
   version "0.2.0"
