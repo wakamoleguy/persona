@@ -23,6 +23,7 @@ urlparse = require('urlparse'),
 certKey = require('../lib/wsapi/cert_key.js'),
 statsd = require('../lib/logging/middleware/statsd.js'),
 morgan = require('../lib/logging/custom_logger');
+const getRawBody = require('raw-body');
 
 logger.info("keysigner starting up");
 
@@ -49,10 +50,22 @@ app.use(morgan(config.get('express_log_format'), {
   }
 }));
 
+// limit all content bodies to 10kb, at which point we'll forcefully
+// close down the connection. 
+app.use(function (req, res, next) {
+  getRawBody(req, {limit: '10kb', encoding: 'utf-8'}, function (err, string) {
+    if (err) return next(err);
+    req.text = string;
+    next();
+  });
+});
+app.use((req, _res, next) => {
+  if (req.text) {
+    req.body = JSON.parse(req.text);
+  }
+  next();
+});
 app.use(statsd());
-
-// parse POST bodies
-//app.use(bodyParser.json());
 
 try {
   // explicitly relay VAR_PATH to children

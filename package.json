@@ -31,7 +31,7 @@
     "compute-cluster": "0.0.9",
     "connect": "3.7.0",
     "connect-cachify": "0.0.15",
-    "connect-fonts": "0.0.11",
+    "connect-fonts": "2.1.5",
     "connect-fonts-feurasans": "0.0.3",
     "connect-fonts-opensans": "0.0.5",
     "connect-logger-statsd": "0.0.1",
