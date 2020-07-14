@@ -23,6 +23,7 @@ const shutdown = require('../lib/shutdown');
 const statsd = require('../lib/logging/middleware/statsd.js');
 const wsapi = require('../lib/wsapi.js');
 const morgan = require('../lib/logging/custom_logger');
+const getRawBody = require('raw-body');
 
 const app = express();
 
@@ -71,6 +72,15 @@ app.use(
 
 i18n_check();
 
+// limit all content bodies to 10kb, at which point we'll forcefully
+// close down the connection. 
+app.use(function (req, res, next) {
+  getRawBody(req, {limit: '10kb', encoding: 'utf-8'}, function (err, string) {
+    if (err) return next(err);
+    req.text = string;
+    next();
+  });
+});
 app.use(statsd());
 
 // #3 - Add Strict-Transport-Security headers if we're serving over SSL

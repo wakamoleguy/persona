@@ -18,7 +18,6 @@ db = require('../lib/db.js'),
 primary = require('./lib/primary.js');
 config = require('../lib/configuration.js'),
 bcrypt = require('bcrypt'),
-primary = require('./lib/primary.js'),
 secondary = require('./lib/secondary.js'),
 util = require('util'),
 path = require('path');
@@ -209,6 +208,7 @@ suite.addBatch({
           }).call(this);
         },
         "succeeds": function(err, r) {
+          console.log(r.statusCode, r.body);
           var resp = JSON.parse(r.body);
           assert.isObject(resp);
           assert.isTrue(resp.success);

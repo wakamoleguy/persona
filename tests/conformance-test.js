@@ -273,7 +273,8 @@ suite.addBatch(
           this.callback);
       },
       "fails appropriately": function(err, certParamsArray, payload, assertionParams) {
-        assert.equal(err, "assertion has expired");
+        console.log(err);
+        assert.equal(err.message, 'expired');
       }
     }    
 });
