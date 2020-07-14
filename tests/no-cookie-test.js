@@ -71,8 +71,8 @@ suite.addBatch({
     },
     "returns a 403 with 'no cookie' as the body": function(err, r) {
       assert.equal(err, null);
-      assert.equal(r.code, 403);
       assert.equal(r.body, 'Forbidden: no cookie');
+      assert.equal(r.code, 403);
     }
   }
 });
