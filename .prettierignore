@@ -1,0 +1,14 @@
+*~
+*.pyc
+\#*\#
+.\#*
+/node_modules
+/var
+/rpmbuild
+/npm-debug.log
+/resources/static
+.DS_Store
+Thumbs.db
+/locale
+/resources/email_templates
+/automation-tests
