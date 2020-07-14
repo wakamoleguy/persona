@@ -66,8 +66,8 @@ function addTests(port, path) {
           req.end();
         });
       },
-      "fails": function (err) {
-	assert.ok(/Error: (socket hang up|read ECONNRESET)/.test(err.toString()));
+      "fails": function (err, r) {
+        assert.strictEqual(r.statusCode, 413);
       }
     }
   });
@@ -97,7 +97,7 @@ function addTests(port, path) {
         });
       },
       "fails": function (err, r) {
-        assert.strictEqual(413, r.statusCode);
+        assert.strictEqual(r.statusCode, 413);
       }
     }
   });
