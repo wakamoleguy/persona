@@ -655,7 +655,7 @@ function make_incorrect_assertion_tests(new_style) {
         var resp = JSON.parse(r.body);
         assert.strictEqual(resp.status, 'failure');
         // XXX: the verifier response should simply be "invalid signature"
-        assert.strictEqual(resp.reason, 'bad signature in chain');
+        assert.strictEqual(resp.reason, 'algorithms do not match');
       }
     }
   };
@@ -750,7 +750,7 @@ function make_crazy_assertion_tests(new_style) {
         // that's revealing too much info about the malformed signature
         var resp = JSON.parse(r.body);
         assert.strictEqual(resp.status, 'failure');
-        assert.strictEqual(resp.reason, 'malformed signature');
+        assert.strictEqual(resp.reason, 'headersegment: invalid json');
       }
     },
     "and appending gunk to it": {
@@ -801,7 +801,7 @@ suite.addBatch({
     "fails with a nice error": function(err, r) {
       var resp = JSON.parse(r.body);
       assert.strictEqual(resp.status, 'failure');
-      assert.strictEqual(resp.reason, 'assertion has expired');
+      assert.strictEqual(resp.reason, 'expired');
     }
   },
   "An assertion with a bundled bogus certificate": {
@@ -824,7 +824,7 @@ suite.addBatch({
     "fails with a nice error": function(err, r) {
       var resp = JSON.parse(r.body);
       assert.strictEqual(resp.status, 'failure');
-      assert.strictEqual(resp.reason, 'malformed signature');
+      assert.strictEqual(resp.reason, 'signed object must have three parts, this one has 1');
     }
   },
   "An assertion with a no certificate": {

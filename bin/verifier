@@ -10,6 +10,7 @@ const
 _ = require('underscore'),
 util = require("util"),
 path = require('path'),
+querystring = require('querystring'),
 url = require('url'),
 fs = require('fs'),
 express = require('express'),
@@ -58,13 +59,21 @@ app.use(function (req, res, next) {
 app.use(statsd());
 app.use(booleanQuery);
 
-app.use((req, _res, next) => {
-  if (req.text) {
-    if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-      req.body = querystring.parse(req.text);
-    } else {
-      req.body = JSON.parse(req.text);
+app.use((req, res, next) => {
+  try {
+    if (req.text) {
+      if (req.headers['content-type'] === 'application/json') {
+        req.body = JSON.parse(req.text);
+      } else if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+        req.body = querystring.parse(req.text);
+      } else {
+        const err = 'Content-Type expected to be one of: application/x-www-form-urlencoded, application/json'
+        httputils.badrequest(res, err);
+        next(err);
+      }
     }
+  } catch (e) {
+    logger.info('Could not parse: ' + req.text);
   }
   next();
 });
@@ -141,7 +150,7 @@ function doVerification(req, resp, next) {
 
     if (err) {
       logger.info("assertion_failure");
-      resp.json({"status":"failure", reason: err});  //Could be 500 or 200 OK if invalid cert
+      resp.json({"status":"failure", reason: err.message ? err.message : err});  //Could be 500 or 200 OK if invalid cert
       logger.info('verify', {
         result: 'failure',
         reason: err,
