@@ -119,7 +119,7 @@
   }
 
   if (!navigator.id.request || navigator.id._shimmed) {
-    var ipServer = "https://login.persona.org";
+    var ipServer = "http://127.0.0.1:10002";
     var userAgent = navigator.userAgent;
     // We must check for both XUL and Java versions of Fennec.  Both have
     // distinct UA strings.

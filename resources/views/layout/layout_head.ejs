@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<%- include('../partial/license_with_code_ver') %>
+<html LANG="<%= lang %>" dir="<%= lang_dir %>">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+  <meta name="format-detection" content="email=no" />
+  <!--[if lt IE 9]>
+    <%- cachify_js('/production/html5shim.js') %>
+  <![endif]-->
+  <%- cachify_css(util.format('/production/%s/browserid.css', locale)) %>
+  <!--[if lt IE 9]>
+    <%- cachify_css('/production/ie8_main.css') %>
+  <![endif]-->
+  <%- cachify_js(util.format('/production/%s/browserid.js', locale)) %>
+  <link rel="shortcut icon" href=<%- cachify('/favicon.ico') -%>>
+  <% /* the title comes from the server when the page is loaded.
+         It still needs translated, so wrap it in its own gettext
+     */ %>
+  <title><%= format(gettext("Mozilla Persona: %s"), [gettext(title)]) %></title>
+</head>
+<body class="loading <%- typeof embedded !== "undefined" && embedded === true ? "embedded" : "" %>" <%- typeof start_blank !== "undefined" ? 'style="display: none;"' : "" %>>
+<% if (enable_development_menu) { %>
+  <a href="#" id="showDevelopment">&nbsp;</a>
+<% } %>
+<div id="errorBackground"></div>
+
+<div id="wrapper">
+<% if (typeof embedded === "undefined" || embedded !== true) { %>
+    <header id="header" class="cf">
+        <a class="home" href="/"><%= gettext("Persona Home") %></a>
+
+        <ul class="nav cf">
+            <li><a href="/about"><%= gettext("How it works") %></a></li>
+            <li class="ifAuthenticated"><a href="/"><%= gettext("Account") %></a></li>
+
+            <li class="ifNotAuthenticated"><a class="signIn" href="/signin"><%= gettext("Sign In") %></a></li>
+            <li class="ifAuthenticated"><a class="signOut" href="/"><%= gettext("Sign Out") %></a></li>
+
+        </ul>
+    </header>
+<% } %>
+
+    <div id="wait" class="message_screen"><div class="contents"></div></div>
+    <div id="error" class="message_screen"><div class="contents"></div></div>
+    <div id="delay" class="message_screen"><div class="contents"></div></div>

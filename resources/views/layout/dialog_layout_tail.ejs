@@ -1,0 +1,31 @@
+      </div>
+
+      <% if (showLoading) { %>
+
+      <!-- the loading screen should take up the entire
+           screen and not just within the borders of the content
+           -->
+      <section id="load" class="message_screen">
+        <div class="table">
+            <div class="vertical">
+                <div class="contents">
+                    <div class="loadingSpinner"></div>
+                    <h2 class="center"><%= gettext('Connecting to Persona...') %></h2>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <% } %>
+
+
+      <footer>
+<span id="footerText"><%- format(gettext('<strong>Mozilla Persona.</strong> Simple sign-in from the non-profit behind Firefox. <a %s>Learn more&rarr;</a>'), [" href='/about' target='_blank'"]) %></span>
+      </footer>
+
+
+      <% if (useJavascript !== false) { %>
+        <%- cachify_js(util.format('/production/%s/dialog.js', locale)) %>
+      <% } %>
+	</body>
+</html>
