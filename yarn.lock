@@ -307,9 +307,9 @@ browser-resolve@^1.11.0, browser-resolve@^1.7.0:
   dependencies:
     resolve "1.1.7"
 
-"browserid-crypto@https://github.com/wakamoleguy/browserid-crypto.git#revive-persona-3":
+"browserid-crypto@https://github.com/wakamoleguy/browserid-crypto.git#revive-persona-4":
   version "0.9.1"
-  resolved "https://github.com/wakamoleguy/browserid-crypto.git#2f64bfa133239a569d20d2c68346878f3e061b08"
+  resolved "https://github.com/wakamoleguy/browserid-crypto.git#8a37bd1b25cb5206ee90730ede739da5acd726d9"
   dependencies:
     browserify "13.1.0"
     http-browserify "1.7.0"

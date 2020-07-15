@@ -42,8 +42,8 @@ BrowserID.CryptoLoader = (function() {
       addScript("/production/bidbundle.js");
       waiting.push(done);
       loading = true;
-      waitUntilExists("require", window, function() {
-        jwCrypto = window.require('./lib/jwcrypto');
+      waitUntilExists("jwcrypto", window, function() {
+        jwCrypto = window.jwcrypto;
         jwCrypto.addEntropy(randomSeed);
         loading = false;
         _.each(waiting, function(doneFunc) {

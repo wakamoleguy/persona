@@ -5,8 +5,7 @@
 (function() {
   "use strict";
 
-  var jwcrypto = require("./lib/jwcrypto"),
-      bid = BrowserID,
+  var bid = BrowserID,
       lib = bid.User,
       storage = bid.Storage,
       network = bid.Network,

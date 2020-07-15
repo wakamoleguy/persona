@@ -13,7 +13,7 @@ BrowserID.Renderer = (function() {
 
     var localVars = _.extend({}, vars);
     if(!localVars.partial) {
-      localVars.partial = function(name) {
+      localVars.include = function(name) {
         // partials are not supported by the client side EJS. Create
         // a standin that does what partial rendering would do on the backend.
         return getTemplateHTML(name, vars);
