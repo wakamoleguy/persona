@@ -12,10 +12,15 @@ BrowserID.Renderer = (function() {
     if (!templateFn) throw new Error("Template not found: " + templateName);
 
     var localVars = _.extend({}, vars);
-    if(!localVars.partial) {
+    if(!localVars.include) {
       localVars.include = function(name) {
         // partials are not supported by the client side EJS. Create
         // a standin that does what partial rendering would do on the backend.
+        if (name.startsWith('../')) {
+          name = name.substring(3);
+        } else if (name.startsWith('layout')) {
+          return '';
+        }
         return getTemplateHTML(name, vars);
       };
     }
