@@ -24,7 +24,7 @@
   <meta name="format-detection" content="email=no" />
 
   <%- cachify_css(util.format('/production/%s/dialog.css', locale)) %>
-  <link rel="shortcut icon" href='/favicon.ico'>
+  <link rel="shortcut icon" href=<%- cachify('/favicon.ico') -%>>
   <% /* the title comes from the server when the page is loaded.
          It still needs translated, so wrap it in its own gettext
      */ %>

@@ -41,7 +41,6 @@
     "ejs": "^2.7.1",
     "etagify": "0.0.2",
     "express": "4.17.1",
-    "express-ejs-layouts": "^2.5.0",
     "gobbledygook": "0.0.3",
     "hood": "0.2.1",
     "i18n-abide": "^0.0.26",
@@ -63,7 +62,7 @@
     "urlparse": "0.0.1",
     "useragent": "2.0.7",
     "validator": "1.5.1",
-    "winston": "3.2.0"
+    "winston": "3.3.3"
   },
   "devDependencies": {
     "awsbox": "https://github.com/mozilla/awsbox/tarball/master",

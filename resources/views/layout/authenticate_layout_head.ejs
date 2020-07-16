@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%- include('partial/license_with_code_ver') %>
+<%- include('../partial/license_with_code_ver') %>
 <html LANG="<%= lang %>" dir="<%= lang_dir %>">
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
@@ -24,7 +24,7 @@
   <meta name="format-detection" content="email=no" />
 
   <%- cachify_css(util.format('/production/%s/dialog.css', locale)) %>
-  <link rel="shortcut icon" href='/favicon.ico'>
+  <link rel="shortcut icon" href=<%- cachify('/favicon.ico') -%>>
   <% /* the title comes from the server when the page is loaded.
          It still needs translated, so wrap it in its own gettext
      */ %>
@@ -36,35 +36,3 @@
       <% } %>
 
       <div id="content">
-        <%-body%>
-      </div>
-
-      <% if (showLoading) { %>
-
-      <!-- the loading screen should take up the entire
-           screen and not just within the borders of the content
-           -->
-      <section id="load" class="message_screen">
-        <div class="table">
-            <div class="vertical">
-                <div class="contents">
-                    <div class="loadingSpinner"></div>
-                    <h2 class="center"><%= gettext('Connecting to Persona...') %></h2>
-                </div>
-            </div>
-        </div>
-      </section>
-
-      <% } %>
-
-
-      <footer>
-<span id="footerText"><%- format(gettext('<strong>Mozilla Persona.</strong> Simple sign-in from the non-profit behind Firefox. <a %s>Learn more&rarr;</a>'), [" href='/about' target='_blank'"]) %></span>
-      </footer>
-
-
-      <% if (useJavascript !== false) { %>
-        <%- cachify_js(util.format('/production/%s/dialog.js', locale)) %>
-      <% } %>
-	</body>
-</html>
