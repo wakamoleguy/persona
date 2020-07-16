@@ -11,14 +11,7 @@ const pro = require('uglify-js').uglify;
 const uglifycss = require('uglifycss');
 const mkdirp = require('mkdirp');
 const connect_fonts = require('connect-fonts');
-const connect_fonts_opensans = require('connect-fonts-opensans');
-const connect_fonts_feurasans = require('connect-fonts-feurasans');
 const path = require('path');
-
-var font_middleware = connect_fonts.setup({
-  fonts: [connect_fonts_opensans, connect_fonts_feurasans],
-  'allow-origin': config.get('public_url'),
-});
 
 function compressResource(staticPath, name, files, cb) {
   var orig_code = '';
@@ -131,7 +124,7 @@ function compressResource(staticPath, name, files, cb) {
 function cachify_embedded_css(css_src) {
   // RegExp is set up to handle multiple url's per declaration, which is
   // possible for things like background-images.
-  return css_src.replace(/url\s*\(['"]([^\)'"]+)\s*['"]\s*\)/g, function (
+  return css_src.replace(/url\s*\(['"]([^)'"]+)\s*['"]\s*\)/g, function (
     str,
     url
   ) {
@@ -152,7 +145,7 @@ function cachify_embedded_css(css_src) {
 function cachify_embedded_js(js_src) {
   // RegExp is set up to handle multiple url's per declaration, which is
   // possible for things like background-images.
-  return js_src.replace(/addScript\s*\(['"]([^\)'"]+)\s*['"]\s*\)/g, function (
+  return js_src.replace(/addScript\s*\(['"]([^)'"]+)\s*['"]\s*\)/g, function (
     str,
     url
   ) {

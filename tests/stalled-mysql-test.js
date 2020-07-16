@@ -36,10 +36,6 @@ process.env['STALL_MYSQL_WHEN_PRESENT'] = stallFile;
 
 start_stop.addStartupBatches(suite);
 
-// ever time a new token is sent out, let's update the global
-// var 'token'
-var token = undefined;
-
 function addStallDriverBatch(stall) {
   suite.addBatch({
     'changing driver state': {
@@ -56,7 +52,7 @@ function addStallDriverBatch(stall) {
         // machine
         setTimeout(this.callback, 300);
       },
-      completes: function (err, r) {},
+      completes: function () {},
     },
   });
 }
@@ -69,6 +65,7 @@ addStallDriverBatch(true);
 suite.addBatch({
   'get context': {
     topic: wsapi.get('/wsapi/session_context'),
+    //eslint-disable-next-line
     works: function (err, r) {
       assert.isNull(err);
     },
@@ -158,8 +155,6 @@ suite.addBatch({
 // order to test the behavior of the remaining APIs when the database
 // is stalled
 addStallDriverBatch(false);
-
-token = undefined;
 
 suite.addBatch({
   ping: {
@@ -301,7 +296,6 @@ suite.addBatch({
 const TEST_DOMAIN = 'example.domain';
 const TEST_EMAIL = 'testuser@' + TEST_DOMAIN;
 const TEST_ORIGIN = 'http://127.0.0.1:10002';
-const TEST_FIRST_ACCT = 'testuser@fake.domain';
 
 var g_keypair;
 var g_cert;
@@ -333,8 +327,6 @@ var g_privKey = jwcrypto.loadSecretKey(
 suite.addBatch({
   'generting a certificate': {
     topic: function () {
-      var domain = process.env['SHIMMED_DOMAIN'];
-
       var expiration = new Date();
       expiration.setTime(new Date().valueOf() + 60 * 60 * 1000);
       jwcrypto.cert.sign(

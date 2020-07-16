@@ -10,7 +10,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const config = require('../lib/configuration.js');
 
 var suite = vows.describe('session-context');
 
@@ -92,7 +91,6 @@ suite.addBatch({
       assert.ok(new Date() - serverTime < 5000);
       assert.strictEqual(resp.authenticated, true);
       assert.strictEqual(resp.auth_level, 'password');
-      var domainKeyCreation = new Date(resp.domain_key_creation_time);
       assert.ok(new Date() - serverTime < 365 * 24 * 60 * 60 * 1000);
       assert.strictEqual(typeof resp.random_seed, 'string');
       assert.strictEqual(resp.userid, 1);

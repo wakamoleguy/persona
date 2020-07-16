@@ -13,9 +13,6 @@ const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
 const db = require('../lib/db.js');
-const config = require('../lib/configuration.js');
-const http = require('http');
-const querystring = require('querystring');
 const path = require('path');
 const primary = require('./lib/primary.js');
 const jwcrypto = require('browserid-crypto');
@@ -82,9 +79,10 @@ suite.addBatch({
 // `lastUsedAs`
 suite.addBatch({
   'setting lastUsedAs to secondary': {
-    topic: function (err, certs_and_assertion) {
+    topic: function () {
       db.updateEmailLastUsedAs(TEST_EMAIL, 'secondary', this.callback);
     },
+    //eslint-disable-next-line
     works: function (err, lastUsedAs) {
       assert.isNull(err);
     },
@@ -153,7 +151,7 @@ suite.addBatch({
               { audience: TEST_ORIGIN, expiresAt: expirationDate },
               innerKeypair.secretKey,
               function (err, signedObject) {
-                if (err) return cb(err);
+                if (err) return self.callback(err);
 
                 var fullAssertion = jwcrypto.cert.bundle(
                   [primaryUser._cert, innerCert],

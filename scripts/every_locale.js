@@ -11,7 +11,7 @@ var allLocales = [];
 var localeDir = path.join(__dirname, '..', 'locale');
 
 fs.readdir(localeDir, function (err, files) {
-  files.forEach(function (file, i) {
+  files.forEach(function (file) {
     path.exists(
       path.join(localeDir, file, 'LC_MESSAGES', 'client.po'),
       function (c_exists) {

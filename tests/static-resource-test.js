@@ -103,11 +103,11 @@ suite.addBatch({
       });
     },
 
-    'and total count is sane': function (files) {
+    'and total count is sane': function () {
       var res = resources.resources;
       var counter = 0;
       for (var key in res) {
-        res[key].forEach(function (item) {
+        res[key].forEach(function () {
           counter++;
         });
       }

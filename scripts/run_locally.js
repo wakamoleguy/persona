@@ -54,9 +54,9 @@ process.env['HTTP_PROXY'] = HOST + ':10006';
 process.env['HOST'] = HOST;
 
 // use the "local" configuration
-var configFiles = [];
+let configFiles = [];
 if (process.env['CONFIG_FILES']) {
-  var configFiles = process.env['CONFIG_FILES'].split(',');
+  configFiles = process.env['CONFIG_FILES'].split(',');
 }
 configFiles.push(path.join(__dirname, '..', 'config', 'local.json'));
 process.env['CONFIG_FILES'] = configFiles.join(',');
@@ -121,7 +121,7 @@ if (config.get('env').substr(0, 5) === 'test_') {
 var SIGNALS_PROP = 'SUPPORTS_SIGNALS';
 if (!(SIGNALS_PROP in process.env)) {
   try {
-    function signals_test() {}
+    const signals_test = () => {}
     process.on('SIGINT', signals_test);
     process.removeListener('SIGINT', signals_test);
     process.env[SIGNALS_PROP] = true;

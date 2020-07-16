@@ -7,10 +7,8 @@
 const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop');
-const config = require('../lib/configuration');
 const StatsdTransport = require('../lib/logging/transports/statsd');
 const StatsdMock = require('./lib/statsd-mock');
-const HttpMock = require('./lib/http-mock');
 
 require('./lib/test_env');
 
@@ -29,7 +27,7 @@ var IncrementMessagesToTest = {
   uncaught_exception: 'browserid.vows.uncaught_exception',
 };
 
-for (var logMessage in IncrementMessagesToTest) {
+for (const logMessage in IncrementMessagesToTest) {
   (function (logMessage, expectedCounterName) {
     var batchConfig = {};
     batchConfig[logMessage + ' - increments'] = {
@@ -77,7 +75,7 @@ var TimingMessagesToTest = {
     'browserid.vows.deep_fetch_well_known.error',
 };
 
-for (var logMessage in TimingMessagesToTest) {
+for (const logMessage in TimingMessagesToTest) {
   (function (logMessage, expectedCounterName) {
     var batchConfig = {};
     batchConfig[logMessage + ' - increments'] = {

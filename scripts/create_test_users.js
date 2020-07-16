@@ -47,7 +47,7 @@ db.open(config.get('database'), function (error) {
     }
     var have = 0;
     for (var i = 1; i <= want; i++) {
-      db.addTestUser(i + '@loadtest.domain', hash, function (err, email) {
+      db.addTestUser(i + '@loadtest.domain', hash, function () {
         if (++have == want) {
           logger.warn('created ' + want + ' test users');
           bcrypt.shutdown();

@@ -10,12 +10,10 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const config = require('../lib/configuration.js');
 const jwcrypto = require('browserid-crypto');
 const http = require('http');
 const querystring = require('querystring');
 const path = require('path');
-const url = require('url');
 const compareAudiences = require('../lib/verifier/certassertion')
   .compareAudiences;
 
@@ -377,7 +375,8 @@ function make_basic_tests(new_style) {
       },
     },
     'leaving off the assertion': {
-      topic: function (err, assertion) {
+    //eslint-disable-next-line
+    topic: function (err, assertion) {
         wsapi
           .post('/verify', {
             audience: TEST_ORIGIN,
@@ -620,7 +619,8 @@ function make_post_format_2_tests(new_style) {
         req.write(postArgs);
         req.end();
       },
-      'fails with a helpful error message': function (r, err) {
+    //eslint-disable-next-line
+    'fails with a helpful error message': function (r, err) {
         var resp = JSON.parse(r);
         assert.strictEqual(resp.status, 'failure');
         assert.strictEqual(
@@ -664,7 +664,8 @@ function make_post_format_2_tests(new_style) {
         req.write(postArgs);
         req.end();
       },
-      'works fabulously': function (r, err) {
+    //eslint-disable-next-line
+    'works fabulously': function (r, err) {
         var resp = JSON.parse(r);
         assert.isObject(resp);
         assert.strictEqual(resp.status, 'okay');

@@ -36,7 +36,7 @@ if (process.env['PUBLIC_URL']) {
 exampleServer.use(
   express.static(path.join(__dirname, '..', 'example', 'rp'), {
     redirect: false,
-    setHeaders: function (res, path, stat) {
+    setHeaders: function (res, path) {
       if (/\.js$/.test(path)) {
         res.setHeader('content-type', 'application/javascript');
       }
@@ -46,7 +46,7 @@ exampleServer.use(
 
 exampleServer.use(bodyParser.json());
 
-exampleServer.post('/process_assertion', function (req, res, next) {
+exampleServer.post('/process_assertion', function (req, res) {
   var verifier = urlparse(process.env['VERIFIER_URL']);
   var meth = verifier.scheme === 'http' ? require('http') : require('https');
   var vreq = meth.request(
@@ -86,7 +86,7 @@ exampleServer.post('/process_assertion', function (req, res, next) {
   // An "audience" argument is embedded in the assertion and must match our hostname.
   // Because this one server runs on multiple different domain names we just use
   // the host parameter out of the request.
-  var audience = req.headers['host'] ? req.headers['host'] : localHostname;
+  var audience = req.headers['host'];
   var params = {
     assertion: req.body.assertion,
     audience: audience,

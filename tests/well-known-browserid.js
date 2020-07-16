@@ -15,9 +15,7 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const db = require('../lib/db.js');
-const config = require('../lib/configuration.js');
-const _ = require('underscore');
+require('../lib/configuration.js');
 
 var mappedDomain = 'example.com';
 var testProxyIdps = { 'example.com': 'example.login.persona.org' };
@@ -27,7 +25,7 @@ var suite = vows.describe('well-known-browserid');
 // disable vows (often flakey?) async error behavior
 suite.options.error = false;
 
-function checkDefaultResponse(err, res) {
+function checkDefaultResponse(_err, res) {
   assert.equal(res.code, 200);
   assert.equal(res.headers['content-type'].indexOf('application/json'), 0);
   var body = JSON.parse(res.body);

@@ -9,7 +9,7 @@ StatsdMock.prototype = {
     this.lastIncrement = counterName;
     this.lastIncrementInfo = info;
   },
-  timing: function (counterName, info, moreInfo) {
+  timing: function (counterName, info) {
     this.lastTiming = counterName;
     this.lastTimingInfo = info;
   },

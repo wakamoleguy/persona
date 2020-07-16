@@ -20,7 +20,6 @@ const TEST_DOMAIN_PATH = path.join(
   '.well-known',
   'browserid'
 );
-const TEST_ORIGIN = 'http://127.0.0.1:10002';
 const TEST_DELEGATE_DOMAIN = 'delegate.example.domain';
 const TEST_DELEGATE_DOMAIN_PATH = path.join(
   __dirname,
@@ -141,6 +140,7 @@ suite.addBatch({
     topic: function () {
       return primary.getPublicKey('cycle.domain', this.callback);
     },
+    //eslint-disable-next-line
     succeeds: function (err, pubKey) {
       assert.strictEqual(
         err,
@@ -156,6 +156,7 @@ suite.addBatch({
     topic: function () {
       return primary.getPublicKey('delegate0.domain', this.callback);
     },
+    //eslint-disable-next-line
     succeeds: function (err, pubKey) {
       assert.strictEqual(
         err,
@@ -173,6 +174,7 @@ suite.addBatch({
     topic: function () {
       return primary.getPublicKey('hozed.domain', this.callback);
     },
+    //eslint-disable-next-line
     succeeds: function (err, pubKey) {
       assert.strictEqual(
         err.indexOf('Circular reference in delegating authority'),
@@ -187,6 +189,7 @@ suite.addBatch({
     topic: function () {
       return primary.checkSupport('borkedauthority.domain', this.callback);
     },
+    //eslint-disable-next-line
     'support is disabled': function (err, r) {
       assert.equal(
         err,

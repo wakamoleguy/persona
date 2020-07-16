@@ -9,7 +9,6 @@ const jwcrypto = require('browserid-crypto');
 const optimist = require('optimist');
 const path = require('path');
 const urlparse = require('urlparse');
-const util = require('util');
 const cp = require('child_process');
 const os = require('os');
 const async = require('async');

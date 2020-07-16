@@ -24,7 +24,7 @@ var dbCfg = configuration.get('database');
 // don't bother creating the schema
 delete dbCfg.create_schema;
 
-db.open(dbCfg, function (err, r) {
+db.open(dbCfg, function (err) {
   function end() {
     process.exit(err ? 1 : 0);
   }

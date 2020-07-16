@@ -2,10 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var fs = require('fs');
 var i18n = require('i18n-abide');
 var path = require('path');
-var util = require('util');
 
 if (!process.env['CONFIG_FILES']) {
   console.error(
@@ -25,7 +23,7 @@ console.log(
   process.env['CONFIG_FILES']
 );
 
-config.get('supported_languages').forEach(function (lang, i) {
+config.get('supported_languages').forEach(function (lang) {
   var locale = i18n.localeFrom(lang);
   if (i18n.languageFrom(locale) !== lang) {
     console.error(

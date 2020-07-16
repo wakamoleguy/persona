@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+/* global phantom, WebPage */
 const TIMEOUT_SECONDS = 160;
 
 /**
@@ -92,7 +92,7 @@ page.open(phantom.args[0], function (status) {
           console.log(el.innerText);
           try {
             return el.getElementsByClassName('failed')[0].innerHTML;
-          } catch (e) {}
+          } catch (e) {/* */}
           return 10000;
         });
         phantom.exit(parseInt(failedNum, 10) > 0 ? 1 : 0);

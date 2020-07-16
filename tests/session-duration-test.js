@@ -12,7 +12,6 @@ const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
 const config = require('../lib/configuration.js');
 const primary = require('./lib/primary.js');
-const ca = require('../lib/keysigner/ca.js');
 const jwcrypto = require('browserid-crypto');
 
 var suite = vows.describe('session-context');
@@ -89,7 +88,7 @@ suite.addBatch({
         assert.isTrue(resp.success);
         assert.isFalse(resp.suppress_ask_if_users_computer);
       },
-      'has expected duration': function (err, r) {
+      'has expected duration': function () {
         assert.strictEqual(
           getSessionDuration(),
           config.get('ephemeral_session_duration_ms')
@@ -122,7 +121,7 @@ suite.addBatch({
         assert.isTrue(resp.success);
         assert.isFalse(resp.suppress_ask_if_users_computer);
       },
-      'has expected duration': function (err, r) {
+      'has expected duration': function () {
         assert.strictEqual(
           getSessionDuration(),
           config.get('authentication_duration_ms')
@@ -162,7 +161,7 @@ suite.addBatch({
         assert.isTrue(resp.success);
         assert.isTrue(resp.suppress_ask_if_users_computer);
       },
-      'has expected duration for FirefoxOS': function (err, r) {
+      'has expected duration for FirefoxOS': function () {
         assert.strictEqual(getSessionDuration(this.context), TEN_YEARS_MS);
       },
     },
@@ -199,7 +198,7 @@ suite.addBatch({
         assert.isTrue(resp.success);
         assert.isTrue(resp.suppress_ask_if_users_computer);
       },
-      'has expected duration FirefoxOS': function (err, r) {
+      'has expected duration FirefoxOS': function () {
         assert.strictEqual(getSessionDuration(this.context), TEN_YEARS_MS);
       },
     },
@@ -271,7 +270,7 @@ suite.addBatch({
       assert.strictEqual(resp.success, true);
       assert.strictEqual(resp.suppress_ask_if_users_computer, false);
     },
-    'yields a session of expected length': function (err, r) {
+    'yields a session of expected length': function () {
       assert.strictEqual(
         getSessionDuration(),
         config.get('ephemeral_session_duration_ms')
@@ -292,7 +291,7 @@ suite.addBatch({
       assert.strictEqual(resp.success, true);
       assert.strictEqual(resp.suppress_ask_if_users_computer, false);
     },
-    'yields a session of expected length': function (err, r) {
+    'yields a session of expected length': function () {
       assert.strictEqual(
         getSessionDuration(),
         config.get('authentication_duration_ms')
@@ -326,7 +325,7 @@ suite.addBatch({
       assert.strictEqual(resp.success, true);
       assert.strictEqual(resp.suppress_ask_if_users_computer, true);
     },
-    'yields a session of expected length': function (err, r) {
+    'yields a session of expected length': function () {
       assert.strictEqual(getSessionDuration(this.context), TEN_YEARS_MS);
     },
   },
@@ -432,7 +431,6 @@ suite.addBatch({
     },
     'does not shorten session duration': function (err, r) {
       assert.equal(r.code, 200);
-      var resp = JSON.parse(r.body);
       // ensure the session duration has not been reset
       assert.strictEqual(
         getSessionDuration(),

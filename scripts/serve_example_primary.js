@@ -10,7 +10,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const urlparse = require('urlparse');
 const postprocess = require('postprocess');
-const querystring = require('querystring');
 const sessions = require('client-sessions');
 const jwcrypto = require('browserid-crypto');
 const cookieParser = require('cookie-parser');

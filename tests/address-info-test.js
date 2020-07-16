@@ -15,11 +15,9 @@ const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
 const db = require('../lib/db.js');
 const primary = require('./lib/primary.js');
-(config = require('../lib/configuration.js')),
-  (bcrypt = require('bcrypt')),
-  (secondary = require('./lib/secondary.js')),
-  (util = require('util')),
-  (path = require('path'));
+const secondary = require('./lib/secondary.js');
+const util = require('util');
+const path = require('path');
 
 var suite = vows.describe('address-info');
 
@@ -52,12 +50,12 @@ suite.addBatch({
     }),
     'returns unknown': function (e, r) {
       assert.isNull(e);
-      var r = JSON.parse(r.body);
-      assert.equal(r.type, 'primary');
-      assert.equal(r.issuer, TEST_DOMAIN);
-      assert.equal(r.state, 'unknown');
-      assert.isString(r.auth);
-      assert.isString(r.prov);
+      var b = JSON.parse(r.body);
+      assert.equal(b.type, 'primary');
+      assert.equal(b.issuer, TEST_DOMAIN);
+      assert.equal(b.state, 'unknown');
+      assert.isString(b.auth);
+      assert.isString(b.prov);
     },
   },
 });
@@ -69,10 +67,10 @@ suite.addBatch({
     }),
     'returns unknown': function (e, r) {
       assert.isNull(e);
-      var r = JSON.parse(r.body);
-      assert.equal(r.type, 'secondary');
-      assert.equal(r.issuer, '127.0.0.1');
-      assert.equal(r.state, 'unknown');
+      var b = JSON.parse(r.body);
+      assert.equal(b.type, 'secondary');
+      assert.equal(b.issuer, '127.0.0.1');
+      assert.equal(b.state, 'unknown');
     },
   },
 });
@@ -82,6 +80,7 @@ suite.addBatch({
     topic: function () {
       secondary.create({ email: 'test@capitalize.example.com' }, this.callback);
     },
+    //eslint-disable-next-line
     works: function (e, r) {
       assert.isNull(e);
     },
@@ -91,9 +90,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'test@capitalize.example.com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'test@capitalize.example.com');
       },
     },
     'calling address_info with upper case domain part': {
@@ -102,9 +101,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'test@capitalize.example.com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'test@capitalize.example.com');
       },
     },
     'calling address_info with all upper case': {
@@ -113,9 +112,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'test@capitalize.example.com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'test@capitalize.example.com');
       },
     },
     'calling address_info with camel case': {
@@ -124,9 +123,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'test@capitalize.example.com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'test@capitalize.example.com');
       },
     },
   },
@@ -140,6 +139,7 @@ suite.addBatch({
         this.callback
       );
     },
+    //eslint-disable-next-line
     works: function (e, r) {
       assert.isNull(e);
     },
@@ -149,9 +149,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'Test2@Capitalize.Example.Com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'Test2@Capitalize.Example.Com');
       },
     },
     'calling address_info with upper case domain part': {
@@ -160,9 +160,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'Test2@Capitalize.Example.Com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'Test2@Capitalize.Example.Com');
       },
     },
     'calling address_info with all upper case': {
@@ -171,9 +171,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'Test2@Capitalize.Example.Com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'Test2@Capitalize.Example.Com');
       },
     },
     'calling address_info with camel case': {
@@ -182,9 +182,9 @@ suite.addBatch({
       }),
       'returns known': function (e, r) {
         assert.isNull(e);
-        var r = JSON.parse(r.body);
-        assert.equal(r.state, 'known');
-        assert.equal(r.normalizedEmail, 'Test2@Capitalize.Example.Com');
+        var b = JSON.parse(r.body);
+        assert.equal(b.state, 'known');
+        assert.equal(b.normalizedEmail, 'Test2@Capitalize.Example.Com');
       },
     },
   },
@@ -230,11 +230,11 @@ suite.addBatch({
     }),
     'returns known': function (e, r) {
       assert.isNull(e);
-      var r = JSON.parse(r.body);
-      assert.equal(r.type, 'primary');
-      assert.equal(r.state, 'known');
-      assert.isString(r.auth);
-      assert.isString(r.prov);
+      var b = JSON.parse(r.body);
+      assert.equal(b.type, 'primary');
+      assert.equal(b.state, 'known');
+      assert.isString(b.auth);
+      assert.isString(b.prov);
     },
   },
 });
@@ -259,11 +259,11 @@ suite.addBatch({
     }),
     'returns transition_to_primary': function (e, r) {
       assert.isNull(e);
-      var r = JSON.parse(r.body);
-      assert.equal(r.type, 'primary');
-      assert.equal(r.state, 'transition_to_primary');
-      assert.isString(r.auth);
-      assert.isString(r.prov);
+      var b = JSON.parse(r.body);
+      assert.equal(b.type, 'primary');
+      assert.equal(b.state, 'transition_to_primary');
+      assert.isString(b.auth);
+      assert.isString(b.prov);
     },
   },
 });
@@ -274,6 +274,7 @@ suite.addBatch({
     topic: function () {
       secondary.create({ email: 'foo@example.com' }, this.callback);
     },
+    //eslint-disable-next-line
     works: function (e, r) {
       assert.isNull(e);
     },
@@ -290,9 +291,9 @@ suite.addBatch({
         }),
         'returns transition_to_secondary': function (e, r) {
           assert.isNull(e);
-          var r = JSON.parse(r.body);
-          assert.equal(r.type, 'secondary');
-          assert.equal(r.state, 'transition_to_secondary');
+          var b = JSON.parse(r.body);
+          assert.equal(b.type, 'secondary');
+          assert.equal(b.state, 'transition_to_secondary');
         },
         "removing the user's password": {
           topic: function () {
@@ -311,9 +312,9 @@ suite.addBatch({
             }),
             "shows 'transition_no_password'": function (err, r) {
               assert.isNull(err);
-              var r = JSON.parse(r.body);
-              assert.equal(r.type, 'secondary');
-              assert.equal(r.state, 'transition_no_password');
+              var b = JSON.parse(r.body);
+              assert.equal(b.type, 'secondary');
+              assert.equal(b.state, 'transition_no_password');
             },
           },
         },
@@ -328,6 +329,7 @@ suite.addBatch({
     topic: function () {
       db.updateIDPLastSeen('example.com', this.callback);
     },
+    //eslint-disable-next-line
     works: function (e, r) {
       assert.isNull(e);
     },
@@ -341,9 +343,9 @@ suite.addBatch({
         }),
         'returns offline': function (e, r) {
           assert.isNull(e);
-          var r = JSON.parse(r.body);
-          assert.equal(r.state, 'offline');
-          assert.equal(r.type, 'secondary');
+          var b = JSON.parse(r.body);
+          assert.equal(b.state, 'offline');
+          assert.equal(b.type, 'secondary');
         },
       },
     },
@@ -356,6 +358,7 @@ suite.addBatch({
     topic: function () {
       secondary.create({ email: 'foo@disabled.domain' }, this.callback);
     },
+    //eslint-disable-next-line
     works: function (e, r) {
       assert.isNull(e);
     },
@@ -372,9 +375,9 @@ suite.addBatch({
         }),
         "returns 'known' and not 'offline'": function (e, r) {
           assert.isNull(e);
-          var r = JSON.parse(r.body);
-          assert.equal(r.type, 'secondary');
-          assert.equal(r.state, 'known');
+          var b = JSON.parse(r.body);
+          assert.equal(b.type, 'secondary');
+          assert.equal(b.state, 'known');
         },
         'causes IDPLastSeen': {
           topic: function () {

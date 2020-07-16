@@ -10,11 +10,7 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const db = require('../lib/db.js');
-const config = require('../lib/configuration.js');
 const jwcrypto = require('browserid-crypto');
-const http = require('http');
-const querystring = require('querystring');
 const path = require('path');
 const secondary = require('./lib/secondary');
 
@@ -41,6 +37,7 @@ const TEST_FIRST_ACCT = 'test.user+folder@fake.domain';
 // signed by our in tree authority
 var g_keypair;
 var g_cert;
+var g_assertion;
 
 suite.addBatch({
   'generating a keypair': {
@@ -70,8 +67,6 @@ var g_privKey = jwcrypto.loadSecretKey(
 suite.addBatch({
   'generting a certificate': {
     topic: function () {
-      var domain = process.env['SHIMMED_DOMAIN'];
-
       var expiration = new Date();
       expiration.setTime(new Date().valueOf() + 60 * 60 * 1000);
       jwcrypto.cert.sign(
@@ -120,7 +115,7 @@ suite.addBatch({
 
 suite.addBatch({
   'adding this email via assertion': {
-    topic: function (assertion) {
+    topic: function () {
       wsapi
         .post('/wsapi/add_email_with_assertion', {
           assertion: g_assertion,
@@ -154,7 +149,7 @@ suite.addBatch({
 
 suite.addBatch({
   'adding this email via assertion': {
-    topic: function (assertion) {
+    topic: function () {
       wsapi
         .post('/wsapi/add_email_with_assertion', {
           assertion: g_assertion,
@@ -264,12 +259,12 @@ suite.addBatch({
     }),
     'returns type of primary': function (e, r) {
       assert.isNull(e);
-      var r = JSON.parse(r.body);
-      assert.equal(r.type, 'primary');
-      assert.equal(r.issuer, TEST_DOMAIN);
-      assert.equal(r.state, 'known');
-      assert.isString(r.auth);
-      assert.isString(r.prov);
+      var b = JSON.parse(r.body);
+      assert.equal(b.type, 'primary');
+      assert.equal(b.issuer, TEST_DOMAIN);
+      assert.equal(b.state, 'known');
+      assert.isString(b.auth);
+      assert.isString(b.prov);
     },
   },
   'address info for TEST_FIRST_ACCT': {
@@ -278,9 +273,9 @@ suite.addBatch({
     }),
     'returns type of primary': function (e, r) {
       assert.isNull(e);
-      var r = JSON.parse(r.body);
-      assert.equal(r.type, 'secondary');
-      assert.equal(r.state, 'known');
+      var b = JSON.parse(r.body);
+      assert.equal(b.type, 'secondary');
+      assert.equal(b.state, 'known');
     },
   },
 });

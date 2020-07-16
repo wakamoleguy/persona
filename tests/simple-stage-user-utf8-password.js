@@ -19,7 +19,6 @@ suite.options.error = false;
 start_stop.addStartupBatches(suite);
 
 const TEST_DOMAIN = 'example.domain';
-const TEST_ORIGIN = 'http://127.0.0.1:10002';
 const TEST_SITE = 'http://dev.123done.org';
 
 // This test simply stages a secondary user. It does so for two users,
@@ -65,7 +64,6 @@ function makeBatch(site, user) {
           'to verify email ownership': function (err, r) {
             assert.equal(r.code, 200);
             assert.strictEqual(JSON.parse(r.body).success, true);
-            token = undefined;
           },
         },
       },

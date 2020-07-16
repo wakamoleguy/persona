@@ -8,8 +8,6 @@ require('./lib/test_env.js');
 
 const assert = require('assert');
 const db = require('../lib/db.js');
-const email = require('../lib/email.js');
-const jwcrypto = require('browserid-crypto');
 const primary = require('./lib/primary.js');
 const start_stop = require('./lib/start-stop.js');
 const vows = require('vows');
@@ -22,10 +20,6 @@ require('browserid-crypto/lib/algs/ds');
 require('browserid-crypto/lib/algs/rs');
 
 start_stop.addStartupBatches(suite);
-
-// every time a new token is sent out, let's update the global
-// var 'token'
-var token;
 
 const TEST_DOMAIN = 'example.domain';
 const TEST_EMAIL = 'testuser@' + TEST_DOMAIN;
@@ -82,7 +76,6 @@ suite.addBatch({
     'request successful': function (err, r) {
       assert.equal(r.code, 200);
       assert.strictEqual(true, JSON.parse(r.body).success);
-      token = undefined;
     },
     'db updated': {
       topic: function () {

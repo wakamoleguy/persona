@@ -13,13 +13,7 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const db = require('../lib/db.js');
-const config = require('../lib/configuration.js');
 const jwcrypto = require('browserid-crypto');
-const http = require('http');
-const querystring = require('querystring');
-const logger = require('../lib/logging/logging.js').logger;
-const path = require('path');
 
 var suite = vows.describe('unverified-email-test');
 
@@ -36,7 +30,6 @@ start_stop.addStartupBatches(suite);
 // had its registration "completed"
 const UNVERIFIED_EMAIL = 'unverified@testuser.com';
 const UNVERIFIED_ORIGIN = 'http://testdomain.com:8080';
-const UNVERIFIED_DOMAIN = 'testdomain.com';
 const UNVERIFIED_PASSWORD = 'unverifiedpassword';
 
 // testing FirefoxOS session durations.
@@ -97,6 +90,7 @@ suite.addBatch({
         assert.isTrue(json.success);
         assert.isTrue(json.suppress_ask_if_users_computer);
       },
+      //eslint-disable-next-line
       'yields a session of expected length': function (err, r) {
         assert.strictEqual(getSessionDuration(), TEN_YEARS_MS);
       },
