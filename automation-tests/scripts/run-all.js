@@ -15,10 +15,9 @@
  */
 
 const sauce_platforms = require('../config/sauce-platforms');
-  const local_platforms = require('../config/local-platforms');
+const local_platforms = require('../config/local-platforms');
 
-const outputFormats = ["console", "json", "xunit"];
-
+const outputFormats = ['console', 'json', 'xunit'];
 
 var argv = require('optimist')
   .usage('Run automation tests.\nUsage: $0')
@@ -27,35 +26,41 @@ var argv = require('optimist')
   .alias('list-platforms', 'lp')
   .describe('lp', 'list available platforms to test on')
   .alias('env', 'e')
-  .describe('env', "target environment: dev/stage/prod or the name of an ephemeral")
+  .describe(
+    'env',
+    'target environment: dev/stage/prod or the name of an ephemeral'
+  )
   .alias('local', 'l')
   .describe('local', 'run tests locally (instead of on saucelabs)')
-  .check(function(a) {
+  .check(function (a) {
     if (a.local) process.env.PERSONA_NO_SAUCE = '1';
   })
   .alias('parallel', 'p')
   .describe('parallel', 'the number of tests to run at the same time')
-  .default('parallel', "10")
-  .check(function(a) {
+  .default('parallel', '10')
+  .check(function (a) {
     if (!a.parallel) a.parallel = parseInt(process.env.RUNNERS, 10) || 10;
   })
   .describe('platform', 'the browser/os to test (globs and csv supported)')
   .alias('iterations', 'i')
   .describe('iterations', 'the number of times to repeat specified tests')
-  .default("iterations", "1")
+  .default('iterations', '1')
   .alias('list-tests', 'lt')
   .describe('list-tests', 'list available tests')
   .alias('tests', 't')
   .describe('tests', 'which test(s) to run (globs supported)')
-  .default("tests", "*")
+  .default('tests', '*')
   .alias('output', 'o')
-  .describe('output', 'desired ouput format.  one of ' + outputFormats.join(", "))
-  .default("output", "console")
+  .describe(
+    'output',
+    'desired ouput format.  one of ' + outputFormats.join(', ')
+  )
+  .default('output', 'console')
   .alias('ignore-tests', 'it')
   .describe('ignore-tests', 'test(s) to ignore (csv supported)')
-  .check(function(a) {
+  .check(function (a) {
     if (outputFormats.indexOf(a.output) === -1) {
-      throw "unsupported output format: " + a.output;
+      throw 'unsupported output format: ' + a.output;
     }
   });
 
@@ -68,48 +73,51 @@ if (args.h) {
 
 // switch between sauce and local platform list depending on results of
 // parsing args.local or seeing PERSONA_NO_SAUCE in env vars
-var config_platforms = process.env.PERSONA_NO_SAUCE ? local_platforms : sauce_platforms;
+var config_platforms = process.env.PERSONA_NO_SAUCE
+  ? local_platforms
+  : sauce_platforms;
 
 // optimist only runs "check" if an option is defined. Since we are checking if
 // an option is not defined, its check has to be outside of the option.
 if (!args.platform) {
-  args.platform = process.env.PERSONA_BROWSER || config_platforms.defaultPlatform;
+  args.platform =
+    process.env.PERSONA_BROWSER || config_platforms.defaultPlatform;
 }
 // all is a supported alias "match everything"
-if (args.platform === 'all') args.platform = "*";
+if (args.platform === 'all') args.platform = '*';
 
 // propogate -e to the environment if present
 if (args.env) process.env.PERSONA_ENV = args.env;
 
 const path = require('path');
-      const util = require('util');
-      const child_process = require('child_process');
-      const test_finder = require('../lib/test-finder');
-      const runner = require('../lib/runner');
-      const toolbelt = require('../lib/toolbelt');
-      const FileReporter = require('../lib/reporters/file-reporter');
-      const ResultsAggregator = require('../lib/results-aggregator');
-      const StdOutReporter = require('../lib/reporters/std-out-reporter');
-      const StdErrReporter = require('../lib/reporters/std-err-reporter');
-      const vows_path = path.join(__dirname, "../node_modules/.bin/vows");
-      const vows_args = [(args.output === 'xunit') ? "--xunit" : "--json", "-i"];
-      const result_extension = process.env.RESULT_EXTENSION || "xml";
-      const supported_platforms = config_platforms.platforms;
-      const start_time = new Date().getTime();
-      const glob = require('minimatch');
+const util = require('util');
+const child_process = require('child_process');
+const test_finder = require('../lib/test-finder');
+const runner = require('../lib/runner');
+const toolbelt = require('../lib/toolbelt');
+const FileReporter = require('../lib/reporters/file-reporter');
+const ResultsAggregator = require('../lib/results-aggregator');
+const StdOutReporter = require('../lib/reporters/std-out-reporter');
+const StdErrReporter = require('../lib/reporters/std-err-reporter');
+const vows_path = path.join(__dirname, '../node_modules/.bin/vows');
+const vows_args = [args.output === 'xunit' ? '--xunit' : '--json', '-i'];
+const result_extension = process.env.RESULT_EXTENSION || 'xml';
+const supported_platforms = config_platforms.platforms;
+const start_time = new Date().getTime();
+const glob = require('minimatch');
 
 // what mode are we in?
 if (args['list-tests']) {
   var testSet = test_finder.find();
-  console.log("%s tests available:", testSet.length);
-  testSet.forEach(function(test) {
-    console.log("  *", test.name);
+  console.log('%s tests available:', testSet.length);
+  testSet.forEach(function (test) {
+    console.log('  *', test.name);
   });
 } else if (args['list-platforms']) {
   var platforms = Object.keys(supported_platforms);
-  console.log("%s platforms configured:", platforms.length);
-  platforms.forEach(function(plat) {
-    console.log("  *", plat);
+  console.log('%s platforms configured:', platforms.length);
+  platforms.forEach(function (plat) {
+    console.log('  *', plat);
   });
 } else {
   startTesting();
@@ -124,22 +132,32 @@ function startTesting() {
   // the tests array is shared state across all invocations of runNext. If two or
   // more tests are run in parallel, they will all check the tests array to see
   // if there are any more tests to run.
-  var platforms = args.platform ? getTestedPlatforms(args.platform) : { any: {} };
+  var platforms = args.platform
+    ? getTestedPlatforms(args.platform)
+    : { any: {} };
   if (Object.keys(platforms).length === 0) {
-    console.log("You asked to use platform '%s', but that is not available. %s",
-                args.platform, "Your choices are:");
+    console.log(
+      "You asked to use platform '%s', but that is not available. %s",
+      args.platform,
+      'Your choices are:'
+    );
     var supportedPlatforms = Object.keys(supported_platforms);
-    supportedPlatforms.forEach(function(plat) {
-      console.log("  *", plat);
+    supportedPlatforms.forEach(function (plat) {
+      console.log('  *', plat);
     });
     process.exit(1);
   }
 
   var tests = getTheTests(platforms);
-  var howManyAtOnce = (tests.length < args.parallel ? tests.length : args.parallel);
-  console.log("Running %s suite(s) on %s platform(s), %s at a time against %s",
-              tests.length, Object.keys(platforms).length, howManyAtOnce,
-              require('../lib/urls.js').persona);
+  var howManyAtOnce =
+    tests.length < args.parallel ? tests.length : args.parallel;
+  console.log(
+    'Running %s suite(s) on %s platform(s), %s at a time against %s',
+    tests.length,
+    Object.keys(platforms).length,
+    howManyAtOnce,
+    require('../lib/urls.js').persona
+  );
   runTests();
 
   function getTestedPlatforms(platform_glob) {
@@ -148,11 +166,12 @@ function startTesting() {
     // see if it's CSV (but don't match a glob brace expansion)
     if (platform_glob.indexOf(',') > 0 && platform_glob.indexOf('{') !== 0) {
       var platformList = platform_glob.split(',');
-      Object.keys(supported_platforms).forEach(function(p) {
-        if (platformList.indexOf(p) !== -1) platforms[p] = supported_platforms[p];
+      Object.keys(supported_platforms).forEach(function (p) {
+        if (platformList.indexOf(p) !== -1)
+          platforms[p] = supported_platforms[p];
       });
     } else {
-      Object.keys(supported_platforms).forEach(function(p) {
+      Object.keys(supported_platforms).forEach(function (p) {
         if (glob(p, platform_glob)) platforms[p] = supported_platforms[p];
       });
     }
@@ -183,33 +202,36 @@ function startTesting() {
   }
 
   function setPlatformOfTests(tests, platform) {
-    tests.forEach(function(test) {
+    tests.forEach(function (test) {
       test.platform = platform;
     });
   }
 
   function runTest(test, aggregator, stdOutReporter, stdErrReporter, done) {
     var testName = test.name;
-        var testPath = test.path;
-        var platform = test.platform;
+    var testPath = test.path;
+    var platform = test.platform;
 
     if (args.output === 'xunit') {
-      util.puts(testName + ' | ' + platform + ' | ' + "starting");
+      util.puts(testName + ' | ' + platform + ' | ' + 'starting');
     }
 
     // make a copy of the current process' environment but force the
     // platform if it is available. PERSONA_PLATFORM will only be set
     // if it is defined.
     var env = toolbelt.copyExtendEnv({
-      PERSONA_BROWSER: platform
+      PERSONA_BROWSER: platform,
     });
 
     var opts = {
       cwd: path.dirname(testPath),
-      env: env
+      env: env,
     };
-    var testProcess = child_process.spawn(vows_path,
-                                          [testPath].concat(vows_args), opts);
+    var testProcess = child_process.spawn(
+      vows_path,
+      [testPath].concat(vows_args),
+      opts
+    );
 
     testProcess.stdout.on('data', function (data) {
       var msg = data.toString().trim();
@@ -220,26 +242,33 @@ function startTesting() {
 
     testProcess.stderr.on('data', function (data) {
       // remove any leading newline characters and trim the rest of the output.
-      var line = prettifyLine(data.toString().replace(/^[\r\n]+/, '').trim());
+      var line = prettifyLine(
+        data
+          .toString()
+          .replace(/^[\r\n]+/, '')
+          .trim()
+      );
       if (!line) return;
 
       if (aggregator) aggregator.parseErrorLine(line);
 
       // output the line to console when we're in xunit mode
       if (args.output === 'xunit') {
-        stdErrReporter.report(testName + ' | ' + platform + ' | ' + line + "\n");
+        stdErrReporter.report(
+          testName + ' | ' + platform + ' | ' + line + '\n'
+        );
       }
     });
 
-    testProcess.on('exit', function(code) {
-      var err = (code !== 0 ? " (failed with exit code " + code + ")": null);
+    testProcess.on('exit', function (code) {
+      var err = code !== 0 ? ' (failed with exit code ' + code + ')' : null;
       done && done(err);
     });
   }
 
   function prettifyLine(line) {
     // decolorize
-    line = line.replace(/\x1b\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]/g, "");
+    line = line.replace(/\x1b\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]/g, '');
     line = line.trim();
 
     // skip blank lines
@@ -249,7 +278,7 @@ function startTesting() {
     // transform sauce lab ids into urls you can load into your browser
     var m = /^.*Driving the web.*: ([a-z0-9]+).*$/.exec(line);
     if (m) {
-      if (process.env.PERSONA_NO_SAUCE) line = "id: " + m[1];
+      if (process.env.PERSONA_NO_SAUCE) line = 'id: ' + m[1];
       else {
         line = 'https://saucelabs.com/tests/' + m[1];
       }
@@ -262,25 +291,29 @@ function startTesting() {
     var test = tests.shift();
 
     if (test) {
-      if (args.output === 'console') process.stdout.write(">");
+      if (args.output === 'console') process.stdout.write('>');
       var testName = test.name;
       var platform = test.platform;
 
-      var outputPath = path.join(__dirname, '..', 'results',
-                                 start_time + "-" + testName + '-' + platform + '.' + result_extension);
+      var outputPath = path.join(
+        __dirname,
+        '..',
+        'results',
+        start_time + '-' + testName + '-' + platform + '.' + result_extension
+      );
       if (aggregator) {
-        aggregator.setName(testName + " - " + platform);
+        aggregator.setName(testName + ' - ' + platform);
       }
 
       var stdOutReporter = null;
       if (args.output === 'xunit') {
         stdOutReporter = new FileReporter({
-          output_path: outputPath
+          output_path: outputPath,
         });
       }
       var stdErrReporter = new StdErrReporter();
 
-      runTest(test, aggregator, stdOutReporter, stdErrReporter, function(err) {
+      runTest(test, aggregator, stdOutReporter, stdErrReporter, function (err) {
         if (stdOutReporter) stdOutReporter.done();
         stdErrReporter.done();
         if (cb) cb(err);
@@ -294,9 +327,9 @@ function startTesting() {
     // test to find out what was failing. So, on SIGINT, show the state of the
     // aggregators before exiting.
     if (process.platform === 'win32') return; // signals are not supported
-    process.on('SIGINT', function() {
+    process.on('SIGINT', function () {
       if (!aggregators.length) return process.exit(1);
-      if (args.output === 'console') process.stdout.write("\n\n");
+      if (args.output === 'console') process.stdout.write('\n\n');
       summarizeResultsAndExit(aggregators);
     });
   }
@@ -317,22 +350,26 @@ function startTesting() {
 
         // now if this is the console, let's output marks as tests start and complete
         if (args.output === 'console') {
-          aggregator.on('pass', function() { process.stdout.write("."); });
-          aggregator.on('fail', function() { process.stdout.write("!"); });
+          aggregator.on('pass', function () {
+            process.stdout.write('.');
+          });
+          aggregator.on('fail', function () {
+            process.stdout.write('!');
+          });
         }
       }
       return aggregator;
     }
 
     function handleTestCompletion(err) {
-      if (args.output === 'console') process.stdout.write("<");
+      if (args.output === 'console') process.stdout.write('<');
       // now pass the error into the results parser to catch bad shutdown in our final report
       if (err) allProcessesExitedCleanly = false;
       // complete!  If all of the tests are done, it's time to summarize results if
       // we're not in xunit mode
       completeTests += 1;
       if (completeTests === totalTests) {
-        if (args.output === 'console') process.stdout.write("\n\n");
+        if (args.output === 'console') process.stdout.write('\n\n');
         if (aggregators.length) {
           summarizeResultsAndExit(aggregators);
         } else {
@@ -345,7 +382,7 @@ function startTesting() {
     }
 
     // run tests in parallel up to the maximum number of runners.
-    for(var i = 0; i < args.parallel && tests.length; ++i) {
+    for (var i = 0; i < args.parallel && tests.length; ++i) {
       runNext(getAggregator(), handleTestCompletion);
     }
   }
@@ -354,35 +391,43 @@ function startTesting() {
     // first let's calculate uber-high level summary information
     var total = 0;
     var successes = 0;
-    aggregators.forEach(function(rp) {
+    aggregators.forEach(function (rp) {
       var r = rp.results();
       total += r.passed + r.failed;
       successes += r.passed;
     });
-    console.log("%s/%s tests passed%s", successes, total,
-                (successes !== total) ? ", here are your failures:" : "");
+    console.log(
+      '%s/%s tests passed%s',
+      successes,
+      total,
+      successes !== total ? ', here are your failures:' : ''
+    );
     if (successes !== total) {
-      aggregators.forEach(function(rp) {
+      aggregators.forEach(function (rp) {
         var r = rp.results();
         if (r.failed || r.unhandledMessages.length) {
           var warnings = r.unhandledMessages.length;
-          console.log(r.name + " (%s failure(s), %s warnings):", r.failed, warnings);
-          r.errorDetails.forEach(function(e) {
-            console.log("  " + e.name + ", errors:");
-            e.errors.forEach(function(err) {
-              console.log("    * " + err);
+          console.log(
+            r.name + ' (%s failure(s), %s warnings):',
+            r.failed,
+            warnings
+          );
+          r.errorDetails.forEach(function (e) {
+            console.log('  ' + e.name + ', errors:');
+            e.errors.forEach(function (err) {
+              console.log('    * ' + err);
             });
           });
-          r.unhandledMessages.forEach(function(om) {
-            console.log("  unexpected output:", om);
+          r.unhandledMessages.forEach(function (om) {
+            console.log('  unexpected output:', om);
           });
-          r.urls.forEach(function(u) {
-            console.log("  >> " + u);
+          r.urls.forEach(function (u) {
+            console.log('  >> ' + u);
           });
         }
       });
     }
-    process.nextTick(function() {
+    process.nextTick(function () {
       process.exit(total - successes);
     });
   }

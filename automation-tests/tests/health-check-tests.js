@@ -6,25 +6,25 @@
 
 /*jshint sub: true */
 
-const
-path = require('path');
+const path = require('path');
 const assert = require('../lib/asserts.js');
-const utils = require('../lib/utils.js');
 const persona_urls = require('../lib/urls.js');
 const CSS = require('../pages/css.js');
-const dialog = require('../pages/dialog.js');
 const restmail = require('../lib/restmail.js');
 const runner = require('../lib/runner.js');
 const testSetup = require('../lib/test-setup.js');
-const timeouts = require('../lib/timeouts.js');
 
 var pcss = CSS['persona.org'];
-  var browser; var secondBrowser; var primaryEmail; var theEmail; var testIdp;
+var browser;
+var secondBrowser;
+var primaryEmail;
+var theEmail;
+var testIdp;
 
 // all the stuff common between primary and secondary tests:
 // go to persona.org, click sign in, enter email, click next.
-var startup = function(b, email, cb) {
-  b.chain({onError: cb})
+var startup = function (b, email, cb) {
+  b.chain({ onError: cb })
     .get(persona_urls['persona'])
     .wclick(pcss.header.signIn)
     .wwin(CSS['dialog'].windowName)
@@ -33,8 +33,11 @@ var startup = function(b, email, cb) {
 };
 
 var setup = {
-  "setup stuff": function(done) {
-    testSetup.setup({browsers: 2, testidps: 1, restmails: 1}, function(err, fixtures) {
+  'setup stuff': function (done) {
+    testSetup.setup({ browsers: 2, testidps: 1, restmails: 1 }, function (
+      err,
+      fixtures
+    ) {
       if (fixtures) {
         browser = fixtures.browsers[0];
         secondBrowser = fixtures.browsers[1];
@@ -44,73 +47,86 @@ var setup = {
       }
       done(err);
     });
-  }
+  },
 };
 
 var primaryTest = {
-  "enable primary support": function(done) {
+  'enable primary support': function (done) {
     testIdp.enableSupport(done);
   },
 
-  "setup browser": function(done) {
+  'setup browser': function (done) {
     testSetup.newBrowserSession(browser, done);
   },
 
-  "go to personaorg, click sign in, type testidp addy, click next": function(done) {
+  'go to personaorg, click sign in, type testidp addy, click next': function (
+    done
+  ) {
     startup(browser, primaryEmail, done);
   },
-  "switch to testidp dialog, submit password, click ok": function(done) {
-    browser.chain({onError: done})
+  'switch to testidp dialog, submit password, click ok': function (done) {
+    browser
+      .chain({ onError: done })
       .wclick(CSS['testidp.org'].loginButton, done);
   },
-  "switch back to main window, look for the email in acct mgr, then log out": function(done) {
-    browser.chain({onError: done})
+  'switch back to main window, look for the email in acct mgr, then log out': function (
+    done
+  ) {
+    browser
+      .chain({ onError: done })
       .wwin()
-      .wtext(pcss.accountEmail, function(err, text) {
+      .wtext(pcss.accountEmail, function (err, text) {
         done(err || assert.equal(primaryEmail.toLowerCase(), text)); // note, had to lower case it.
       });
   },
-  "sign out": function(done) {
+  'sign out': function (done) {
     browser.wclick(pcss.header.signOut, done);
   },
-  "shut down primary test": function(done) {
+  'shut down primary test': function (done) {
     browser.quit(done);
     browser = null;
-  }
+  },
 };
 
 var secondaryTest = {
-  "setup second browser": function(done) {
+  'setup second browser': function (done) {
     testSetup.newBrowserSession(secondBrowser, done);
   },
-  "go to personaorg, click sign in, type restmail addy, click next": function(done) {
+  'go to personaorg, click sign in, type restmail addy, click next': function (
+    done
+  ) {
     startup(secondBrowser, theEmail, done);
   },
-  "enter password and click verify": function(done) {
-    secondBrowser.chain({onError: done})
+  'enter password and click verify': function (done) {
+    secondBrowser
+      .chain({ onError: done })
       .wtype(CSS['dialog'].choosePassword, theEmail.split('@')[0])
       .wtype(CSS['dialog'].verifyPassword, theEmail.split('@')[0])
       .wclick(CSS['dialog'].createUserButton, done);
   },
-  "get verification link": function(done) {
-    restmail.getVerificationLink({email: theEmail}, done);
+  'get verification link': function (done) {
+    restmail.getVerificationLink({ email: theEmail }, done);
   },
-  "open verification link and verify we are redirected to the manage page": function(done, token, link) {
-    secondBrowser.chain({onError: done})
+  'open verification link and verify we are redirected to the manage page': function (
+    done,
+    token,
+    link
+  ) {
+    secondBrowser
+      .chain({ onError: done })
       .wwin()
       .get(link)
       .wfind(pcss.accountManagerHeader, done);
   },
-  "shut down secondary test": function(done) {
+  'shut down secondary test': function (done) {
     secondBrowser.quit(done);
     secondBrowser = null;
-  }
+  },
 };
 
-runner.run(
-  module,
-  [setup, secondaryTest, primaryTest],
-  {
-    suiteName: path.basename(__filename),
-    cleanup: function(done) { testSetup.teardown(done); }
-  });
+runner.run(module, [setup, secondaryTest, primaryTest], {
+  suiteName: path.basename(__filename),
+  cleanup: function (done) {
+    testSetup.teardown(done);
+  },
+});

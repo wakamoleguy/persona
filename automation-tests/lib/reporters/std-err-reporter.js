@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-function StdErrReporter() { }
-StdErrReporter.prototype.report = function(msg) {
+function StdErrReporter() {}
+StdErrReporter.prototype.report = function (msg) {
   process.stderr.write(msg);
 };
-StdErrReporter.prototype.done = function() {};
+StdErrReporter.prototype.done = function () {};
 
 module.exports = StdErrReporter;

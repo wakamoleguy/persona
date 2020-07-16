@@ -1,8 +1,8 @@
 const vowsHarness = require('../lib/vows_harness.js');
 
 var alltests = {};
-  var rawSuites = [];
-  var globalCount = 0;
+var rawSuites = [];
+var globalCount = 0;
 
 // register just pushes suites onto a master list
 function register(suites) {
@@ -15,7 +15,7 @@ function register(suites) {
 function run(mod, suites, opts) {
   if (suites) register(suites);
 
-  rawSuites.forEach(function(suite) {
+  rawSuites.forEach(function (suite) {
     for (var vow in suite) {
       globalCount++;
       // vows with duplicate names cause great sadness; use a counter to ensure

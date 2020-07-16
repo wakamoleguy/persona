@@ -1,8 +1,8 @@
 var vows = require('vows');
-    var path = require('path');
-    var assert = require('assert');
+var path = require('path');
+var assert = require('assert');
 
-module.exports = function(spec, mod, opts) {
+module.exports = function (spec, mod, opts) {
   opts = opts || {};
   // bail on error means halt tests at first failure
   if (opts.bailOnError === undefined) opts.bailOnError = true;
@@ -14,15 +14,15 @@ module.exports = function(spec, mod, opts) {
 
   var lastArgs = [];
   var failedState = false;
-  Object.keys(spec).forEach(function(name) {
+  Object.keys(spec).forEach(function (name) {
     var myNumber = suite.batches.length + 1;
     var obj = {};
     obj[name] = {
-      topic: function() {
+      topic: function () {
         var self = this;
         var args = lastArgs.slice(1);
         // add a "done" function as the first argument
-        args.unshift(function() {
+        args.unshift(function () {
           // invoke callback with all these arguments
           lastArgs = Array.prototype.slice.call(arguments, 0);
           self.callback.apply(self, lastArgs);
@@ -34,7 +34,7 @@ module.exports = function(spec, mod, opts) {
           this.callback(null);
         }
       },
-      "succeeds": function(err) {
+      succeeds: function (err) {
         if (opts.bailOnError && err) {
           failedState = true;
           // halt processing of subsequent batches (except for the cleanup batch,
@@ -45,7 +45,7 @@ module.exports = function(spec, mod, opts) {
           }
         }
         if (err) assert.fail(err);
-      }
+      },
     };
     suite.addBatch(obj);
   });
@@ -54,12 +54,12 @@ module.exports = function(spec, mod, opts) {
 
   if (opts.cleanup) {
     suite.addBatch({
-      "cleanup": {
-        topic: function() {
+      cleanup: {
+        topic: function () {
           opts.cleanup(this.callback);
         },
-        "done": function() { }
-      }
+        done: function () {},
+      },
     });
   }
 

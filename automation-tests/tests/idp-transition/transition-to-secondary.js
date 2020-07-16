@@ -6,8 +6,7 @@
 
 /*jshint sub: true */
 
-const
-assert = require('../../lib/asserts.js');
+const assert = require('../../lib/asserts.js');
 const CSS = require('../../pages/css.js');
 const path = require('path');
 const persona_urls = require('../../lib/urls.js');
@@ -17,7 +16,10 @@ const testSetup = require('../../lib/test-setup.js');
 const dialog = require('../../pages/dialog.js');
 const rp_123done = require('../../pages/123done.js');
 
-var browser; var testIdp; var primaryToSecondaryUser; var secondaryUser;
+var browser;
+var testIdp;
+var primaryToSecondaryUser;
+var secondaryUser;
 
 /**
  * This suite checks the "transition_to_secondary" state flow for an email
@@ -36,125 +38,167 @@ var browser; var testIdp; var primaryToSecondaryUser; var secondaryUser;
  * 5) Verify email, make sure the user is signed in.
  */
 
-runner.run(module, {
-  "setup": function(done) {
-    testSetup.setup({browsers: 1, testidps: 1, restmails: 1}, function(err, fixtures) {
-      if (fixtures) {
-        browser = fixtures.browsers[0];
-        testIdp = fixtures.testidps[0];
-        primaryToSecondaryUser = testIdp.getRandomEmail();
-        secondaryUser = fixtures.restmails[0];
-      }
-      done(err);
-    });
+runner.run(
+  module,
+  {
+    setup: function (done) {
+      testSetup.setup({ browsers: 1, testidps: 1, restmails: 1 }, function (
+        err,
+        fixtures
+      ) {
+        if (fixtures) {
+          browser = fixtures.browsers[0];
+          testIdp = fixtures.testidps[0];
+          primaryToSecondaryUser = testIdp.getRandomEmail();
+          secondaryUser = fixtures.restmails[0];
+        }
+        done(err);
+      });
+    },
+    'create a new selenium session': function (done) {
+      testSetup.newBrowserSession(browser, done);
+    },
+    'load 123done and open dialog': function (done) {
+      browser
+        .chain({ onError: done })
+        .get(persona_urls['123done'])
+        .wclick(CSS['123done.org'].signinButton)
+        .wwin(CSS['dialog'].windowName, done);
+    },
+    'create account with secondary user': function (done) {
+      dialog.signInAsNewUser(
+        {
+          browser: browser,
+          email: secondaryUser,
+          password: 'password',
+        },
+        done
+      );
+    },
+    'verify secondary email': function (done) {
+      rp_123done.completeEmailVerification(
+        {
+          browser: browser,
+          email: secondaryUser,
+        },
+        done
+      );
+    },
+    "verify we're signed in to 123done": function (done) {
+      rp_123done.testSignedInUser(
+        {
+          browser: browser,
+          email: secondaryUser,
+        },
+        done
+      );
+    },
+    'Happy, healthy primary': function (done) {
+      testIdp.enableSupport(false, done);
+    },
+    're-open dialog to add primary email': function (done) {
+      rp_123done.logoutOpenDialog(browser, done);
+    },
+    'add primary email to account': function (done) {
+      browser
+        .chain({ onError: done })
+        .wclick(CSS['dialog'].useNewEmail)
+        .wtype(CSS['dialog'].newEmail, primaryToSecondaryUser)
+        .wclick(CSS['dialog'].addNewEmailButton)
+        .wwin(done);
+    },
+    'check primaryToSecondaryUser is logged in': function (done) {
+      rp_123done.testSignedInUser(
+        {
+          browser: browser,
+          email: primaryToSecondaryUser,
+        },
+        done
+      );
+    },
+    'The IdP disables support': function (done) {
+      testIdp.disableSupport(done);
+    },
+    'verify user is logged out on page reload - email is in transition state': function (
+      done
+    ) {
+      browser
+        .chain({ onError: done })
+        .refresh()
+        .wfind(CSS['123done.org'].signinButton, done);
+    },
+    'sign in as primaryToSecondaryUser': function (done) {
+      browser
+        .chain({ onError: done })
+        .wclick(CSS['123done.org'].signinButton)
+        .wwin(CSS['dialog'].windowName)
+        .wclick(CSS['dialog'].thisIsNotMe)
+        .wtype(CSS['dialog'].emailInput, primaryToSecondaryUser)
+        .wclick(CSS['dialog'].newEmailNextButton, done);
+    },
+    'primaryToSecondaryUser is now in a transition state, user must enter Persona password and verify email address': function (
+      done
+    ) {
+      browser
+        .chain({ onError: done })
+        .wtype(CSS['dialog'].existingPassword, 'password')
+        .wclick(CSS['dialog'].returningUserButton)
+        .wfind(CSS['dialog'].confirmAddressScreen, done);
+    },
+    'User verifies ownership of previous primary address': function (done) {
+      rp_123done.completeEmailVerification(
+        {
+          browser: browser,
+          email: primaryToSecondaryUser,
+        },
+        done
+      );
+    },
+    'Check primaryToSecondaryUser is logged in': function (done) {
+      rp_123done.testSignedInUser(
+        {
+          browser: browser,
+          email: primaryToSecondaryUser,
+        },
+        done
+      );
+    },
+    'Log user out of 123done to verify they can sign in with password': function (
+      done
+    ) {
+      rp_123done.logoutOpenDialog(browser, done);
+    },
+    'Sign primaryToSecondaryUser out of dialog to try to sign in with password': function (
+      done
+    ) {
+      browser.wclick(CSS['dialog'].thisIsNotMe, done);
+    },
+    'Sign primaryToSecondaryUser in with password': function (done) {
+      dialog.signInExistingUser(
+        {
+          browser: browser,
+          email: primaryToSecondaryUser,
+          password: 'password',
+        },
+        done
+      );
+    },
+    'Make sure primaryToSecondaryUser is signed in to 123done': function (
+      done
+    ) {
+      rp_123done.testSignedInUser(
+        {
+          browser: browser,
+          email: primaryToSecondaryUser,
+        },
+        done
+      );
+    },
   },
-  "create a new selenium session": function(done) {
-    testSetup.newBrowserSession(browser, done);
-  },
-  "load 123done and open dialog": function(done) {
-    browser.chain({onError: done})
-           .get(persona_urls["123done"])
-           .wclick(CSS['123done.org'].signinButton)
-           .wwin(CSS["dialog"].windowName, done);
-  },
-  "create account with secondary user": function(done) {
-    dialog.signInAsNewUser({
-      browser: browser,
-      email: secondaryUser,
-      password: 'password'
-    }, done);
-  },
-  "verify secondary email": function(done) {
-    rp_123done.completeEmailVerification({
-      browser: browser,
-      email: secondaryUser
-    }, done);
-  },
-  "verify we're signed in to 123done": function(done) {
-    rp_123done.testSignedInUser({
-      browser: browser,
-      email: secondaryUser
-    }, done);
-  },
-  "Happy, healthy primary": function(done) {
-    testIdp.enableSupport(false, done);
-  },
-  "re-open dialog to add primary email": function(done) {
-    rp_123done.logoutOpenDialog(browser, done);
-  },
-  "add primary email to account": function(done) {
-    browser.chain({onError: done})
-      .wclick(CSS['dialog'].useNewEmail)
-      .wtype(CSS['dialog'].newEmail, primaryToSecondaryUser)
-      .wclick(CSS['dialog'].addNewEmailButton)
-      .wwin(done);
-  },
-  "check primaryToSecondaryUser is logged in": function(done) {
-    rp_123done.testSignedInUser({
-      browser: browser,
-      email: primaryToSecondaryUser
-    }, done);
-  },
-  "The IdP disables support": function(done) {
-    testIdp.disableSupport(done);
-  },
-  "verify user is logged out on page reload - email is in transition state":
-      function(done) {
-    browser.chain({onError: done})
-      .refresh()
-      .wfind(CSS['123done.org'].signinButton, done);
-  },
-  "sign in as primaryToSecondaryUser": function(done) {
-    browser.chain({onError: done})
-      .wclick(CSS['123done.org'].signinButton)
-      .wwin(CSS['dialog'].windowName)
-      .wclick(CSS['dialog'].thisIsNotMe)
-      .wtype(CSS['dialog'].emailInput, primaryToSecondaryUser)
-      .wclick(CSS['dialog'].newEmailNextButton, done);
-  },
-  "primaryToSecondaryUser is now in a transition state, user must enter Persona password and verify email address": function(done) {
-
-    browser.chain({onError: done})
-      .wtype(CSS['dialog'].existingPassword, "password")
-      .wclick(CSS['dialog'].returningUserButton)
-      .wfind(CSS['dialog'].confirmAddressScreen, done);
-  },
-  "User verifies ownership of previous primary address": function(done) {
-    rp_123done.completeEmailVerification({
-      browser: browser,
-      email: primaryToSecondaryUser
-    }, done);
-  },
-  "Check primaryToSecondaryUser is logged in": function(done) {
-    rp_123done.testSignedInUser({
-      browser: browser,
-      email: primaryToSecondaryUser
-    }, done);
-  },
-  "Log user out of 123done to verify they can sign in with password":
-      function(done) {
-    rp_123done.logoutOpenDialog(browser, done);
-  },
-  "Sign primaryToSecondaryUser out of dialog to try to sign in with password":
-      function(done) {
-    browser.wclick(CSS['dialog'].thisIsNotMe, done);
-  },
-  "Sign primaryToSecondaryUser in with password": function(done) {
-    dialog.signInExistingUser({
-      browser: browser,
-      email: primaryToSecondaryUser,
-      password: "password"
-    }, done);
-  },
-  "Make sure primaryToSecondaryUser is signed in to 123done": function(done) {
-    rp_123done.testSignedInUser({
-      browser: browser,
-      email: primaryToSecondaryUser
-    }, done);
+  {
+    suiteName: path.basename(__filename),
+    cleanup: function (done) {
+      testSetup.teardown(done);
+    },
   }
-},
-{
-  suiteName: path.basename(__filename),
-  cleanup: function(done) { testSetup.teardown(done); }
-});
-
+);

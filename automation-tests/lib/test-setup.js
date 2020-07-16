@@ -1,7 +1,6 @@
 /*jshint sub: true */
 
-const
-personatestuser = require('../lib/personatestuser.js');
+const personatestuser = require('../lib/personatestuser.js');
 const Q = require('q');
 const restmail = require('../lib/restmail.js');
 const saucePlatforms = require('../config/sauce-platforms.js');
@@ -16,7 +15,9 @@ require('./wd-extensions.js');
 
 var testSetup = {};
 
-var configPlatforms = process.env['PERSONA_NO_SAUCE'] ? localPlatforms : saucePlatforms;
+var configPlatforms = process.env['PERSONA_NO_SAUCE']
+  ? localPlatforms
+  : saucePlatforms;
 
 // as part of test setup, configure wsapi_client to use the proper environment,
 // this way, any code which wants to programatically interact with the
@@ -26,7 +27,6 @@ var wsapi = require('../../tests/lib/wsapi.js');
 wsapi.configuration.browserid = persona_urls.persona;
 
 /* public API */
-
 
 // startup determines if browser sessions will be local or use saucelabs.
 // should only be called once per session (potentially, once for many tests)
@@ -44,13 +44,13 @@ wsapi.configuration.browserid = persona_urls.persona;
 //  - desiredCapabilities (see json wire protocol for list of capabilities;
 //                         varies for local vs sauce)
 // env var equivalents are PERSONA_BROWSER and PERSONA_BROWSER_CAPABILITIES
-testSetup.startup = function(opts) {
+testSetup.startup = function (opts) {
   opts = opts || {};
   setSessionOpts(opts);
 
   var sauceUser = opts.sauceUser || process.env['PERSONA_SAUCE_USER'];
-    var sauceApiKey = opts.sauceApiKey || process.env['PERSONA_SAUCE_APIKEY'];
-    var browser;
+  var sauceApiKey = opts.sauceApiKey || process.env['PERSONA_SAUCE_APIKEY'];
+  var browser;
 
   if (sauceUser && sauceApiKey && !process.env.PERSONA_NO_SAUCE) {
     browser = wd.remote('ondemand.saucelabs.com', 80, sauceUser, sauceApiKey);
@@ -58,7 +58,7 @@ testSetup.startup = function(opts) {
     browser = wd.remote();
   }
 
-  browser.on('status', function(info) {
+  browser.on('status', function (info) {
     // using console.error so we don't mix up plain text with junitxml
     // TODO do something nicer with this
     var format = process.env.NODE_DISABLE_COLORS ? '%s' : '\x1b[36m%s\x1b[0m';
@@ -88,16 +88,16 @@ testSetup.browsers = [];
 //   firstUser = fixtures.personatestusers[0];
 //   secondUser = fixtures.personatestusers[1];
 // }
-testSetup.setup = function(opts, cb) {
+testSetup.setup = function (opts, cb) {
   /*jshint loopfunc: true */
   var fixtures = {};
-    var restmails = opts.restmails || opts.r;
-    var eyedeemails = opts.eyedeemails || opts.e;
-    var testidps = opts.testidps || opts.t;
-    var personatestusers = opts.personatestusers || opts.p;
-    var browsers = opts.browsers || opts.b;
-    var promises = [];
-    var idx = 0;
+  var restmails = opts.restmails || opts.r;
+  var eyedeemails = opts.eyedeemails || opts.e;
+  var testidps = opts.testidps || opts.t;
+  var personatestusers = opts.personatestusers || opts.p;
+  var browsers = opts.browsers || opts.b;
+  var promises = [];
+  var idx = 0;
 
   if (restmails) {
     fixtures.r = fixtures.restmails = [];
@@ -115,10 +115,12 @@ testSetup.setup = function(opts, cb) {
     fixtures.t = fixtures.testidps = [];
     for (idx = 0; idx < testidps; idx++) {
       var testIdpPromise = Q.ncall(testidp.qCreateIdP)
-      .then(function (qRes) {
-        fixtures.testidps.push(qRes);
-      })
-      .fail(function (error) {return cb(error);});
+        .then(function (qRes) {
+          fixtures.testidps.push(qRes);
+        })
+        .fail(function (error) {
+          return cb(error);
+        });
       promises.push(testIdpPromise);
     }
   }
@@ -128,40 +130,44 @@ testSetup.setup = function(opts, cb) {
     // then the final promise will be resolved.
     for (idx = 0; idx < personatestusers; idx++) {
       var userPromise = Q.ncall(personatestuser.getVerifiedUser)
-        .then(function(user) { fixtures.personatestusers.push(user[0]); })
-        .fail(function(error) { return cb(error); });
+        .then(function (user) {
+          fixtures.personatestusers.push(user[0]);
+        })
+        .fail(function (error) {
+          return cb(error);
+        });
       promises.push(userPromise);
     }
   }
   // no need to return a promise, just fire the cb when ready
   if (promises) {
     Q.all(promises)
-      .then(function() {
+      .then(function () {
         fixtures = setupBrowsers(browsers, fixtures);
         cb(null, fixtures);
       })
-      .fail(function(error) { cb(error); });
+      .fail(function (error) {
+        cb(error);
+      });
   } else {
     fixtures = setupBrowsers(browsers, fixtures);
     cb(null, fixtures);
   }
 };
 
-testSetup.newBrowserSession = function(b, cb) {
+testSetup.newBrowserSession = function (b, cb) {
   b.newSession(testSetup.sessionOpts, cb);
 };
 
-testSetup.teardown = function(cb) {
+testSetup.teardown = function (cb) {
   var enders = [];
   // quit all browser sessions
-  for (var i = 0, b; b = testSetup.browsers[i]; i++) enders.push(Q.ncall(b.quit, b));
-  Q.all(enders)
-    .fin(cb);
+  for (var i = 0, b; (b = testSetup.browsers[i]); i++)
+    enders.push(Q.ncall(b.quit, b));
+  Q.all(enders).fin(cb);
 };
 
-
 /* private functions */
-
 
 // these session opts aren't needed until the user requests a session via newSession()
 // but we harvest them from the command line at startup time
@@ -171,19 +177,33 @@ function setSessionOpts(opts) {
 
   // check for typos: throw error if requestedPlatform not found in list of supported sauce platforms
   var requestedPlatform = opts.platform || process.env['PERSONA_BROWSER'];
-  if (requestedPlatform && requestedPlatform !== 'any' && !configPlatforms.platforms[requestedPlatform]) {
-    throw new Error('requested platform ' + requestedPlatform +
-                    ' not found in list of available platforms');
+  if (
+    requestedPlatform &&
+    requestedPlatform !== 'any' &&
+    !configPlatforms.platforms[requestedPlatform]
+  ) {
+    throw new Error(
+      'requested platform ' +
+        requestedPlatform +
+        ' not found in list of available platforms'
+    );
   }
   // Default to *nothing* locally (server's choice), and chrome/VISTA for sauce
-  var defaultPlatform = process.env.PERSONA_NO_SAUCE ? 'any' : { browserName: 'chrome', platform: 'Windows 2008' };
-  var platform = requestedPlatform ? configPlatforms.platforms[requestedPlatform] : defaultPlatform;
+  var defaultPlatform = process.env.PERSONA_NO_SAUCE
+    ? 'any'
+    : { browserName: 'chrome', platform: 'Windows 2008' };
+  var platform = requestedPlatform
+    ? configPlatforms.platforms[requestedPlatform]
+    : defaultPlatform;
   // add platform, browserName, version to session opts
   _.extend(sessionOpts, platform);
 
   // pull the default desired capabilities out of the sauce-platforms file
   // overwrite if specified by user
-  var desiredCapabilities = opts.desiredCapabilities || process.env['PERSONA_BROWSER_CAPABILITIES'] || {};
+  var desiredCapabilities =
+    opts.desiredCapabilities ||
+    process.env['PERSONA_BROWSER_CAPABILITIES'] ||
+    {};
   _.extend(sessionOpts, configPlatforms.defaultCapabilities);
   _.extend(sessionOpts, desiredCapabilities);
 
@@ -209,7 +229,9 @@ function setSessionOpts(opts) {
 }
 
 function setupBrowsers(browserCount, out) {
-  for (var i = 0; i < browserCount; i++) { testSetup.startup(); }
+  for (var i = 0; i < browserCount; i++) {
+    testSetup.startup();
+  }
   // just use the browsers array directly
   out.b = out.browsers = testSetup.browsers;
   return out;
@@ -218,11 +240,13 @@ function setupBrowsers(browserCount, out) {
 function createTestName() {
   var testname = path.basename(process.argv[1], '.js');
   if (testname === 'vows') {
-    var isOption = function(elt) { return elt.indexOf('-') === 0; };
+    var isOption = function (elt) {
+      return elt.indexOf('-') === 0;
+    };
     testname = _.reject(process.argv.slice(2), isOption)[0];
     testname = path.basename(testname, '.js');
   }
-  return [ 'persona', testname.replace(/\s+/g, '-') ].join('.');
+  return ['persona', testname.replace(/\s+/g, '-')].join('.');
 }
 
 module.exports = testSetup;

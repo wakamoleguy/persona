@@ -6,10 +6,10 @@
 // see the Webdriver wiki for more: https://code.google.com/p/selenium/w/list
 //
 const platforms = {
-  "firefox": {
+  firefox: {
     platform: 'ANY',
     browserName: 'firefox',
-    version: ''
+    version: '',
   },
   /* if you wish to add a second firefox, give it a unique name and specify
      the path to the binary, which will vary across systems.
@@ -23,33 +23,33 @@ const platforms = {
     firefox_binary: '/Applications/FirefoxNightly.app/Contents/MacOS/firefox-bin'
   },
   */
-  "chrome": {
+  chrome: {
     platform: 'ANY',
     browserName: 'chrome',
-    version: ''
+    version: '',
   },
-  "opera": {
+  opera: {
     platform: 'ANY',
     browserName: 'opera',
-    version: ''
+    version: '',
   },
-  "safari": {
+  safari: {
     platform: 'ANY',
     browserName: 'safari',
-    version: ''
+    version: '',
   },
-  "ie": {
+  ie: {
     platform: 'ANY',
     browserName: 'internet explorer',
-    version: ''
-  }
+    version: '',
+  },
 };
 
 // see https://code.google.com/p/selenium/wiki/DesiredCapabilities for other opts
 const defaultCapabilities = {
-  javascriptEnabled: true
+  javascriptEnabled: true,
 };
 
 exports.platforms = platforms;
 exports.defaultCapabilities = defaultCapabilities;
-exports.defaultPlatform = "firefox";
+exports.defaultPlatform = 'firefox';

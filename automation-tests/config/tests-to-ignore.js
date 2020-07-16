@@ -6,21 +6,13 @@
 // XXX extract duplication if this file gets significantly longer
 
 var testsToIgnore = {
-  dev: [
-    "public-terminals.js"
-  ],
+  dev: ['public-terminals.js'],
 
-  stage: [
-    "frontend-qunit-test.js",
-    "public-terminals.js"
-  ],
+  stage: ['frontend-qunit-test.js', 'public-terminals.js'],
 
-  prod: [
-    "frontend-qunit-test.js",
-    "public-terminals.js"
-  ]
+  prod: ['frontend-qunit-test.js', 'public-terminals.js'],
 };
 
-module.exports = function(env) {
+module.exports = function (env) {
   return testsToIgnore[env] || testsToIgnore.dev;
 };

@@ -6,8 +6,7 @@
 
 /*jshint sub: true */
 
-const
-path = require('path');
+const path = require('path');
 const assert = require('../lib/asserts.js');
 const restmail = require('../lib/restmail.js');
 const utils = require('../lib/utils.js');
@@ -21,15 +20,17 @@ const timeouts = require('../lib/timeouts.js');
 
 // pull in test environment, including wd
 var browser;
-    var testIdp;
-    var firstPrimaryEmail;
-    var secondPrimaryEmail;
-    var secondaryEmail;
-    var secondaryPassword;
-    var emails = [];
+var testIdp;
+var firstPrimaryEmail;
+var secondPrimaryEmail;
+var secondaryEmail;
+var secondaryPassword;
+var emails = [];
 
 function getEmailIndex(email) {
-  emails = emails.sort(function(a, b) { return a === b ? 0 : a > b ? 1 : -1; });
+  emails = emails.sort(function (a, b) {
+    return a === b ? 0 : a > b ? 1 : -1;
+  });
   var index = emails.indexOf(email);
   return index;
 }
@@ -40,186 +41,214 @@ function saveEmail(email) {
 }
 
 function removeEmail(email, done) {
-  browser.chain({onError: done})
+  browser
+    .chain({ onError: done })
     .get(persona_urls['persona'])
     .wclick(CSS['persona.org'].emailListEditButton)
-    .elementsByCssSelector(CSS['persona.org'].removeEmailButton, function(err, elements) {
+    .elementsByCssSelector(CSS['persona.org'].removeEmailButton, function (
+      err,
+      elements
+    ) {
       var index = getEmailIndex(email);
       var button = elements[index];
 
-      browser.chain({onError: done})
+      browser
+        .chain({ onError: done })
         .clickElement(button)
         // Give Chrome a bit to display the alert or else the command to
         // accept the alert is fired too early.
         .delay(500)
-        .acceptAlert(function() {
+        .acceptAlert(function () {
           emails.splice(index, 1);
 
           if (emails.length) {
             // if there are emails remaining, click the done button
             browser.wclick(CSS['persona.org'].emailListDoneButton, done);
-          }
-          else {
+          } else {
             // if there are no emails remaining, the user will be logged out
             browser.wfind(CSS['persona.org'].header.signIn, done);
           }
         });
     });
-
 }
 
-runner.run(module, {
-  "setup all the things": function(done) {
-    // this is the more compact setup syntax
-    testSetup.setup({b:2, r:1, testidps:1}, function(err, fix) {
-      if (fix) {
-        browser = fix.b[0];
-        testIdp = fix.testidps[0];
-        firstPrimaryEmail = saveEmail(testIdp.getRandomEmail());
-        secondPrimaryEmail = saveEmail(testIdp.getRandomEmail());
-        secondaryEmail = saveEmail(fix.r[0]);
-        secondaryPassword = secondaryEmail.split('@')[0];
-      }
-      done(err);
-    });
-  },
-  "enable primary support": function(done) {
-    testIdp.enableSupport(done);
-  },
-
-  "init browser session": function(done) {
-    testSetup.newBrowserSession(browser, done);
-  },
-  "go to 123done and create a primary account": function(done) {
-    browser.chain({onError: done})
-      .get(persona_urls['123done'])
-      .wclick(CSS['123done.org'].signInButton)
-      .wwin(CSS['dialog'].windowName)
-      .wtype(CSS['dialog'].emailInput, firstPrimaryEmail)
-      .wclick(CSS['dialog'].newEmailNextButton)
-      .wclick(CSS['testidp.org'].loginButton)
-      .wwin()
-      .wtext(CSS['123done.org'].currentlyLoggedInEmail, function(err, text) {
-        done(err || assert.equal(text, firstPrimaryEmail));
+runner.run(
+  module,
+  {
+    'setup all the things': function (done) {
+      // this is the more compact setup syntax
+      testSetup.setup({ b: 2, r: 1, testidps: 1 }, function (err, fix) {
+        if (fix) {
+          browser = fix.b[0];
+          testIdp = fix.testidps[0];
+          firstPrimaryEmail = saveEmail(testIdp.getRandomEmail());
+          secondPrimaryEmail = saveEmail(testIdp.getRandomEmail());
+          secondaryEmail = saveEmail(fix.r[0]);
+          secondaryPassword = secondaryEmail.split('@')[0];
+        }
+        done(err);
       });
-  },
+    },
+    'enable primary support': function (done) {
+      testIdp.enableSupport(done);
+    },
 
-  "add another primary to account": function(done) {
-    browser.chain({onError: done})
-      .wclick(CSS['123done.org'].logoutLink)
-      .wclick(CSS['123done.org'].signInButton)
-      .wwin(CSS['dialog'].windowName)
-      .wclick(CSS['dialog'].useNewEmail)
-      .wtype(CSS['dialog'].newEmail, secondPrimaryEmail)
-      .wclick(CSS['dialog'].addNewEmailButton)
-      .wclick(CSS['testidp.org'].loginButton)
-      .wwin()
-      .wtext(CSS['123done.org'].currentlyLoggedInEmail, function(err, text) {
-        done(err || assert.equal(text, secondPrimaryEmail));
-      });
-  },
+    'init browser session': function (done) {
+      testSetup.newBrowserSession(browser, done);
+    },
+    'go to 123done and create a primary account': function (done) {
+      browser
+        .chain({ onError: done })
+        .get(persona_urls['123done'])
+        .wclick(CSS['123done.org'].signInButton)
+        .wwin(CSS['dialog'].windowName)
+        .wtype(CSS['dialog'].emailInput, firstPrimaryEmail)
+        .wclick(CSS['dialog'].newEmailNextButton)
+        .wclick(CSS['testidp.org'].loginButton)
+        .wwin()
+        .wtext(CSS['123done.org'].currentlyLoggedInEmail, function (err, text) {
+          done(err || assert.equal(text, firstPrimaryEmail));
+        });
+    },
 
-  "add secondary to account": function(done) {
-    browser.chain({onError: done})
-      .wclick(CSS['123done.org'].logoutLink)
-      .wclick(CSS['123done.org'].signInButton)
-      .wwin(CSS['dialog'].windowName)
-      .wclick(CSS['dialog'].useNewEmail)
-      .wtype(CSS['dialog'].newEmail, secondaryEmail)
-      .wclick(CSS['dialog'].addNewEmailButton)
-      .wtype(CSS['dialog'].choosePassword, secondaryPassword)
-      .wtype(CSS['dialog'].verifyPassword, secondaryPassword)
-      .wclick(CSS['dialog'].createUserButton, done);
-  },
+    'add another primary to account': function (done) {
+      browser
+        .chain({ onError: done })
+        .wclick(CSS['123done.org'].logoutLink)
+        .wclick(CSS['123done.org'].signInButton)
+        .wwin(CSS['dialog'].windowName)
+        .wclick(CSS['dialog'].useNewEmail)
+        .wtype(CSS['dialog'].newEmail, secondPrimaryEmail)
+        .wclick(CSS['dialog'].addNewEmailButton)
+        .wclick(CSS['testidp.org'].loginButton)
+        .wwin()
+        .wtext(CSS['123done.org'].currentlyLoggedInEmail, function (err, text) {
+          done(err || assert.equal(text, secondPrimaryEmail));
+        });
+    },
 
-  "get verification link": function(done) {
-    restmail.getVerificationLink({ email: secondaryEmail }, done);
-  },
+    'add secondary to account': function (done) {
+      browser
+        .chain({ onError: done })
+        .wclick(CSS['123done.org'].logoutLink)
+        .wclick(CSS['123done.org'].signInButton)
+        .wwin(CSS['dialog'].windowName)
+        .wclick(CSS['dialog'].useNewEmail)
+        .wtype(CSS['dialog'].newEmail, secondaryEmail)
+        .wclick(CSS['dialog'].addNewEmailButton)
+        .wtype(CSS['dialog'].choosePassword, secondaryPassword)
+        .wtype(CSS['dialog'].verifyPassword, secondaryPassword)
+        .wclick(CSS['dialog'].createUserButton, done);
+    },
 
-  "follow link, wait for redirect, secondary should be displayed": function(done, token, link) {
-    browser.chain({onError: done})
-      .wwin()
-      .get(link)
-      .wtype(CSS['persona.org'].signInForm.password, secondaryPassword)
-      .wclick(CSS['persona.org'].signInForm.finishButton, secondaryPassword)
-      .wtext(CSS['123done.org'].currentlyLoggedInEmail, function(err, text) {
-        done(err || assert.equal(text, secondaryEmail));
-      });
-  },
+    'get verification link': function (done) {
+      restmail.getVerificationLink({ email: secondaryEmail }, done);
+    },
 
-  "log in to 123done using secondPrimaryEmail": function(done) {
-    browser.chain({onError: done})
-      .wclick(CSS['123done.org'].logoutLink)
-      .wclick(CSS['123done.org'].signInButton)
-      .wwin(CSS['dialog'].windowName)
-      .wclick(CSS['dialog'].emailPrefix + getEmailIndex(secondPrimaryEmail))
-      .wclick(CSS['dialog'].signInButton)
-      // The user has not yet clicked "yes" to "is this your computer?" and
-      // the cert used when secondPrimaryEmail was added has been deleted.
-      // The user must re-auth with the IdP.
-      .wclick(CSS['testidp.org'].loginButton)
-      .wclickIfExists(CSS['dialog'].notMyComputerButton)
-      .wwin()
-      .wtext(CSS['123done.org'].currentlyLoggedInEmail, function(err, text) {
-        done(err || assert.equal(text, secondPrimaryEmail));
-      });
-  },
+    'follow link, wait for redirect, secondary should be displayed': function (
+      done,
+      token,
+      link
+    ) {
+      browser
+        .chain({ onError: done })
+        .wwin()
+        .get(link)
+        .wtype(CSS['persona.org'].signInForm.password, secondaryPassword)
+        .wclick(CSS['persona.org'].signInForm.finishButton, secondaryPassword)
+        .wtext(CSS['123done.org'].currentlyLoggedInEmail, function (err, text) {
+          done(err || assert.equal(text, secondaryEmail));
+        });
+    },
 
-  "log in to myfavoritebeer using secondaryEmail": function(done) {
-    browser.chain({onError: done})
-      .get(persona_urls['myfavoritebeer'])
-      .wclick(CSS['myfavoritebeer.org'].signInButton)
-      .wwin(CSS['dialog'].windowName)
-      .wclick(CSS['dialog'].emailPrefix + getEmailIndex(secondaryEmail))
-      .wclick(CSS['dialog'].signInButton)
-      .wclickIfExists(CSS['dialog'].notMyComputerButton)
-      .wwin()
-      .wtext(CSS['myfavoritebeer.org'].currentlyLoggedInEmail, function(err, text) {
-        done(err || assert.equal(text, secondaryEmail));
-      });
-  },
+    'log in to 123done using secondPrimaryEmail': function (done) {
+      browser
+        .chain({ onError: done })
+        .wclick(CSS['123done.org'].logoutLink)
+        .wclick(CSS['123done.org'].signInButton)
+        .wwin(CSS['dialog'].windowName)
+        .wclick(CSS['dialog'].emailPrefix + getEmailIndex(secondPrimaryEmail))
+        .wclick(CSS['dialog'].signInButton)
+        // The user has not yet clicked "yes" to "is this your computer?" and
+        // the cert used when secondPrimaryEmail was added has been deleted.
+        // The user must re-auth with the IdP.
+        .wclick(CSS['testidp.org'].loginButton)
+        .wclickIfExists(CSS['dialog'].notMyComputerButton)
+        .wwin()
+        .wtext(CSS['123done.org'].currentlyLoggedInEmail, function (err, text) {
+          done(err || assert.equal(text, secondPrimaryEmail));
+        });
+    },
 
-  "go to main site, remove secondPrimaryEmail": function(done) {
-    removeEmail(secondPrimaryEmail, done);
-  },
+    'log in to myfavoritebeer using secondaryEmail': function (done) {
+      browser
+        .chain({ onError: done })
+        .get(persona_urls['myfavoritebeer'])
+        .wclick(CSS['myfavoritebeer.org'].signInButton)
+        .wwin(CSS['dialog'].windowName)
+        .wclick(CSS['dialog'].emailPrefix + getEmailIndex(secondaryEmail))
+        .wclick(CSS['dialog'].signInButton)
+        .wclickIfExists(CSS['dialog'].notMyComputerButton)
+        .wwin()
+        .wtext(CSS['myfavoritebeer.org'].currentlyLoggedInEmail, function (
+          err,
+          text
+        ) {
+          done(err || assert.equal(text, secondaryEmail));
+        });
+    },
 
-  "go to 123done, user should no longer be logged in": function(done) {
-    browser.chain({onError: done})
-      .get(persona_urls['123done'])
-      .wfind(CSS['123done.org'].signInButton, done);
-  },
+    'go to main site, remove secondPrimaryEmail': function (done) {
+      removeEmail(secondPrimaryEmail, done);
+    },
 
-  "go to main site, remove secondaryEmail": function(done) {
-    removeEmail(secondaryEmail, done);
-  },
+    'go to 123done, user should no longer be logged in': function (done) {
+      browser
+        .chain({ onError: done })
+        .get(persona_urls['123done'])
+        .wfind(CSS['123done.org'].signInButton, done);
+    },
 
-  "go to myfavoritebeer, make sure user is still signed in - mfb still uses old API": function(done) {
-    browser.chain({onError: done})
-      .get(persona_urls['myfavoritebeer'])
-      .wfind(CSS['myfavoritebeer.org'].logoutLink, done);
-  },
+    'go to main site, remove secondaryEmail': function (done) {
+      removeEmail(secondaryEmail, done);
+    },
 
-  "go to main site, remove firstPrimaryEmail": function(done) {
-    removeEmail(firstPrimaryEmail, done);
-  },
+    'go to myfavoritebeer, make sure user is still signed in - mfb still uses old API': function (
+      done
+    ) {
+      browser
+        .chain({ onError: done })
+        .get(persona_urls['myfavoritebeer'])
+        .wfind(CSS['myfavoritebeer.org'].logoutLink, done);
+    },
 
-  "user should now be signed out - cannot sign in with deleted addresses": function(done) {
-    browser.chain({onError: done})
-      .get(persona_urls['persona'])
-      .wclick(CSS['persona.org'].header.signIn)
-      .wwin(CSS['dialog'].windowName)
-      .wtype(CSS['dialog'].emailInput, secondaryEmail)
-      .wclick(CSS['dialog'].newEmailNextButton)
-      .wfind(CSS['dialog'].verifyPassword)
-      .wclick(CSS['dialog'].submitCancelButton)
-      .wclear(CSS['dialog'].emailInput)
-      // the user will still be logged in to testidp.org under the
-      // secondPrimaryEmail, so try logging in using the firstPrimaryEmail
-      .wtype(CSS['dialog'].emailInput, firstPrimaryEmail)
-      .wclick(CSS['dialog'].newEmailNextButton, done);
+    'go to main site, remove firstPrimaryEmail': function (done) {
+      removeEmail(firstPrimaryEmail, done);
+    },
+
+    'user should now be signed out - cannot sign in with deleted addresses': function (
+      done
+    ) {
+      browser
+        .chain({ onError: done })
+        .get(persona_urls['persona'])
+        .wclick(CSS['persona.org'].header.signIn)
+        .wwin(CSS['dialog'].windowName)
+        .wtype(CSS['dialog'].emailInput, secondaryEmail)
+        .wclick(CSS['dialog'].newEmailNextButton)
+        .wfind(CSS['dialog'].verifyPassword)
+        .wclick(CSS['dialog'].submitCancelButton)
+        .wclear(CSS['dialog'].emailInput)
+        // the user will still be logged in to testidp.org under the
+        // secondPrimaryEmail, so try logging in using the firstPrimaryEmail
+        .wtype(CSS['dialog'].emailInput, firstPrimaryEmail)
+        .wclick(CSS['dialog'].newEmailNextButton, done);
+    },
+  },
+  {
+    suiteName: path.basename(__filename),
+    cleanup: function (done) {
+      testSetup.teardown(done);
+    },
   }
-},
-{
-  suiteName: path.basename(__filename),
-  cleanup: function(done) { testSetup.teardown(done); }
-});
+);

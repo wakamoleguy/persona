@@ -3,18 +3,18 @@
 // changes.
 
 module.exports = {
-  "123done.org": {
+  '123done.org': {
     // XXX Change all signinButton's to signInButton to be consistent
     signinButton: 'button.btn-persona',
     signInButton: 'button.btn-persona',
     // the email address of the user who is currently logged in
     currentlyLoggedInEmail: 'li#loggedin span',
-    logoutLink: 'li#loggedin a'
+    logoutLink: 'li#loggedin a',
   },
-  "persona.org": {
-    windowName: "__persona_dialog",
+  'persona.org': {
+    windowName: '__persona_dialog',
     accountManagerHeader: '#manage h1',
-    accountEmail: "#emailList .email",
+    accountEmail: '#emailList .email',
     changePasswordButton: '#edit_password button.edit',
     oldPassword: '#edit_password_form input#old_password',
     newPassword: '#edit_password_form input#new_password',
@@ -27,18 +27,18 @@ module.exports = {
     header: {
       home: '#header a.home',
       signIn: '#header a.signIn',
-      signOut: '#header a.signOut'
+      signOut: '#header a.signOut',
     },
     signInForm: {
       password: '#signUpForm input#password',
       verifyPassword: '#signUpForm input#vpassword',
       verifyEmailButton: '#signUpForm button#verifyEmail',
-      finishButton: '#signUpForm .password_entry button'
+      finishButton: '#signUpForm .password_entry button',
     },
-    congratsMessage: 'div#congrats'
+    congratsMessage: 'div#congrats',
   },
-  "dialog": {
-    windowName: "__persona_dialog",
+  dialog: {
+    windowName: '__persona_dialog',
     emailInput: 'input#authentication_email',
     newEmailNextButton: 'p.submit.buttonrow button.isStart',
     submitCancelButton: 'p.submit.buttonrow #cancel',
@@ -48,7 +48,7 @@ module.exports = {
     forgotPassword: 'a.isDesktop.isEmailMutable.forgotPassword',
     choosePassword: 'div#set_password input#password',
     verifyPassword: 'input#vpassword',
-    confirmAddressScreen: "#confirm_address",
+    confirmAddressScreen: '#confirm_address',
     // The next two are when a user has to type their password in the dialog
     // post-verification.
     postVerificationPassword: 'input#authentication_password',
@@ -68,24 +68,24 @@ module.exports = {
     signInButton: 'button#signInButton',
     notMyComputerButton: 'button#this_is_not_my_computer',
     myComputerButton: 'button#this_is_my_computer',
-    primaryOfflineCancel: '#primary_offline_confirm'
+    primaryOfflineCancel: '#primary_offline_confirm',
   },
-  "myfavoritebeer.org": {
+  'myfavoritebeer.org': {
     // XXX Change all signinButton's to signInButton to be consistent
     signinButton: '#loginInfo .login',
     signInButton: '#loginInfo .login',
     currentlyLoggedInEmail: 'span.username',
     // XXX - change logout to logoutLink to be consistent
     logout: 'a#logout',
-    logoutLink: 'a#logout'
+    logoutLink: 'a#logout',
   },
-  "eyedee.me": {
+  'eyedee.me': {
     newPassword: 'input#new_password',
     createAccountButton: 'button#create_account',
     existingPassword: 'input#password',
-    signInButton: 'button#sign_in'
+    signInButton: 'button#sign_in',
   },
-  "testidp.org": {
-    loginButton: "#login"
-  }
+  'testidp.org': {
+    loginButton: '#login',
+  },
 };

@@ -4,18 +4,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
-const child_process = require("child_process");
-      const fs            = require("fs");
-      const path          = require("path");
-      const toolbelt      = require("../lib/toolbelt");
+const child_process = require('child_process');
+const fs = require('fs');
+const path = require('path');
+const toolbelt = require('../lib/toolbelt');
 
 function installDependencies(done) {
-  console.log(">> Installing selenium test dependencies");
+  console.log('>> Installing selenium test dependencies');
 
-  var installProcess = child_process.spawn("npm", ["install"], {
-    cwd: path.join(__dirname, ".."),
-    env: process.env
+  var installProcess = child_process.spawn('npm', ['install'], {
+    cwd: path.join(__dirname, '..'),
+    env: process.env,
   });
 
   installProcess.stdout.pipe(process.stdout);
@@ -26,10 +25,10 @@ function installDependencies(done) {
 function getJSONConfig(name) {
   var config;
   try {
-    var configPath = path.join(__dirname, "..", "..", "..", name);
+    var configPath = path.join(__dirname, '..', '..', '..', name);
     config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  } catch(e) {
-    console.error("cannot read " + name + " or json is invalid");
+  } catch (e) {
+    console.error('cannot read ' + name + ' or json is invalid');
     process.exit(1);
   }
 
@@ -38,10 +37,12 @@ function getJSONConfig(name) {
 
 function getTestEnvironment() {
   // the next two will exit the process if they fail.
-  var sauceConfig = getJSONConfig("sauce.json");
-      var globalConfig = getJSONConfig("config.json");
-      // personaEnv is the name of the ephemeral instance
-      var personaEnv = globalConfig.public_url.replace("https://", '').replace(".personatest.org", "");
+  var sauceConfig = getJSONConfig('sauce.json');
+  var globalConfig = getJSONConfig('config.json');
+  // personaEnv is the name of the ephemeral instance
+  var personaEnv = globalConfig.public_url
+    .replace('https://', '')
+    .replace('.personatest.org', '');
 
   var env = toolbelt.copyExtendEnv({
     RUNNERS: sauceConfig.runners,
@@ -49,18 +50,18 @@ function getTestEnvironment() {
     PERSONA_SAUCE_USER: sauceConfig.persona_sauce_user,
     PERSONA_SAUCE_APIKEY: sauceConfig.persona_sauce_api_key,
     PERSONA_SAUCE_PASS: sauceConfig.persona_sauce_pass,
-    PERSONA_BROWSER: sauceConfig.persona_browser
+    PERSONA_BROWSER: sauceConfig.persona_browser,
   });
 
   return env;
 }
 
 function runTests(env, done) {
-  console.log(">> Running tests against " + env.PERSONA_ENV);
+  console.log('>> Running tests against ' + env.PERSONA_ENV);
 
-  var runnerPath = path.join(__dirname, "run-all.js");
-  var testProcess = child_process.spawn("node", [ runnerPath ], {
-    env: env
+  var runnerPath = path.join(__dirname, 'run-all.js');
+  var testProcess = child_process.spawn('node', [runnerPath], {
+    env: env,
   });
 
   testProcess.stdout.pipe(process.stdout);
@@ -69,11 +70,9 @@ function runTests(env, done) {
 }
 
 var env = getTestEnvironment();
-installDependencies(function() {
-  runTests(env, function(code) {
-    console.log(">> Exiting tests with code: " + code);
+installDependencies(function () {
+  runTests(env, function (code) {
+    console.log('>> Exiting tests with code: ' + code);
     process.exit(code);
   });
 });
-
-
