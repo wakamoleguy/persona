@@ -119,7 +119,6 @@ suite.addBatch({
   },
 });
 
-var token;
 // now we have a new account.  let's add a secondary to it
 suite.addBatch({
   'add a new email address to our account': {

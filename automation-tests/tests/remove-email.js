@@ -9,14 +9,10 @@
 const path = require('path');
 const assert = require('../lib/asserts.js');
 const restmail = require('../lib/restmail.js');
-const utils = require('../lib/utils.js');
 const persona_urls = require('../lib/urls.js');
 const CSS = require('../pages/css.js');
-const dialog = require('../pages/dialog.js');
 const runner = require('../lib/runner.js');
 const testSetup = require('../lib/test-setup.js');
-const user = require('../lib/user.js');
-const timeouts = require('../lib/timeouts.js');
 
 // pull in test environment, including wd
 var browser;

@@ -12,7 +12,6 @@ const assert = require('assert');
 const vows = require('vows');
 const fs = require('fs');
 const path = require('path');
-const exec = require('child_process').exec;
 
 var suite = vows.describe('jshint');
 var jshint = require('jshint').JSHINT;

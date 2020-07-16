@@ -32,6 +32,7 @@ suite.addBatch({
         this.callback
       );
     },
+    // eslint-disable-next-line
     succeeds: function (err, r) {
       assert.isNull(err);
     },

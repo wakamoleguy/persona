@@ -121,7 +121,7 @@ if (config.get('env').substr(0, 5) === 'test_') {
 var SIGNALS_PROP = 'SUPPORTS_SIGNALS';
 if (!(SIGNALS_PROP in process.env)) {
   try {
-    const signals_test = () => {}
+    const signals_test = () => {};
     process.on('SIGINT', signals_test);
     process.removeListener('SIGINT', signals_test);
     process.env[SIGNALS_PROP] = true;

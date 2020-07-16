@@ -8,9 +8,7 @@ require('./lib/test_env.js');
 
 const assert = require('assert');
 const vows = require('vows');
-const i18n = require('i18n-abide');
 const start_stop = require('./lib/start-stop.js');
-const wsapi = require('./lib/wsapi.js');
 const http = require('http');
 const path = require('path');
 

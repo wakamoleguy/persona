@@ -9,8 +9,6 @@ require('./lib/test_env.js');
 const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
-const wsapi = require('./lib/wsapi.js');
-const config = require('../lib/configuration.js');
 const http = require('http');
 const secrets = require('../lib/secrets.js');
 const version = require('../lib/version.js');

@@ -375,8 +375,8 @@ function make_basic_tests(new_style) {
       },
     },
     'leaving off the assertion': {
-    //eslint-disable-next-line
-    topic: function (err, assertion) {
+      //eslint-disable-next-line
+      topic: function (err, assertion) {
         wsapi
           .post('/verify', {
             audience: TEST_ORIGIN,
@@ -619,8 +619,8 @@ function make_post_format_2_tests(new_style) {
         req.write(postArgs);
         req.end();
       },
-    //eslint-disable-next-line
-    'fails with a helpful error message': function (r, err) {
+      //eslint-disable-next-line
+      'fails with a helpful error message': function (r, err) {
         var resp = JSON.parse(r);
         assert.strictEqual(resp.status, 'failure');
         assert.strictEqual(
@@ -664,8 +664,8 @@ function make_post_format_2_tests(new_style) {
         req.write(postArgs);
         req.end();
       },
-    //eslint-disable-next-line
-    'works fabulously': function (r, err) {
+      //eslint-disable-next-line
+      'works fabulously': function (r, err) {
         var resp = JSON.parse(r);
         assert.isObject(resp);
         assert.strictEqual(resp.status, 'okay');

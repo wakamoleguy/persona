@@ -10,7 +10,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const email = require('../lib/email.js');
 const jwcrypto = require('browserid-crypto');
 const secondary = require('./lib/secondary.js');
 
@@ -42,6 +41,7 @@ suite.addBatch({
         this.callback
       );
     },
+    // eslint-disable-next-line
     succeeds: function (err, r) {
       assert.isNull(err);
     },
@@ -556,7 +556,6 @@ suite.addBatch({
     },
     works: function (err, r) {
       assert.equal(r.code, 200);
-      var body = JSON.parse(r.body);
     },
   },
 });

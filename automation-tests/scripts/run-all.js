@@ -93,11 +93,9 @@ const path = require('path');
 const util = require('util');
 const child_process = require('child_process');
 const test_finder = require('../lib/test-finder');
-const runner = require('../lib/runner');
 const toolbelt = require('../lib/toolbelt');
 const FileReporter = require('../lib/reporters/file-reporter');
 const ResultsAggregator = require('../lib/results-aggregator');
-const StdOutReporter = require('../lib/reporters/std-out-reporter');
 const StdErrReporter = require('../lib/reporters/std-err-reporter');
 const vows_path = path.join(__dirname, '../node_modules/.bin/vows');
 const vows_args = [args.output === 'xunit' ? '--xunit' : '--json', '-i'];
@@ -268,6 +266,7 @@ function startTesting() {
 
   function prettifyLine(line) {
     // decolorize
+    //eslint-disable-next-line
     line = line.replace(/\x1b\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]/g, '');
     line = line.trim();
 

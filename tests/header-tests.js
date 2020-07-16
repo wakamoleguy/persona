@@ -9,10 +9,8 @@ process.env.MEASURE_DOM_LOADING = false;
 require('./lib/test_env.js');
 
 const assert = require('assert');
-const http = require('http');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
-const wsapi = require('./lib/wsapi.js');
 const urlparse = require('urlparse');
 
 var suite = vows.describe('header tests');

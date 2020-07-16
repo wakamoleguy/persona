@@ -9,9 +9,6 @@ require('./lib/test_env.js');
 const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
-const wsapi = require('./lib/wsapi.js');
-const db = require('../lib/db.js');
-const config = require('../lib/configuration.js');
 const http = require('http');
 
 var suite = vows.describe('heartbeat');
@@ -24,7 +21,6 @@ start_stop.addStartupBatches(suite);
 // test deep and shallow heartbeats work for all processes
 [10004, 10002, 10003, 10004, 10007].forEach(function (port) {
   [true, false].forEach(function (shallow) {
-    var testName = 'shallow heartbeat check for 127.0.0.1:' + port;
     suite.addBatch({
       testName: {
         topic: function () {
@@ -85,6 +81,7 @@ suite.addBatch({
             req.abort();
           });
       },
+      // eslint-disable-next-line
       fails: function (e, code, start) {
         assert.ok(!e);
         assert.strictEqual(500, code);
@@ -95,6 +92,7 @@ suite.addBatch({
         assert.ok(3000 < elapsedMS < 7000);
       },
       'but upon SIGCONT': {
+        // eslint-disable-next-line
         topic: function (e, code) {
           process.kill(parseInt(process.env['BROWSERID_PID'], 10), 'SIGCONT');
           this.callback();
@@ -158,6 +156,7 @@ suite.addBatch({
             req.abort();
           });
       },
+      // eslint-disable-next-line
       fails: function (e, code, start) {
         assert.ok(!e);
         assert.strictEqual(500, code);
@@ -168,6 +167,7 @@ suite.addBatch({
         assert.ok(3000 < elapsedMS < 7000);
       },
       'but upon SIGCONT': {
+        // eslint-disable-next-line
         topic: function (e, code) {
           process.kill(parseInt(process.env['STATIC_PID'], 10), 'SIGCONT');
           this.callback();

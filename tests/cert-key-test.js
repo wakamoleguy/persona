@@ -10,7 +10,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const ca = require('../lib/keysigner/ca.js');
 const db = require('../lib/db.js');
 const jwcrypto = require('browserid-crypto');
 const secondary = require('./lib/secondary.js');
@@ -40,6 +39,7 @@ suite.addBatch({
         this.callback
       );
     },
+    //eslint-disable-next-line
     succeeds: function (err, r) {
       assert.isNull(err);
     },
@@ -53,9 +53,10 @@ suite.addBatch({
 // verify it is properly updated.
 suite.addBatch({
   'setting lastUsedAs to primary': {
-    topic: function (err, certs_and_assertion) {
+    topic: function () {
       db.updateEmailLastUsedAs('syncer@somehost.com', 'primary', this.callback);
     },
+    //eslint-disable-next-line
     works: function (err, lastUsedAs) {
       assert.isNull(err);
     },
@@ -155,11 +156,11 @@ suite.addBatch({
       'after a short wait': {
         // In practise, db.emailLastUsedAs is sometimes called before
         // db.updateEmailLastUsedAs has been called by cert_key wsapi...
-        topic: function (err, r) {
+        topic: function () {
           setTimeout(this.callback, 500);
         },
         'email table lastUsedAs updated': {
-          topic: function (err, certs_and_assertion) {
+          topic: function () {
             db.emailLastUsedAs('syncer@somehost.com', this.callback);
           },
           'cert_key records a secondary': function (err, lastUsedAs) {

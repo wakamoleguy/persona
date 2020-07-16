@@ -27,6 +27,7 @@ suite.addBatch({
         this.callback
       );
     },
+    // eslint-disable-next-line
     'data can be read': function (err, data) {
       assert.isNull(err);
     },

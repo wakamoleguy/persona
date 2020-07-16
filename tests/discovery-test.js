@@ -13,17 +13,13 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const config = require('../lib/configuration.js');
 const util = require('util');
 const path = require('path');
 
 var suite = vows.describe('discovery');
 
 const TEST_DISABLED_DOMAIN = 'disabled.domain';
-(TEST_DOMAIN = 'example.domain'),
-  (TEST_EMAIL = 'test@' + TEST_DOMAIN),
-  (TEST_ORIGIN = 'http://127.0.0.1:10002');
-
+const TEST_DOMAIN = 'example.domain';
 const SECONDARY_TEST_DOMAIN = 'example.com';
 
 // an explicitly disabled domain

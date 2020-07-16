@@ -7,7 +7,7 @@
    After we drop Android 2.x, we can trust defer and ditch DOMContentLoaded.
 */
 
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", function () {
   'use strict';
 
   /* HACK: IE8 doesn't support object.addEventListener */
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
       var option; var meta; var el;
       for (option in options) {
-        if (options.hasOwnProperty(option)) {
+        if (Object.prototype.hasOwnProperty.call(options, option)) {
           meta = options[option];
           el = document.getElementById(prefix + '-' + option);
           if (!el) {
@@ -157,14 +157,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
       function getXHR() {
         if (window.XMLHttpRequest) {
           return new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-          try {
-            return new ActiveXObject("Msxml2.XMLHTTP");
-          } catch (e1) {
-            try {
-              return new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e2) {}
-          }
         }
       }
 
@@ -254,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           'false': false
         };
 
-        if (options.loggedInUser && specialCases.hasOwnProperty(options.loggedInUser)) {
+        if (options.loggedInUser && Object.prototype.hasOwnProperty.call(specialCases, options.loggedInUser)) {
           options.loggedInUser = specialCases[options.loggedInUser];
         }
 

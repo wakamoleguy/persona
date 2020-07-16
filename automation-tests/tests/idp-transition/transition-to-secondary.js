@@ -6,11 +6,9 @@
 
 /*jshint sub: true */
 
-const assert = require('../../lib/asserts.js');
 const CSS = require('../../pages/css.js');
 const path = require('path');
 const persona_urls = require('../../lib/urls.js');
-const restmail = require('../../lib/restmail.js');
 const runner = require('../../lib/runner.js');
 const testSetup = require('../../lib/test-setup.js');
 const dialog = require('../../pages/dialog.js');

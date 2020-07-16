@@ -5,12 +5,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const path = require('path'),
-  fs = require('fs'),
-  test_root_path = path.join(__dirname, '..', 'tests'),
-  env = process.env['PERSONA_ENV'] || 'dev',
-  tests_to_ignore = require('../config/tests-to-ignore')(env),
-  glob = require('minimatch');
+const path = require('path');
+const fs = require('fs');
+const test_root_path = path.join(__dirname, '..', 'tests');
+const env = process.env['PERSONA_ENV'] || 'dev';
+const tests_to_ignore = require('../config/tests-to-ignore')(env);
+const glob = require('minimatch');
 
 exports.find = function (pattern, root, tests, ignoreTests) {
   root = root || test_root_path;

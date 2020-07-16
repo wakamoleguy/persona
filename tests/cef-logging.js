@@ -33,7 +33,7 @@ function produces(signature, message, expected_string, extensions) {
       // Return the message to the test context.
       server.on(
         'message',
-        function (buf, rinfo) {
+        function (buf) {
           server.removeAllListeners();
           server.close();
           this.callback(null, buf.toString());
@@ -114,7 +114,7 @@ var suite = vows
       topic: function () {
         var cb = this.callback;
         var logger = cef_logger.getInstance();
-        var server = http.createServer(function (req, res) {
+        var server = http.createServer(function (req) {
           // combine http request and a couple other objects
           cb(
             null,

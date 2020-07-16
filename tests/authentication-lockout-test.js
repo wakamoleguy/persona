@@ -13,7 +13,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const config = require('../lib/configuration.js');
 const secondary = require('./lib/secondary.js');
 
 var suite = vows.describe('password-length');
@@ -43,6 +42,7 @@ suite.addBatch({
         this.callback
       );
     },
+    //eslint-disable-next-line
     succeeds: function (err, r) {
       assert.isNull(err);
     },

@@ -10,7 +10,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const config = require('../lib/configuration.js');
 const secondary = require('./lib/secondary.js');
 
 var suite = vows.describe('password-length');
@@ -23,9 +22,6 @@ start_stop.addStartupBatches(suite);
 const TEST_EMAIL = 'someuser@somedomain.com';
 const OLD_PASSWORD = 'thisismyoldpassword';
 const NEW_PASSWORD = 'thisismynewpassword';
-
-// surpress console output of emails with a noop email interceptor
-var token = undefined;
 
 // create a new secondary account
 suite.addBatch({
@@ -40,6 +36,7 @@ suite.addBatch({
         this.callback
       );
     },
+    // eslint-disable-next-line
     succeeds: function (err, r) {
       assert.isNull(err);
     },

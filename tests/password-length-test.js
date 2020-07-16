@@ -10,7 +10,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const email = require('../lib/email.js');
 
 var suite = vows.describe('password-length');
 
@@ -18,8 +17,6 @@ var suite = vows.describe('password-length');
 suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
-
-var token = undefined;
 
 suite.addBatch({
   'get csrf token': {

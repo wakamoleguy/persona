@@ -48,6 +48,7 @@ suite.addBatch({
     topic: function () {
       secrets.generate(LENGTH, this.callback);
     },
+    // eslint-disable-next-line
     'of proper length': function (s, err) {
       assert.equal(s.length, LENGTH);
     },

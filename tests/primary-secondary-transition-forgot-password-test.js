@@ -14,32 +14,17 @@ const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
 const db = require('../lib/db.js');
-const primary = require('./lib/primary.js');
-(config = require('../lib/configuration.js')),
-  (bcrypt = require('bcrypt')),
-  (primary = require('./lib/primary.js')),
-  (secondary = require('./lib/secondary.js')),
-  (util = require('util')),
-  (path = require('path'));
+const secondary = require('./lib/secondary.js');
+const util = require('util');
+const path = require('path');
 
 var suite = vows.describe('password-length');
-
-const TEST_DOMAIN = 'example.domain';
-const TEST_EMAIL = 'test@' + TEST_DOMAIN;
-const TEST_ORIGIN = 'http://127.0.0.1:10002';
-
-const SECONDARY_TEST_EMAIL = 'test@example.com';
 
 // an explicitly disabled domain
 process.env['SHIMMED_PRIMARIES'] = util.format(
   'disabled.domain|http://127.0.0.1:10005|%s',
   path.join(__dirname, 'data', 'disabled.domain', '.well-known', 'browserid')
 );
-
-var primaryUser = new primary({
-  email: TEST_EMAIL,
-  domain: TEST_DOMAIN,
-});
 
 var token;
 
@@ -54,6 +39,7 @@ suite.addBatch({
     topic: function () {
       secondary.create({ email: 'foo@example.com' }, this.callback);
     },
+    // eslint-disable-next-line
     works: function (e, r) {
       assert.isNull(e);
     },
@@ -68,9 +54,9 @@ suite.addBatch({
         topic: wsapi.get('/wsapi/address_info', {
           email: 'foo@example.com',
         }),
-        "shows 'transition_no_password'": function (err, r) {
+        "shows 'transition_no_password'": function (err, result) {
           assert.isNull(err);
-          var r = JSON.parse(r.body);
+          var r = JSON.parse(result.body);
           assert.equal(r.type, 'secondary');
           assert.equal(r.state, 'transition_to_secondary');
         },

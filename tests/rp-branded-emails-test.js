@@ -12,7 +12,6 @@ const start_stop = require('./lib/start-stop.js');
 const secondary = require('./lib/secondary.js');
 const wsapi = require('./lib/wsapi.js');
 const secrets = require('../lib/secrets.js');
-const email = require('../lib/email.js');
 
 const FIRST_EMAIL = secrets.weakGenerate(12) + '@somedomain.com';
 const SECOND_EMAIL = secrets.weakGenerate(12) + '@otherdomain.com';

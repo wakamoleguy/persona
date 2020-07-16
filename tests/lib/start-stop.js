@@ -3,7 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const assert = require('assert');
-const fs = require('fs');
 const path = require('path');
 const wsapi = require('./wsapi.js');
 const spawn = require('child_process').spawn;
@@ -97,7 +96,7 @@ exports.addStartupBatches = function (suite) {
         config.set('database.name', process.env['DATABASE_NAME']);
         return true;
       },
-      'should work': function (x) {
+      'should work': function () {
         assert.equal(typeof config.get('database.name'), 'string');
         assert.equal(typeof process.env['DATABASE_NAME'], 'string');
         assert.equal(process.env['DATABASE_NAME'], config.get('database.name'));

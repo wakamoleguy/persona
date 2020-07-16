@@ -11,8 +11,6 @@ const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const secondary = require('./lib/secondary.js');
 const wsapi = require('./lib/wsapi.js');
-const db = require('../lib/db.js');
-const config = require('../lib/configuration.js');
 const secrets = require('../lib/secrets.js');
 
 var suite = vows.describe('logout');

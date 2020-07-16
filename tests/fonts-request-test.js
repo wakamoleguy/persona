@@ -8,7 +8,6 @@ require('./lib/test_env');
 
 const _ = require('underscore');
 const vows = require('vows');
-const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');

@@ -10,8 +10,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const email = require('../lib/email.js');
-const jwcrypto = require('browserid-crypto');
 const secondary = require('./lib/secondary.js');
 
 var suite = vows.describe('forgotten-email');
@@ -37,6 +35,7 @@ suite.addBatch({
         this.callback
       );
     },
+    // eslint-disable-next-line
     succeeds: function (err, r) {
       assert.isNull(err);
     },

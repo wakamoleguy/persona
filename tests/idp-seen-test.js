@@ -18,7 +18,6 @@ const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
 const db = require('../lib/db.js');
 const primary = require('./lib/primary.js');
-(config = require('../lib/configuration.js')), (bcrypt = require('bcrypt'));
 
 var suite = vows.describe('password-length');
 

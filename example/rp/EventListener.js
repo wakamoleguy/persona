@@ -31,7 +31,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				// create an cached list of the master events list (to protect this loop from breaking when an event is removed)
 				for (var i = 0, typeListenersCache = [].concat(typeListeners), typeListenerCache, immediatePropagation = true; immediatePropagation && (typeListenerCache = typeListenersCache[i]); ++i) {
 					// check to see if the cached event still exists in the master events list
-					for (var ii = 0, typeListener; typeListener = typeListeners[ii]; ++ii) {
+					for (var ii = 0, typeListener; (typeListener = typeListeners[ii]); ++ii) {
 						if (typeListener == typeListenerCache) {
 							typeListener.call(target, event);
 
@@ -54,7 +54,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		var typeListeners = listeners[type] = listeners[type] || [];
 
 		// remove the newest matching event from the master event list
-		for (var i = typeListeners.length - 1, typeListener; typeListener = typeListeners[i]; --i) {
+		for (var i = typeListeners.length - 1, typeListener; (typeListener = typeListeners[i]); --i) {
 			if (typeListener == listener) {
 				typeListeners.splice(i, 1);
 
@@ -111,7 +111,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	});
 
 	// ready
-	function ready(event) {
+	function ready() {
 		if (ready.interval && document.body) {
 			ready.interval = clearInterval(ready.interval);
 

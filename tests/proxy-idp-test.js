@@ -12,7 +12,6 @@ const path = require('path');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
 const primary = require('./lib/primary.js');
-const util = require('util');
 const jwcrypto = require('browserid-crypto');
 
 require('browserid-crypto/lib/algs/rs');

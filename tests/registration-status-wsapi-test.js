@@ -157,10 +157,7 @@ suite.addBatch({
       assert.strictEqual(r.code, 200);
       assert.strictEqual(JSON.parse(r.body).auth_level, 'password');
     },
-    'but we can easily clear cookies on the client to change that!': function (
-      err,
-      r
-    ) {
+    'but we can easily clear cookies on the client to change that!': function () {
       wsapi.clearCookies();
     },
   },

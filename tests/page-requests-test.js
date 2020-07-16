@@ -6,7 +6,6 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const respondsWith = require('./lib/responds-with.js');

@@ -5,7 +5,6 @@
 
 const vows = require('vows');
 const assert = require('assert');
-const path = require('path');
 const jwcrypto = require('browserid-crypto');
 
 require('browserid-crypto/lib/algs/rs');
@@ -49,15 +48,6 @@ suite.addBatch({
 /*
  * some functions to do b64url encoding/decoding
  */
-function base64urlencode(arg) {
-  var s = Buffer.from(arg).toString('base64'); // window.btoa(arg);
-  s = s.split('=')[0]; // Remove any trailing '='s
-  s = s.replace(/\+/g, '-'); // 62nd char of encoding
-  s = s.replace(/\//g, '_'); // 63rd char of encoding
-  // TODO optimize this; we can do much better
-  return s;
-}
-
 function base64urldecode(arg) {
   var s = arg;
   s = s.replace(/-/g, '+'); // 62nd char of encoding
@@ -74,7 +64,7 @@ function base64urldecode(arg) {
       s += '=';
       break; // One pad char
     default:
-      throw new InputException('Illegal base64url string!');
+      throw new Error('Illegal base64url string!');
   }
   return Buffer.from(s, 'base64').toString('ascii'); // window.atob(s); // Standard base64 decoder
 }
@@ -168,6 +158,7 @@ suite.addBatch({
         this.callback
       );
     },
+    // eslint-disable-next-line
     works: function (err, signedObject) {
       assert.isNull(err);
     },
@@ -216,6 +207,7 @@ suite.addBatch({
         this.callback
       );
     },
+    // eslint-disable-next-line
     works: function (err, signedObject) {
       assert.isNull(err);
     },
@@ -280,7 +272,6 @@ var VECTORS = [
 
 var assertion = VECTORS[0].assertion;
 var pk = jwcrypto.loadPublicKeyFromObject(VECTORS[0].root);
-var now = new Date();
 
 // times
 var timeOfCert = 1335562698768;
@@ -305,9 +296,9 @@ suite.addBatch({
     },
     'fails appropriately': function (
       err,
-      certParamsArray,
-      payload,
-      assertionParams
+      certParamsArray, //eslint-disable-line
+      payload, //eslint-disable-line
+      assertionParams //eslint-disable-line
     ) {
       console.log(err);
       assert.equal(err.message, 'expired');
@@ -329,6 +320,7 @@ suite.addBatch({
         this.callback
       );
     },
+    //eslint-disable-next-line
     succeed: function (err, certParamsArray, payload, assertionParams) {
       assert.isNull(err);
     },

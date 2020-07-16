@@ -13,9 +13,7 @@
 // are excercised in this test.
 
 const path = require('path');
-const assert = require('../../lib/asserts.js');
 const restmail = require('../../lib/restmail.js');
-const utils = require('../../lib/utils.js');
 const persona_urls = require('../../lib/urls.js');
 const CSS = require('../../pages/css.js');
 const dialog = require('../../pages/dialog.js');

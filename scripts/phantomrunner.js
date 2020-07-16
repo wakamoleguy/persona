@@ -92,7 +92,9 @@ page.open(phantom.args[0], function (status) {
           console.log(el.innerText);
           try {
             return el.getElementsByClassName('failed')[0].innerHTML;
-          } catch (e) {/* */}
+          } catch (e) {
+            /* */
+          }
           return 10000;
         });
         phantom.exit(parseInt(failedNum, 10) > 0 ? 1 : 0);

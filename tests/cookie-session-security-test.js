@@ -10,7 +10,6 @@ const assert = require('assert');
 const vows = require('vows');
 const start_stop = require('./lib/start-stop.js');
 const wsapi = require('./lib/wsapi.js');
-const email = require('../lib/email.js');
 
 var suite = vows.describe('cookie-session-security');
 
@@ -20,11 +19,6 @@ suite.options.error = false;
 start_stop.addStartupBatches(suite);
 
 var first_cookie;
-var second_cookie;
-
-function stripExpires(cookieString) {
-  return cookieString.replace(/expires=[^;]*;/, '');
-}
 
 // changed tests that assumed that cookies were coming back in every request
 // because they're not anymore! (2011-12-29)

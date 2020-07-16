@@ -10,8 +10,6 @@ require('./lib/test_env.js');
 
 const assert = require('assert');
 const vows = require('vows');
-const fs = require('fs');
-const path = require('path');
 const db = require('../lib/db.js');
 const configuration = require('../lib/configuration.js');
 
@@ -26,13 +24,13 @@ suite.addBatch({
     topic: function () {
       db.onReady(this.callback);
     },
-    works: function (r) {},
+    works: function () {},
   },
   'onReady still': {
     topic: function () {
       db.onReady(this.callback);
     },
-    'works for more than one caller': function (r) {},
+    'works for more than one caller': function () {},
   },
   'opening the database': {
     topic: function () {
@@ -45,7 +43,7 @@ suite.addBatch({
       topic: function () {
         db.onReady(this.callback);
       },
-      'from working': function (r) {},
+      'from working': function () {},
     },
   },
 });
@@ -89,12 +87,13 @@ suite.addBatch({
       topic: function (err, secret) {
         db.emailForVerificationSecret(secret, this.callback);
       },
+      // eslint-disable-next-line
       'matches expected email': function (err, email, uid) {
         assert.strictEqual(email, 'lloyd@nowhe.re');
       },
     },
     'fetch secret for email': {
-      topic: function (err, secret) {
+      topic: function () {
         db.verificationSecretForEmail('lloyd@nowhe.re', this.callback);
       },
       'matches expected secret': function (err, storedSecret) {
@@ -131,6 +130,7 @@ suite.addBatch({
     topic: function () {
       db.completeCreateUser(secret, this.callback);
     },
+    // eslint-disable-next-line
     'gotVerificationSecret completes without error': function (err, r) {
       assert.isNull(err);
     },
@@ -245,6 +245,7 @@ suite.addBatch({
         });
       });
     },
+    // eslint-disable-next-line
     works: function (err, r, failedAuthTries) {
       assert.isNull(err);
       assert.strictEqual(r, 'anotherbiglongpasswordhash');
@@ -308,6 +309,7 @@ suite.addBatch({
     topic: function () {
       db.emailToUID('lloyd@nowhe.re', this.callback);
     },
+    // eslint-disable-next-line
     'does not error': function (err, uid) {
       assert.isNull(err);
     },
@@ -334,9 +336,11 @@ suite.addBatch({
           assert.isTrue(r);
         },
         'lets you verify it': {
+          // eslint-disable-next-line
           topic: function (secret, r) {
             db.completeConfirmEmail(secret, this.callback);
           },
+          // eslint-disable-next-line
           successfully: function (err, r) {
             assert.isNull(err);
           },
@@ -466,6 +470,7 @@ suite.addBatch({
     topic: function () {
       db.createUserWithPrimaryEmail('lloyd@primary.domain', this.callback);
     },
+    // eslint-disable-next-line
     'returns no error': function (err, r) {
       assert.isNull(err);
     },

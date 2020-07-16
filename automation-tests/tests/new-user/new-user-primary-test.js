@@ -8,19 +8,14 @@
 
 const path = require('path');
 const assert = require('../../lib/asserts.js');
-const restmail = require('../../lib/restmail.js');
-const utils = require('../../lib/utils.js');
 const persona_urls = require('../../lib/urls.js');
 const CSS = require('../../pages/css.js');
-const dialog = require('../../pages/dialog.js');
 const testSetup = require('../../lib/test-setup.js');
 const runner = require('../../lib/runner.js');
-const timeouts = require('../../lib/timeouts.js');
 
 var browser;
 var testIdp;
 var primaryEmail;
-var theEmail;
 var primaryEmail_mfb;
 var porg_primaryEmail;
 
@@ -44,7 +39,6 @@ var primary_123done = {
         primaryEmail = testIdp.getRandomEmail();
         primaryEmail_mfb = testIdp.getRandomEmail();
         porg_primaryEmail = testIdp.getRandomEmail();
-        theEmail = fixtures.restmails[0];
       }
       done(err);
     });
