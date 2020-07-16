@@ -1,8 +1,8 @@
 const vowsHarness = require('../lib/vows_harness.js');
 
-var alltests = {},
-  rawSuites = [],
-  globalCount = 0;
+var alltests = {};
+  var rawSuites = [];
+  var globalCount = 0;
 
 // register just pushes suites onto a master list
 function register(suites) {

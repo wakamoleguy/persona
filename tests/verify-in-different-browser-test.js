@@ -6,11 +6,11 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  primary = require('./lib/primary.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const primary = require('./lib/primary.js');
 
 var suite = vows.describe('verify-in-different-browser');
 
@@ -24,14 +24,14 @@ start_stop.addStartupBatches(suite);
 // first we'll need to authenticate a user with an assertion from a
 // primary IdP
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_EMAIL = 'testuser@' + TEST_DOMAIN,
-  TEST_ORIGIN = 'http://127.0.0.1:10002',
-  TEST_PASS = 'fakepass',
-  SECONDARY_EMAIL = 'secondary@notexample.domain',
-  SECOND_SECONDARY_EMAIL = 'secondsecondary@notexample.domain',
-  THIRD_SECONDARY_EMAIL = 'thirdsecondary@notexample.domain',
-  FOURTH_SECONDARY_EMAIL = 'fourthsecondary@notexample.domain';
+const TEST_DOMAIN = 'example.domain';
+const TEST_EMAIL = 'testuser@' + TEST_DOMAIN;
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_PASS = 'fakepass';
+const SECONDARY_EMAIL = 'secondary@notexample.domain';
+const SECOND_SECONDARY_EMAIL = 'secondsecondary@notexample.domain';
+const THIRD_SECONDARY_EMAIL = 'thirdsecondary@notexample.domain';
+const FOURTH_SECONDARY_EMAIL = 'fourthsecondary@notexample.domain';
 
 var primaryUser = new primary({
   email: TEST_EMAIL,

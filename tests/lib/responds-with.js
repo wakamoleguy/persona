@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const assert = require('assert'),
-  http = require('http'),
-  wsapi = require('./wsapi.js');
+const assert = require('assert');
+const http = require('http');
+const wsapi = require('./wsapi.js');
 
 // Taken from the vows page.
 function assertStatus(code) {
@@ -18,9 +18,9 @@ module.exports = function (status, done) {
     topic: function () {
       // Get the current context's name, such as "POST /"
       // and split it at the space.
-      var req = this.context.name.split(/ +/), // ["POST", "/"]
-        method = req[0].toLowerCase(), // "post"
-        path = req[1]; // "/"
+      var req = this.context.name.split(/ +/); // ["POST", "/"]
+      var method = req[0].toLowerCase(); // "post"
+      var path = req[1]; // "/"
 
       // Perform the contextual client request,
       // with the above method and path. If done is not passed in,

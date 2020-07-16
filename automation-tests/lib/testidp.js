@@ -1,9 +1,9 @@
 /*jshint sub: true */
 
 const
-request = require('request'),
-restmail = require('./restmail.js'),
-URLS = require('./urls');
+request = require('request');
+const restmail = require('./restmail.js');
+const URLS = require('./urls');
 
 const TESTIDP_API = 'https://testidp.org/api/';
 

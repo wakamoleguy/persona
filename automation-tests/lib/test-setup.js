@@ -1,17 +1,16 @@
 /*jshint sub: true */
 
 const
-personatestuser = require('../lib/personatestuser.js'),
-Q = require('q'),
-request = require('request'),
-restmail = require('../lib/restmail.js'),
-saucePlatforms = require('../config/sauce-platforms.js'),
-localPlatforms = require('../config/local-platforms.js'),
-testidp = require('./testidp.js'),
-wd = require('wd'),
-path = require('path'),
-_ = require('underscore'),
-persona_urls = require('./urls.js');
+personatestuser = require('../lib/personatestuser.js');
+const Q = require('q');
+const restmail = require('../lib/restmail.js');
+const saucePlatforms = require('../config/sauce-platforms.js');
+const localPlatforms = require('../config/local-platforms.js');
+const testidp = require('./testidp.js');
+const wd = require('wd');
+const path = require('path');
+const _ = require('underscore');
+const persona_urls = require('./urls.js');
 
 require('./wd-extensions.js');
 
@@ -49,9 +48,9 @@ testSetup.startup = function(opts) {
   opts = opts || {};
   setSessionOpts(opts);
 
-  var sauceUser = opts.sauceUser || process.env['PERSONA_SAUCE_USER'],
-    sauceApiKey = opts.sauceApiKey || process.env['PERSONA_SAUCE_APIKEY'],
-    browser;
+  var sauceUser = opts.sauceUser || process.env['PERSONA_SAUCE_USER'];
+    var sauceApiKey = opts.sauceApiKey || process.env['PERSONA_SAUCE_APIKEY'];
+    var browser;
 
   if (sauceUser && sauceApiKey && !process.env.PERSONA_NO_SAUCE) {
     browser = wd.remote('ondemand.saucelabs.com', 80, sauceUser, sauceApiKey);
@@ -91,14 +90,14 @@ testSetup.browsers = [];
 // }
 testSetup.setup = function(opts, cb) {
   /*jshint loopfunc: true */
-  var fixtures = {},
-    restmails = opts.restmails || opts.r,
-    eyedeemails = opts.eyedeemails || opts.e,
-    testidps = opts.testidps || opts.t,
-    personatestusers = opts.personatestusers || opts.p,
-    browsers = opts.browsers || opts.b,
-    promises = [],
-    idx = 0;
+  var fixtures = {};
+    var restmails = opts.restmails || opts.r;
+    var eyedeemails = opts.eyedeemails || opts.e;
+    var testidps = opts.testidps || opts.t;
+    var personatestusers = opts.personatestusers || opts.p;
+    var browsers = opts.browsers || opts.b;
+    var promises = [];
+    var idx = 0;
 
   if (restmails) {
     fixtures.r = fixtures.restmails = [];

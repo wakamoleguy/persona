@@ -4,9 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // A tiny webserver for the delegation of authority
-const express = require('express'),
-  morgan = require('morgan'),
-  path = require('path');
+const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
 
 var exampleServer = express();
 

@@ -7,17 +7,17 @@
 /*jshint sub: true */
 
 const
-path = require('path'),
-assert = require('../../lib/asserts.js'),
-restmail = require('../../lib/restmail.js'),
-utils = require('../../lib/utils.js'),
-persona_urls = require('../../lib/urls.js'),
-CSS = require('../../pages/css.js'),
-dialog = require('../../pages/dialog.js'),
-testSetup = require('../../lib/test-setup.js'),
-runner = require('../../lib/runner.js');
+path = require('path');
+const assert = require('../../lib/asserts.js');
+const restmail = require('../../lib/restmail.js');
+const utils = require('../../lib/utils.js');
+const persona_urls = require('../../lib/urls.js');
+const CSS = require('../../pages/css.js');
+const dialog = require('../../pages/dialog.js');
+const testSetup = require('../../lib/test-setup.js');
+const runner = require('../../lib/runner.js');
 
-var browser, secondBrowser, theEmail, mfbEmail, nspEmail;
+var browser; var secondBrowser; var theEmail; var mfbEmail; var nspEmail;
 
 var new_secondary_123done_two_browsers = {
   "setup": function(done) {

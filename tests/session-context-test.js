@@ -6,11 +6,11 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  config = require('../lib/configuration.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const config = require('../lib/configuration.js');
 
 var suite = vows.describe('session-context');
 
@@ -19,8 +19,8 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_EMAIL = 'someuser@somedomain.com',
-  PASSWORD = 'thisismypassword';
+const TEST_EMAIL = 'someuser@somedomain.com';
+const PASSWORD = 'thisismypassword';
 
 var token = undefined;
 

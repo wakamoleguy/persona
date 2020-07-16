@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var fs = require('fs'),
-  i18n = require('i18n-abide'),
-  path = require('path'),
-  util = require('util');
+var fs = require('fs');
+var i18n = require('i18n-abide');
+var path = require('path');
+var util = require('util');
 
 if (!process.env['CONFIG_FILES']) {
   console.error(
@@ -14,9 +14,9 @@ if (!process.env['CONFIG_FILES']) {
   process.exit(1);
 }
 
-var config = require('../lib/configuration.js'),
-  error = 0,
-  logged = false;
+var config = require('../lib/configuration.js');
+var error = 0;
+var logged = false;
 
 console.log(
   'Checking ',

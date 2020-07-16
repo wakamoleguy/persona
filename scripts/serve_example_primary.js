@@ -4,16 +4,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // finally, let's run a tiny webserver for the example code.
-const express = require('express'),
-  morgan = require('morgan'),
-  bodyParser = require('body-parser'),
-  path = require('path'),
-  urlparse = require('urlparse'),
-  postprocess = require('postprocess'),
-  querystring = require('querystring'),
-  sessions = require('client-sessions'),
-  jwcrypto = require('browserid-crypto'),
-  cookieParser = require('cookie-parser');
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const path = require('path');
+const urlparse = require('urlparse');
+const postprocess = require('postprocess');
+const querystring = require('querystring');
+const sessions = require('client-sessions');
+const jwcrypto = require('browserid-crypto');
+const cookieParser = require('cookie-parser');
 
 // alg
 require('browserid-crypto/lib/algs/rs');

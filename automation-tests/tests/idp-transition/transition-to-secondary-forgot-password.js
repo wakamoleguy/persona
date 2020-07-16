@@ -7,17 +7,17 @@
 /*jshint sub: true */
 
 const
-assert = require('../../lib/asserts.js'),
-CSS = require('../../pages/css.js'),
-path = require('path'),
-persona_urls = require('../../lib/urls.js'),
-restmail = require('../../lib/restmail.js'),
-runner = require('../../lib/runner.js'),
-testSetup = require('../../lib/test-setup.js'),
-dialog = require('../../pages/dialog.js'),
-rp_123done = require('../../pages/123done.js');
+assert = require('../../lib/asserts.js');
+const CSS = require('../../pages/css.js');
+const path = require('path');
+const persona_urls = require('../../lib/urls.js');
+const restmail = require('../../lib/restmail.js');
+const runner = require('../../lib/runner.js');
+const testSetup = require('../../lib/test-setup.js');
+const dialog = require('../../pages/dialog.js');
+const rp_123done = require('../../pages/123done.js');
 
-var browser, testIdp, primaryToSecondaryUser, secondaryUser;
+var browser; var testIdp; var primaryToSecondaryUser; var secondaryUser;
 
 /**
  * This suite checks the "transition_to_secondary" state flow for an email

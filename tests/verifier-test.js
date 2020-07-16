@@ -6,17 +6,18 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  config = require('../lib/configuration.js'),
-  jwcrypto = require('browserid-crypto'),
-  http = require('http'),
-  querystring = require('querystring'),
-  path = require('path'),
-  url = require('url'),
-  compareAudiences = require('../lib/verifier/certassertion').compareAudiences;
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const config = require('../lib/configuration.js');
+const jwcrypto = require('browserid-crypto');
+const http = require('http');
+const querystring = require('querystring');
+const path = require('path');
+const url = require('url');
+const compareAudiences = require('../lib/verifier/certassertion')
+  .compareAudiences;
 
 const TEST_DOMAIN_PATH = path.join(
   __dirname,
@@ -49,10 +50,10 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_EMAIL = 'someuser@somedomain.com',
-  TEST_PASSWORD = 'thisismyoldpassword',
-  TEST_DOMAIN = 'fakesite.com',
-  TEST_ORIGIN = 'http://fakesite.com:8080';
+const TEST_EMAIL = 'someuser@somedomain.com';
+const TEST_PASSWORD = 'thisismyoldpassword';
+const TEST_DOMAIN = 'fakesite.com';
+const TEST_ORIGIN = 'http://fakesite.com:8080';
 
 var token = undefined;
 
@@ -145,7 +146,8 @@ suite.addBatch({
 });
 
 // now we need to generate a keypair
-var g_keypair, g_cert;
+var g_keypair;
+var g_cert;
 
 suite.addBatch({
   'generating a keypair': {
@@ -683,7 +685,8 @@ function make_post_format_2_tests(new_style) {
 suite.addBatch(make_post_format_2_tests(false));
 suite.addBatch(make_post_format_2_tests(true));
 
-var fakeDomainKeypair, newClientKeypair;
+var fakeDomainKeypair;
+var newClientKeypair;
 
 // let's reuse the keys, cause we don't need new ones.
 suite.addBatch({

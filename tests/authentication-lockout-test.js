@@ -9,12 +9,12 @@ process.env['MAX_AUTH_ATTEMPTS'] = 3;
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  config = require('../lib/configuration.js'),
-  secondary = require('./lib/secondary.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const config = require('../lib/configuration.js');
+const secondary = require('./lib/secondary.js');
 
 var suite = vows.describe('password-length');
 
@@ -23,9 +23,9 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_EMAIL = 'someuser@somedomain.com',
-  OLD_PASSWORD = 'thisismyoldpassword',
-  NEW_PASSWORD = 'thisismynewpassword';
+const TEST_EMAIL = 'someuser@somedomain.com';
+const OLD_PASSWORD = 'thisismyoldpassword';
+const NEW_PASSWORD = 'thisismynewpassword';
 
 // surpress console output of emails with a noop email interceptor
 var token = undefined;

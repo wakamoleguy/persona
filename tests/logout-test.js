@@ -6,14 +6,14 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  secondary = require('./lib/secondary.js'),
-  wsapi = require('./lib/wsapi.js'),
-  db = require('../lib/db.js'),
-  config = require('../lib/configuration.js'),
-  secrets = require('../lib/secrets.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const secondary = require('./lib/secondary.js');
+const wsapi = require('./lib/wsapi.js');
+const db = require('../lib/db.js');
+const config = require('../lib/configuration.js');
+const secrets = require('../lib/secrets.js');
 
 var suite = vows.describe('logout');
 var bid_cookie;
@@ -23,9 +23,9 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_EMAIL = secrets.weakGenerate(12) + '@somedomain.com',
-  TEST_PASS = 'thisismypassword',
-  TEST_SITE = 'http://fakesite.com';
+const TEST_EMAIL = secrets.weakGenerate(12) + '@somedomain.com';
+const TEST_PASS = 'thisismypassword';
+const TEST_SITE = 'http://fakesite.com';
 
 // Note: this not-logged-in request will be rejected by middleware and will
 // not actually reach lib/wsapi/logout.js code.

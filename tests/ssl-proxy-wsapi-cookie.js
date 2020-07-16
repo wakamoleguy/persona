@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const assert = require('assert'),
-  http = require('http'),
-  path = require('path'),
-  spawn = require('child_process').spawn,
-  url = require('url'),
-  vows = require('vows');
+const assert = require('assert');
+const http = require('http');
+const path = require('path');
+const spawn = require('child_process').spawn;
+const url = require('url');
+const vows = require('vows');
 
 var suite = vows.describe('ssl-proxy-wsapi-cookie');
 suite.options.error = false;

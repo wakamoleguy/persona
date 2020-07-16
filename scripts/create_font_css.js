@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const fs = require('fs'),
-  path = require('path'),
-  resources = require('../lib/static_resources.js'),
-  templates = require('../lib/templates'),
-  cachify = require('connect-cachify'),
-  connect_fonts = require('connect-fonts'),
-  connect_fonts_opensans = require('connect-fonts-opensans'),
-  connect_fonts_feurasans = require('connect-fonts-feurasans'),
-  config = require('../lib/configuration'),
-  mkdirp = require('mkdirp');
+const fs = require('fs');
+const path = require('path');
+const resources = require('../lib/static_resources.js');
+const templates = require('../lib/templates');
+const cachify = require('connect-cachify');
+const connect_fonts = require('connect-fonts');
+const connect_fonts_opensans = require('connect-fonts-opensans');
+const connect_fonts_feurasans = require('connect-fonts-feurasans');
+const config = require('../lib/configuration');
+const mkdirp = require('mkdirp');
 
 var dir = process.cwd();
 var output_dir = process.env.BUILD_DIR || dir;

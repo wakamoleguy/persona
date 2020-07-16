@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var child_process = require('child_process'),
-  util = require('util');
+var child_process = require('child_process');
+var util = require('util');
 
 exports.scp = function (path, target, done) {
   var cmd = 'scp -o "StrictHostKeyChecking no" ' + path + ' ' + target;

@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const wcli = require('../lib/wsapi_client.js'),
-  jwcrypto = require('browserid-crypto');
+const wcli = require('../lib/wsapi_client.js');
+const jwcrypto = require('browserid-crypto');
 require('browserid-crypto/lib/algs/ds');
 
 var argv = require('optimist')

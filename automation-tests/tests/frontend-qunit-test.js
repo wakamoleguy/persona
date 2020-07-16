@@ -7,14 +7,14 @@
 /*jshint sub: true */
 
 const
-assert = require('../lib/asserts.js'),
-utils = require('../lib/utils.js'),
-runner = require('../lib/runner.js'),
-persona_urls = require('../lib/urls.js'),
-fs = require('fs'),
-os = require('os'),
-path = require('path'),
-testSetup = require('../lib/test-setup.js');
+assert = require('../lib/asserts.js');
+const utils = require('../lib/utils.js');
+const runner = require('../lib/runner.js');
+const persona_urls = require('../lib/urls.js');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const testSetup = require('../lib/test-setup.js');
 
 // target the proper instance (modified by run-all.js -e or PERSONA_ENV
 // environment variable, just like all the other automation tests)

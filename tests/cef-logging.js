@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const assert = require('assert'),
-  vows = require('vows'),
-  util = require('util'),
-  dgram = require('dgram'),
-  http = require('http'),
-  cef = require('cef'),
-  cef_logger = require('../lib/logging/cef_logger');
+const assert = require('assert');
+const vows = require('vows');
+const util = require('util');
+const dgram = require('dgram');
+const http = require('http');
+const cef = require('cef');
+const cef_logger = require('../lib/logging/cef_logger');
 
 var mock_http_req = cef.extensionsFromHTTPRequest({
   url: '/pie',

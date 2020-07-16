@@ -6,16 +6,16 @@
 
 require('./lib/test_env');
 
-const _ = require('underscore'),
-  vows = require('vows'),
-  assert = require('assert'),
-  fs = require('fs'),
-  path = require('path'),
-  url = require('url'),
-  start_stop = require('./lib/start-stop'),
-  resources = require('../lib/static_resources'),
-  respondsWithVow = require('./lib/responds-with'),
-  wsapi = require('./lib/wsapi.js');
+const _ = require('underscore');
+const vows = require('vows');
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const url = require('url');
+const start_stop = require('./lib/start-stop');
+const resources = require('../lib/static_resources');
+const respondsWithVow = require('./lib/responds-with');
+const wsapi = require('./lib/wsapi.js');
 
 /**
  * This set of tests check to make sure all of the expected font CSS files

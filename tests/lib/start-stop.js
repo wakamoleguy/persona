@@ -2,14 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const assert = require('assert'),
-  fs = require('fs'),
-  path = require('path'),
-  wsapi = require('./wsapi.js'),
-  spawn = require('child_process').spawn,
-  events = require('events'),
-  config = require('../../lib/configuration.js'),
-  db = require('../../lib/db.js');
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const wsapi = require('./wsapi.js');
+const spawn = require('child_process').spawn;
+const events = require('events');
+const config = require('../../lib/configuration.js');
+const db = require('../../lib/db.js');
 
 // at test completion, allow a moment for in-flight backend requests to finish
 // before shutting down the backend daemons. GH-3465.
@@ -44,8 +44,8 @@ exports.waitForToken = function (email, cb) {
 exports.browserid = new events.EventEmitter();
 
 function setupProc(proc) {
-  var m,
-    sentReady = false;
+  var m;
+  var sentReady = false;
 
   proc.stdout.on('data', function (buf) {
     buf

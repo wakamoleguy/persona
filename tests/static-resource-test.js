@@ -6,9 +6,9 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  resources = require('../lib/static_resources');
+const assert = require('assert');
+const vows = require('vows');
+const resources = require('../lib/static_resources');
 
 var suite = vows.describe('cache header tests');
 suite.options.error = false;

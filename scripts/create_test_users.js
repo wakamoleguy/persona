@@ -14,11 +14,11 @@
  *  $ CONFIG_FILES=config/production.json scripts/create_test_users.js 5000
  */
 
-const db = require('../lib/db.js'),
-  config = require('../lib/configuration.js'),
-  logging = require('../lib/logging.js'),
-  logger = logging.logger,
-  bcrypt = require('../lib/bcrypt');
+const db = require('../lib/db.js');
+const config = require('../lib/configuration.js');
+const logging = require('../lib/logging.js');
+const logger = logging.logger;
+const bcrypt = require('../lib/bcrypt');
 
 logging.enableConsoleLogging();
 

@@ -8,9 +8,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	// add
 	addToPrototype("addEventListener", function (type, listener) {
 		var
-		target = this,
-		listeners = target.addEventListener.listeners = target.addEventListener.listeners || {},
-		typeListeners = listeners[type] = listeners[type] || [];
+		target = this;
+		var listeners = target.addEventListener.listeners = target.addEventListener.listeners || {};
+		var typeListeners = listeners[type] = listeners[type] || [];
 
 		// if no events exist, attach the listener
 		if (!typeListeners.length) {
@@ -49,9 +49,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	// remove
 	addToPrototype("removeEventListener", function (type, listener) {
 		var
-		target = this,
-		listeners = target.addEventListener.listeners = target.addEventListener.listeners || {},
-		typeListeners = listeners[type] = listeners[type] || [];
+		target = this;
+		var listeners = target.addEventListener.listeners = target.addEventListener.listeners || {};
+		var typeListeners = listeners[type] = listeners[type] || [];
 
 		// remove the newest matching event from the master event list
 		for (var i = typeListeners.length - 1, typeListener; typeListener = typeListeners[i]; --i) {
@@ -71,10 +71,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	// dispatch
 	addToPrototype("dispatchEvent", function (eventObject) {
 		var
-		target = this,
-		type = eventObject.type,
-		listeners = target.addEventListener.listeners = target.addEventListener.listeners || {},
-		typeListeners = listeners[type] = listeners[type] || [];
+		target = this;
+		var type = eventObject.type;
+		var listeners = target.addEventListener.listeners = target.addEventListener.listeners || {};
+		var typeListeners = listeners[type] = listeners[type] || [];
 
 		try {
 			return target.fireEvent("on" + type, eventObject);
@@ -93,7 +93,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			var self = this;
 
 			return function CustomEvent(type, eventInitDict) {
-				var event = self.document.createEventObject(), key;
+				var event = self.document.createEventObject(); var key;
 
 				event.type = type;
 				for (key in eventInitDict) {

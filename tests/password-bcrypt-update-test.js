@@ -6,13 +6,13 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  db = require('../lib/db.js'),
-  config = require('../lib/configuration.js'),
-  bcrypt = require('bcrypt');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const db = require('../lib/db.js');
+const config = require('../lib/configuration.js');
+const bcrypt = require('bcrypt');
 
 var suite = vows.describe('password-length');
 
@@ -21,8 +21,8 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_EMAIL = 'update@passwd.bcrypt',
-  TEST_PASSWORD = 'thisismypassword';
+const TEST_EMAIL = 'update@passwd.bcrypt';
+const TEST_PASSWORD = 'thisismypassword';
 
 // surpress console output of emails with a noop email interceptor
 var token = undefined;

@@ -1,8 +1,5 @@
-/*jshint sub: true */
-
-const utils = require("./utils.js"),
-urls = require('./urls.js'),
-request = require('request');
+const urls = require('./urls.js');
+const request = require('request');
 
 // TODO factor out common bits with lib/restmail
 // TODO accept all the personatestuser arguments

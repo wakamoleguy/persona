@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var path = require('path'),
-  child_process = require('child_process');
+var path = require('path');
+var child_process = require('child_process');
 
 /*
  * A thin wrapper around awsbox that expects certain env

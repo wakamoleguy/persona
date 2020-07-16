@@ -4,13 +4,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // finally, let's run a tiny webserver for the example code.
-const express = require('express'),
-  morgan = require('morgan'),
-  path = require('path'),
-  urlparse = require('urlparse'),
-  postprocess = require('postprocess'),
-  bodyParser = require('body-parser'),
-  querystring = require('querystring');
+const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
+const urlparse = require('urlparse');
+const postprocess = require('postprocess');
+const bodyParser = require('body-parser');
+const querystring = require('querystring');
 
 var exampleServer = express();
 
@@ -92,7 +92,7 @@ exampleServer.post('/process_assertion', function (req, res, next) {
     audience: audience,
     allowUnverified: req.body.allowUnverified,
   };
-  if (!!req.body.forceIssuer) params['forceIssuer'] = req.body.forceIssuer;
+  if (req.body.forceIssuer) params['forceIssuer'] = req.body.forceIssuer;
   var data = querystring.stringify(params);
 
   vreq.setHeader('Content-Length', data.length);

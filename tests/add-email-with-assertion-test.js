@@ -6,17 +6,17 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  db = require('../lib/db.js'),
-  config = require('../lib/configuration.js'),
-  jwcrypto = require('browserid-crypto'),
-  http = require('http'),
-  querystring = require('querystring'),
-  path = require('path'),
-  secondary = require('./lib/secondary');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const db = require('../lib/db.js');
+const config = require('../lib/configuration.js');
+const jwcrypto = require('browserid-crypto');
+const http = require('http');
+const querystring = require('querystring');
+const path = require('path');
+const secondary = require('./lib/secondary');
 
 var suite = vows.describe('auth-with-assertion');
 
@@ -29,17 +29,18 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_EMAIL = 'testuser@' + TEST_DOMAIN,
-  TEST_ORIGIN = 'http://127.0.0.1:10002',
-  TEST_FIRST_ACCT = 'test.user+folder@fake.domain';
+const TEST_DOMAIN = 'example.domain';
+const TEST_EMAIL = 'testuser@' + TEST_DOMAIN;
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_FIRST_ACCT = 'test.user+folder@fake.domain';
 
 // This test will excercise the ability to add an email to an
 // account using an assertion from a primary
 
 // now we need to generate a keypair and a certificate
 // signed by our in tree authority
-var g_keypair, g_cert;
+var g_keypair;
+var g_cert;
 
 suite.addBatch({
   'generating a keypair': {
@@ -170,7 +171,8 @@ suite.addBatch({
 
 // now create a lame cert: valid signature by the wrong party
 const OTHER_EMAIL = 'otheruser@other.domain'; // *not* TEST_DOMAIN
-var bad_cert, bad_assertion;
+var bad_cert;
+var bad_assertion;
 
 suite.addBatch({
   'generating a lame certificate': {

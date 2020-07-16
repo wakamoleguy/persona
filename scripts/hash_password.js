@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const config = require('../lib/configuration'),
-  bcrypt = require('bcrypt');
+const config = require('../lib/configuration');
+const bcrypt = require('bcrypt');
 
 function bcryptPassword(password, cb) {
   var bcryptWorkFactor = config.get('bcrypt_work_factor');

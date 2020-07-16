@@ -6,13 +6,13 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  email = require('../lib/email.js'),
-  jwcrypto = require('browserid-crypto'),
-  secondary = require('./lib/secondary.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const email = require('../lib/email.js');
+const jwcrypto = require('browserid-crypto');
+const secondary = require('./lib/secondary.js');
 
 var suite = vows.describe('forgotten-email');
 

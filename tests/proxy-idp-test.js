@@ -6,14 +6,14 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  path = require('path'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  primary = require('./lib/primary.js'),
-  util = require('util'),
-  jwcrypto = require('browserid-crypto');
+const assert = require('assert');
+const vows = require('vows');
+const path = require('path');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const primary = require('./lib/primary.js');
+const util = require('util');
+const jwcrypto = require('browserid-crypto');
 
 require('browserid-crypto/lib/algs/rs');
 require('browserid-crypto/lib/algs/ds');

@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const jwcrypto = require('browserid-crypto'),
-  path = require('path');
+const jwcrypto = require('browserid-crypto');
+const path = require('path');
 
 require('browserid-crypto/lib/algs/rs');
 require('browserid-crypto/lib/algs/ds');

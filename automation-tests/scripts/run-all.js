@@ -14,8 +14,8 @@
  * should be tested.
  */
 
-const sauce_platforms = require('../config/sauce-platforms'),
-  local_platforms = require('../config/local-platforms');
+const sauce_platforms = require('../config/sauce-platforms');
+  const local_platforms = require('../config/local-platforms');
 
 const outputFormats = ["console", "json", "xunit"];
 
@@ -81,22 +81,22 @@ if (args.platform === 'all') args.platform = "*";
 // propogate -e to the environment if present
 if (args.env) process.env.PERSONA_ENV = args.env;
 
-const path = require('path'),
-      util = require('util'),
-      child_process = require('child_process'),
-      test_finder = require('../lib/test-finder'),
-      runner = require('../lib/runner'),
-      toolbelt = require('../lib/toolbelt'),
-      FileReporter = require('../lib/reporters/file-reporter'),
-      ResultsAggregator = require('../lib/results-aggregator'),
-      StdOutReporter = require('../lib/reporters/std-out-reporter'),
-      StdErrReporter = require('../lib/reporters/std-err-reporter'),
-      vows_path = path.join(__dirname, "../node_modules/.bin/vows"),
-      vows_args = [(args.output === 'xunit') ? "--xunit" : "--json", "-i"],
-      result_extension = process.env.RESULT_EXTENSION || "xml",
-      supported_platforms = config_platforms.platforms,
-      start_time = new Date().getTime(),
-      glob = require('minimatch');
+const path = require('path');
+      const util = require('util');
+      const child_process = require('child_process');
+      const test_finder = require('../lib/test-finder');
+      const runner = require('../lib/runner');
+      const toolbelt = require('../lib/toolbelt');
+      const FileReporter = require('../lib/reporters/file-reporter');
+      const ResultsAggregator = require('../lib/results-aggregator');
+      const StdOutReporter = require('../lib/reporters/std-out-reporter');
+      const StdErrReporter = require('../lib/reporters/std-err-reporter');
+      const vows_path = path.join(__dirname, "../node_modules/.bin/vows");
+      const vows_args = [(args.output === 'xunit') ? "--xunit" : "--json", "-i"];
+      const result_extension = process.env.RESULT_EXTENSION || "xml";
+      const supported_platforms = config_platforms.platforms;
+      const start_time = new Date().getTime();
+      const glob = require('minimatch');
 
 // what mode are we in?
 if (args['list-tests']) {
@@ -189,9 +189,9 @@ function startTesting() {
   }
 
   function runTest(test, aggregator, stdOutReporter, stdErrReporter, done) {
-    var testName = test.name,
-        testPath = test.path,
-        platform = test.platform;
+    var testName = test.name;
+        var testPath = test.path;
+        var platform = test.platform;
 
     if (args.output === 'xunit') {
       util.puts(testName + ' | ' + platform + ' | ' + "starting");
@@ -263,8 +263,8 @@ function startTesting() {
 
     if (test) {
       if (args.output === 'console') process.stdout.write(">");
-      var testName = test.name,
-      platform = test.platform;
+      var testName = test.name;
+      var platform = test.platform;
 
       var outputPath = path.join(__dirname, '..', 'results',
                                  start_time + "-" + testName + '-' + platform + '.' + result_extension);

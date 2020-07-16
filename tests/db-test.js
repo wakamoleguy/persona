@@ -8,12 +8,12 @@ require('./lib/test_env.js');
 
 // add lib/ to the require path
 
-const assert = require('assert'),
-  vows = require('vows'),
-  fs = require('fs'),
-  path = require('path'),
-  db = require('../lib/db.js'),
-  configuration = require('../lib/configuration.js');
+const assert = require('assert');
+const vows = require('vows');
+const fs = require('fs');
+const path = require('path');
+const db = require('../lib/db.js');
+const configuration = require('../lib/configuration.js');
 
 var suite = vows.describe('db');
 // disable vows (often flakey?) async error behavior

@@ -1,5 +1,5 @@
-const utils = require("./utils.js"),
-request = require('request');
+const utils = require("./utils.js");
+const request = require('request');
 
 const DEFAULT_POLL = 1000;
 const DEFAULT_TIMEOUT = 20000;

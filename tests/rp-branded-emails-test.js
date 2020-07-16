@@ -6,18 +6,18 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  secondary = require('./lib/secondary.js'),
-  wsapi = require('./lib/wsapi.js'),
-  secrets = require('../lib/secrets.js'),
-  email = require('../lib/email.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const secondary = require('./lib/secondary.js');
+const wsapi = require('./lib/wsapi.js');
+const secrets = require('../lib/secrets.js');
+const email = require('../lib/email.js');
 
-const FIRST_EMAIL = secrets.weakGenerate(12) + '@somedomain.com',
-  SECOND_EMAIL = secrets.weakGenerate(12) + '@otherdomain.com',
-  TEST_PASS = 'thisismypassword',
-  TEST_SITE = 'https://fakesite.com';
+const FIRST_EMAIL = secrets.weakGenerate(12) + '@somedomain.com';
+const SECOND_EMAIL = secrets.weakGenerate(12) + '@otherdomain.com';
+const TEST_PASS = 'thisismypassword';
+const TEST_SITE = 'https://fakesite.com';
 
 var suite = vows.describe('rp-branded-emails');
 

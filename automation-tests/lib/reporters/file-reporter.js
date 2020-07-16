@@ -1,7 +1,6 @@
-const fs          = require('fs'),
-      mkdirp      = require('mkdirp'),
-      path        = require('path'),
-      existsSync  = fs.existsSync || path.existsSync;
+const fs          = require('fs');
+      const mkdirp      = require('mkdirp');
+      const path        = require('path');
 
 function FileReporter(config) {
   var fileName = config.output_path;

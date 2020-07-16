@@ -6,14 +6,14 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  config = require('../lib/configuration.js'),
-  primary = require('./lib/primary.js'),
-  ca = require('../lib/keysigner/ca.js'),
-  jwcrypto = require('browserid-crypto');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const config = require('../lib/configuration.js');
+const primary = require('./lib/primary.js');
+const ca = require('../lib/keysigner/ca.js');
+const jwcrypto = require('browserid-crypto');
 
 var suite = vows.describe('session-context');
 
@@ -23,9 +23,9 @@ suite.options.error = false;
 start_stop.addStartupBatches(suite);
 
 // test that auth_with_assertion also respects the 'ephemeral' argument
-const PRIMARY_DOMAIN = 'example.domain',
-  PRIMARY_EMAIL = 'testuser@' + PRIMARY_DOMAIN,
-  PRIMARY_ORIGIN = 'http://127.0.0.1:10002';
+const PRIMARY_DOMAIN = 'example.domain';
+const PRIMARY_EMAIL = 'testuser@' + PRIMARY_DOMAIN;
+const PRIMARY_ORIGIN = 'http://127.0.0.1:10002';
 
 // testing FirefoxOS session durations.
 const TEN_YEARS_MS = 315360000000;
@@ -208,10 +208,10 @@ suite.addBatch({
 
 // now test that authenticate_user & secondary emails properly respect the 'ephemeral' argument to
 // alter session length
-const TEST_EMAIL = 'someuser@somedomain.com',
-  SECOND_EMAIL = 'someotheruser@somedomain.com',
-  PASSWORD = 'thisismypassword',
-  RESET_PASSWORD = 'thisismynewpassword';
+const TEST_EMAIL = 'someuser@somedomain.com';
+const SECOND_EMAIL = 'someotheruser@somedomain.com';
+const PASSWORD = 'thisismypassword';
+const RESET_PASSWORD = 'thisismynewpassword';
 
 var token = undefined;
 

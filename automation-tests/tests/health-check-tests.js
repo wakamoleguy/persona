@@ -7,19 +7,19 @@
 /*jshint sub: true */
 
 const
-path = require('path'),
-assert = require('../lib/asserts.js'),
-utils = require('../lib/utils.js'),
-persona_urls = require('../lib/urls.js'),
-CSS = require('../pages/css.js'),
-dialog = require('../pages/dialog.js'),
-restmail = require('../lib/restmail.js'),
-runner = require('../lib/runner.js'),
-testSetup = require('../lib/test-setup.js'),
-timeouts = require('../lib/timeouts.js');
+path = require('path');
+const assert = require('../lib/asserts.js');
+const utils = require('../lib/utils.js');
+const persona_urls = require('../lib/urls.js');
+const CSS = require('../pages/css.js');
+const dialog = require('../pages/dialog.js');
+const restmail = require('../lib/restmail.js');
+const runner = require('../lib/runner.js');
+const testSetup = require('../lib/test-setup.js');
+const timeouts = require('../lib/timeouts.js');
 
-var pcss = CSS['persona.org'],
-  browser, secondBrowser, primaryEmail, theEmail, testIdp;
+var pcss = CSS['persona.org'];
+  var browser; var secondBrowser; var primaryEmail; var theEmail; var testIdp;
 
 // all the stuff common between primary and secondary tests:
 // go to persona.org, click sign in, enter email, click next.

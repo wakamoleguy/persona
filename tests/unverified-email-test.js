@@ -9,17 +9,17 @@ require('./lib/test_env.js');
 // disable email throttling so we can stage the same email twice without delay
 process.env.MIN_TIME_BETWEEN_EMAILS_MS = 0;
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  db = require('../lib/db.js'),
-  config = require('../lib/configuration.js'),
-  jwcrypto = require('browserid-crypto'),
-  http = require('http'),
-  querystring = require('querystring'),
-  logger = require('../lib/logging/logging.js').logger,
-  path = require('path');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const db = require('../lib/db.js');
+const config = require('../lib/configuration.js');
+const jwcrypto = require('browserid-crypto');
+const http = require('http');
+const querystring = require('querystring');
+const logger = require('../lib/logging/logging.js').logger;
+const path = require('path');
 
 var suite = vows.describe('unverified-email-test');
 
@@ -128,7 +128,8 @@ suite.addBatch({
 });
 
 // now we need to generate a keypair
-var unverified_keypair, unverified_cert;
+var unverified_keypair;
+var unverified_cert;
 
 suite.addBatch({
   'generating an unverified keypair': {

@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function parseOpts(prefix, options) {
       var result = {};
 
-      var option, meta, el;
+      var option; var meta; var el;
       for (option in options) {
         if (options.hasOwnProperty(option)) {
           meta = options[option];

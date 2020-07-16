@@ -6,11 +6,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const
-path = require('path'),
-CSS = require('../../pages/css.js'),
-runner = require('../../lib/runner.js'),
-persona_urls = require('../../lib/urls.js'),
-testSetup = require('../../lib/test-setup.js');
+path = require('path');
+const CSS = require('../../pages/css.js');
+const runner = require('../../lib/runner.js');
+const persona_urls = require('../../lib/urls.js');
+const testSetup = require('../../lib/test-setup.js');
 
 var browser;
 

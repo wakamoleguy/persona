@@ -7,18 +7,18 @@
 /*jshint sub: true */
 
 const
-path = require('path'),
-assert = require('../lib/asserts.js'),
-restmail = require('../lib/restmail.js'),
-utils = require('../lib/utils.js'),
-persona_urls = require('../lib/urls.js'),
-CSS = require('../pages/css.js'),
-dialog = require('../pages/dialog.js'),
-testSetup = require('../lib/test-setup.js'),
-runner = require('../lib/runner.js'),
-timeouts = require('../lib/timeouts.js');
+path = require('path');
+const assert = require('../lib/asserts.js');
+const restmail = require('../lib/restmail.js');
+const utils = require('../lib/utils.js');
+const persona_urls = require('../lib/urls.js');
+const CSS = require('../pages/css.js');
+const dialog = require('../pages/dialog.js');
+const testSetup = require('../lib/test-setup.js');
+const runner = require('../lib/runner.js');
+const timeouts = require('../lib/timeouts.js');
 
-var browser, testIdp, primary, secondary;
+var browser; var testIdp; var primary; var secondary;
 /*
 - setup: create account with 2 emails (primary and a secondary on same account) on persona.org, then:
 - verify that no email is selected on first login to a site

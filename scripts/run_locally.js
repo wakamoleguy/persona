@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const path = require('path'),
-  spawn = require('child_process').spawn,
-  config = require('../lib/configuration.js'),
-  temp = require('temp'),
-  secrets = require('../lib/secrets.js');
+const path = require('path');
+const spawn = require('child_process').spawn;
+const config = require('../lib/configuration.js');
+const temp = require('temp');
+const secrets = require('../lib/secrets.js');
 
 // force a build of include.js
 require('./create_include')();

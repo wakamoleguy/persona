@@ -1,9 +1,9 @@
 // add helper routines onto wd that make common operations easy to do
 // correctly
 
-const wd        = require('wd/lib/webdriver'),
-      utils     = require('./utils.js'),
-      timeouts  = require('./timeouts.js');
+const wd        = require('wd/lib/webdriver');
+      const utils     = require('./utils.js');
+      const timeouts  = require('./timeouts.js');
 
 function setTimeouts(opts) {
   opts.poll = opts.poll || timeouts.DEFAULT_POLL_MS;

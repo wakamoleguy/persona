@@ -6,10 +6,10 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
 
 var suite = vows.describe('simple-stage-user-utf8-password');
 
@@ -18,9 +18,9 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_ORIGIN = 'http://127.0.0.1:10002',
-  TEST_SITE = 'http://dev.123done.org';
+const TEST_DOMAIN = 'example.domain';
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_SITE = 'http://dev.123done.org';
 
 // This test simply stages a secondary user. It does so for two users,
 // one with a password that is only ascii, and the other with non-ascii

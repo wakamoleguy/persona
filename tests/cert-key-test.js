@@ -6,15 +6,15 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  ca = require('../lib/keysigner/ca.js'),
-  db = require('../lib/db.js'),
-  jwcrypto = require('browserid-crypto'),
-  secondary = require('./lib/secondary.js'),
-  primary = require('./lib/primary.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const ca = require('../lib/keysigner/ca.js');
+const db = require('../lib/db.js');
+const jwcrypto = require('browserid-crypto');
+const secondary = require('./lib/secondary.js');
+const primary = require('./lib/primary.js');
 
 var suite = vows.describe('cert-emails');
 
@@ -23,9 +23,9 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const PRIMARY_DOMAIN = 'example.domain',
-  PRIMARY_EMAIL = 'testuser@' + PRIMARY_DOMAIN,
-  PRIMARY_ORIGIN = 'http://127.0.0.1:10002';
+const PRIMARY_DOMAIN = 'example.domain';
+const PRIMARY_EMAIL = 'testuser@' + PRIMARY_DOMAIN;
+const PRIMARY_ORIGIN = 'http://127.0.0.1:10002';
 
 // create a new secondary account
 suite.addBatch({

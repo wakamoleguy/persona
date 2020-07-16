@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var fs = require('fs'),
-  i18n = require('i18n-abide'),
-  path = require('path'),
-  util = require('util');
+var fs = require('fs');
+var i18n = require('i18n-abide');
+var path = require('path');
+var util = require('util');
 
-var allLocales = [],
-  localeDir = path.join(__dirname, '..', 'locale');
+var allLocales = [];
+var localeDir = path.join(__dirname, '..', 'locale');
 
 fs.readdir(localeDir, function (err, files) {
   files.forEach(function (file, i) {

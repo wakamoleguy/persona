@@ -1,5 +1,5 @@
-var wsapi = require('./wsapi.js'),
-  wcli = require('../../lib/wsapi_client.js');
+var wsapi = require('./wsapi.js');
+var wcli = require('../../lib/wsapi_client.js');
 
 // create a new account via the api with (first address)
 exports.create = function (opts, cb) {

@@ -7,18 +7,18 @@
 /*jshint sub: true */
 
 const
-path = require('path'),
-assert = require('../../lib/asserts.js'),
-restmail = require('../../lib/restmail.js'),
-utils = require('../../lib/utils.js'),
-persona_urls = require('../../lib/urls.js'),
-CSS = require('../../pages/css.js'),
-dialog = require('../../pages/dialog.js'),
-testSetup = require('../../lib/test-setup.js'),
-runner = require('../../lib/runner.js'),
-timeouts = require('../../lib/timeouts.js');
+path = require('path');
+const assert = require('../../lib/asserts.js');
+const restmail = require('../../lib/restmail.js');
+const utils = require('../../lib/utils.js');
+const persona_urls = require('../../lib/urls.js');
+const CSS = require('../../pages/css.js');
+const dialog = require('../../pages/dialog.js');
+const testSetup = require('../../lib/test-setup.js');
+const runner = require('../../lib/runner.js');
+const timeouts = require('../../lib/timeouts.js');
 
-var browser, testIdp, primaryEmail, theEmail, primaryEmail_mfb, porg_primaryEmail;
+var browser; var testIdp; var primaryEmail; var theEmail; var primaryEmail_mfb; var porg_primaryEmail;
 
 function dialogTestIdpFlow(b, email, cb) {
   b.chain({onError: cb})
@@ -69,8 +69,8 @@ var primary_123done = {
   }
 };
 
-var mcss = CSS['myfavoritebeer.org'],
-  primary_mfb = {
+var mcss = CSS['myfavoritebeer.org'];
+  var primary_mfb = {
     "startup browser": function(done) {
       testSetup.newBrowserSession(browser, done);
     },
@@ -94,8 +94,8 @@ var mcss = CSS['myfavoritebeer.org'],
     }
 };
 
-var pcss = CSS['persona.org'],
-  primary_personaorg = {
+var pcss = CSS['persona.org'];
+  var primary_personaorg = {
     // how much do we really need to split this out into separate vows?
     // is this too compact or actually better?
     //

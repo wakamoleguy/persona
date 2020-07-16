@@ -8,17 +8,17 @@ require('./lib/test_env.js');
 
 process.env.PROXY_IDPS = '{"yahoo.com": "bigtent.domain"}';
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  db = require('../lib/db.js'),
-  config = require('../lib/configuration.js'),
-  http = require('http'),
-  querystring = require('querystring'),
-  path = require('path'),
-  primary = require('./lib/primary.js'),
-  jwcrypto = require('browserid-crypto');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const db = require('../lib/db.js');
+const config = require('../lib/configuration.js');
+const http = require('http');
+const querystring = require('querystring');
+const path = require('path');
+const primary = require('./lib/primary.js');
+const jwcrypto = require('browserid-crypto');
 
 var suite = vows.describe('auth-with-assertion');
 
@@ -27,10 +27,10 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_EMAIL = 'testuser@' + TEST_DOMAIN,
-  TEST_ORIGIN = 'http://127.0.0.1:10002',
-  OTHER_EMAIL = 'otheruser@' + TEST_DOMAIN;
+const TEST_DOMAIN = 'example.domain';
+const TEST_EMAIL = 'testuser@' + TEST_DOMAIN;
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
+const OTHER_EMAIL = 'otheruser@' + TEST_DOMAIN;
 
 // here we go!  let's authenticate with an assertion from
 // a primary.
@@ -189,13 +189,13 @@ suite.addBatch({
   },
 });
 
-const BT_DOMAIN = 'bigtent.domain',
-  BT_EMAIL = 'sita@yahoo.com',
-  BT_PRIV_KEY = jwcrypto.loadSecretKey(
-    require('fs').readFileSync(
-      path.join(__dirname, '..', 'example', 'bigtent', 'key.secretkey')
-    )
-  );
+const BT_DOMAIN = 'bigtent.domain';
+const BT_EMAIL = 'sita@yahoo.com';
+const BT_PRIV_KEY = jwcrypto.loadSecretKey(
+  require('fs').readFileSync(
+    path.join(__dirname, '..', 'example', 'bigtent', 'key.secretkey')
+  )
+);
 
 var bigTentUser;
 

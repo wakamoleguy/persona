@@ -8,11 +8,11 @@ require('./lib/test_env.js');
 
 // add lib/ to the require path
 
-const assert = require('assert'),
-  vows = require('vows'),
-  fs = require('fs'),
-  path = require('path'),
-  exec = require('child_process').exec;
+const assert = require('assert');
+const vows = require('vows');
+const fs = require('fs');
+const path = require('path');
+const exec = require('child_process').exec;
 
 var suite = vows.describe('jshint');
 var jshint = require('jshint').JSHINT;

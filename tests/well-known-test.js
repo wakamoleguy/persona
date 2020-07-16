@@ -6,30 +6,30 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  path = require('path'),
-  util = require('util');
+const assert = require('assert');
+const vows = require('vows');
+const path = require('path');
+const util = require('util');
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_DOMAIN_PATH = path.join(
-    __dirname,
-    '..',
-    'example',
-    'primary',
-    '.well-known',
-    'browserid'
-  ),
-  TEST_ORIGIN = 'http://127.0.0.1:10002',
-  TEST_DELEGATE_DOMAIN = 'delegate.example.domain',
-  TEST_DELEGATE_DOMAIN_PATH = path.join(
-    __dirname,
-    '..',
-    'example',
-    'delegated_primary',
-    '.well-known',
-    'browserid'
-  );
+const TEST_DOMAIN = 'example.domain';
+const TEST_DOMAIN_PATH = path.join(
+  __dirname,
+  '..',
+  'example',
+  'primary',
+  '.well-known',
+  'browserid'
+);
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_DELEGATE_DOMAIN = 'delegate.example.domain';
+const TEST_DELEGATE_DOMAIN_PATH = path.join(
+  __dirname,
+  '..',
+  'example',
+  'delegated_primary',
+  '.well-known',
+  'browserid'
+);
 
 // Good examples
 process.env['SHIMMED_PRIMARIES'] =

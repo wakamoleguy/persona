@@ -5,9 +5,9 @@
 /*jshint sub: true */
 
 const
-assert = require('../lib/asserts.js'),
-restmail = require('../lib/restmail.js'),
-CSS = require('./css.js');
+assert = require('../lib/asserts.js');
+const restmail = require('../lib/restmail.js');
+const CSS = require('./css.js');
 
 function verifyOpts(optionList, opts) {
   optionList.forEach(function(required) {

@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const child_process = require("child_process"),
-      fs            = require("fs"),
-      path          = require("path"),
-      toolbelt      = require("../lib/toolbelt");
+const child_process = require("child_process");
+      const fs            = require("fs");
+      const path          = require("path");
+      const toolbelt      = require("../lib/toolbelt");
 
 function installDependencies(done) {
   console.log(">> Installing selenium test dependencies");
@@ -38,10 +38,10 @@ function getJSONConfig(name) {
 
 function getTestEnvironment() {
   // the next two will exit the process if they fail.
-  var sauceConfig = getJSONConfig("sauce.json"),
-      globalConfig = getJSONConfig("config.json"),
+  var sauceConfig = getJSONConfig("sauce.json");
+      var globalConfig = getJSONConfig("config.json");
       // personaEnv is the name of the ephemeral instance
-      personaEnv = globalConfig.public_url.replace("https://", '').replace(".personatest.org", "");
+      var personaEnv = globalConfig.public_url.replace("https://", '').replace(".personatest.org", "");
 
   var env = toolbelt.copyExtendEnv({
     RUNNERS: sauceConfig.runners,

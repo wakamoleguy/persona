@@ -9,12 +9,12 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  db = require('../lib/db.js'),
-  primary = require('./lib/primary.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const db = require('../lib/db.js');
+const primary = require('./lib/primary.js');
 (config = require('../lib/configuration.js')),
   (bcrypt = require('bcrypt')),
   (primary = require('./lib/primary.js')),
@@ -24,9 +24,9 @@ const assert = require('assert'),
 
 var suite = vows.describe('password-length');
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_EMAIL = 'test@' + TEST_DOMAIN,
-  TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_DOMAIN = 'example.domain';
+const TEST_EMAIL = 'test@' + TEST_DOMAIN;
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
 
 const SECONDARY_TEST_EMAIL = 'test@example.com';
 

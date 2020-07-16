@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const vows = require('vows'),
-  assert = require('assert'),
-  path = require('path'),
-  jwcrypto = require('browserid-crypto');
+const vows = require('vows');
+const assert = require('assert');
+const path = require('path');
+const jwcrypto = require('browserid-crypto');
 
 require('browserid-crypto/lib/algs/rs');
 require('browserid-crypto/lib/algs/ds');

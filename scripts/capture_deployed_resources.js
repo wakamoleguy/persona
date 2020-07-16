@@ -17,51 +17,51 @@
  * Data is stored into <browserid_root>/var/capture/<ip_address>@<timestamp>
  */
 
-const path = require('path'),
-  fs = require('fs'),
-  mkdirp = require('mkdirp'),
-  https = require('https'),
-  // TODO - externalize the config - but to where?
-  ipAddresses = process.env.IP_ADDRESS
-    ? [process.env.IP_ADDRESS]
-    : ['63.245.209.241', '63.245.217.134'],
-  resources = [
-    '/include.js',
-    '/authentication_api.js',
-    '/ver.txt',
-    '/humans.txt',
-    // main site
-    '/',
-    '/signin',
-    '/about',
-    '/privacy',
-    '/tos',
-    '/communication_iframe',
-    '/production/communication_iframe.js',
-    '/unsupported_dialog',
-    '/cookies_disabled',
-    '/relay',
-    '/production/relay.js',
-    '/authenticate_with_primary',
-    '/production/authenticate_with_primary.js',
-    '/idp_auth_complete',
-    '/forgot',
-    '/verify_email_address',
-    '/add_email_address',
-    '/reset_password',
-    '/confirm',
-    '/production/browserid.css',
-    '/production/ie8_main.css',
-    '/production/en/browserid.js',
-    // dialog
-    '/sign_in',
-    '/production/html5shim.js',
-    '/production/dialog.css',
-    '/production/ie8_dialog.css',
-    '/production/en/dialog.js',
-  ],
-  outputDir = path.join(__dirname, '..', 'var', 'capture'),
-  startTime = new Date().toISOString();
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const https = require('https');
+// TODO - externalize the config - but to where?
+const ipAddresses = process.env.IP_ADDRESS
+  ? [process.env.IP_ADDRESS]
+  : ['63.245.209.241', '63.245.217.134'];
+const resources = [
+  '/include.js',
+  '/authentication_api.js',
+  '/ver.txt',
+  '/humans.txt',
+  // main site
+  '/',
+  '/signin',
+  '/about',
+  '/privacy',
+  '/tos',
+  '/communication_iframe',
+  '/production/communication_iframe.js',
+  '/unsupported_dialog',
+  '/cookies_disabled',
+  '/relay',
+  '/production/relay.js',
+  '/authenticate_with_primary',
+  '/production/authenticate_with_primary.js',
+  '/idp_auth_complete',
+  '/forgot',
+  '/verify_email_address',
+  '/add_email_address',
+  '/reset_password',
+  '/confirm',
+  '/production/browserid.css',
+  '/production/ie8_main.css',
+  '/production/en/browserid.js',
+  // dialog
+  '/sign_in',
+  '/production/html5shim.js',
+  '/production/dialog.css',
+  '/production/ie8_dialog.css',
+  '/production/en/dialog.js',
+];
+const outputDir = path.join(__dirname, '..', 'var', 'capture');
+const startTime = new Date().toISOString();
 
 ipAddresses.forEach(function (ipAddress) {
   var serverOutputDir = path.join(outputDir, ipAddress + '@' + startTime);

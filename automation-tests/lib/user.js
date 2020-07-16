@@ -4,13 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const
-assert = require('assert'),
-restmail = require('../lib/restmail.js'),
-persona_urls = require('../lib/urls.js'),
-CSS = require('../pages/css.js'),
-dialog = require('../pages/dialog.js'),
-testSetup = require('../lib/test-setup.js');
+const restmail = require('../lib/restmail.js');
+const persona_urls = require('../lib/urls.js');
+const CSS = require('../pages/css.js');
+const dialog = require('../pages/dialog.js');
+const testSetup = require('../lib/test-setup.js');
 
 exports.verifyEmail = function(email, password, index, browser, done) {
   restmail.getVerificationLink({ email: email, index: index }, function(err, token, link) {

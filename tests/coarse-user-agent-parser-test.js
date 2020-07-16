@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const fs = require('fs'),
-  // TODO: convert to vows based test (or introduce nodeunit dependency)
-  vows = require('vows'),
-  coarse = require('../lib/coarse_user_agent_parser'),
-  assert = require('assert'),
-  path = require('path');
+const fs = require('fs');
+// TODO: convert to vows based test (or introduce nodeunit dependency)
+const vows = require('vows');
+const coarse = require('../lib/coarse_user_agent_parser');
+const assert = require('assert');
+const path = require('path');
 
 var suite = vows.describe('coarse-user-agent-parser');
 

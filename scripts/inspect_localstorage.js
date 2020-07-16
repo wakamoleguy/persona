@@ -4,15 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const fs = require('fs'),
-  jwcrypto = require('browserid-crypto'),
-  optimist = require('optimist'),
-  path = require('path'),
-  urlparse = require('urlparse'),
-  util = require('util'),
-  cp = require('child_process'),
-  os = require('os'),
-  async = require('async');
+const fs = require('fs');
+const jwcrypto = require('browserid-crypto');
+const optimist = require('optimist');
+const path = require('path');
+const urlparse = require('urlparse');
+const util = require('util');
+const cp = require('child_process');
+const os = require('os');
+const async = require('async');
 
 const WEBAPPSSTORE_SQLITE = 'webappsstore.sqlite';
 
@@ -69,7 +69,9 @@ const extendedHelp = heredoc(function () {
 */
 });
 
-var sqlite3, argv, args;
+var sqlite3;
+var argv;
+var args;
 try {
   sqlite3 = require('sqlite3');
 } catch (e) {
@@ -316,8 +318,8 @@ function processRows(err, rows) {
   if (err) throw err;
   var localStorage = {};
   rows.forEach(function (row) {
-    var key = row.key,
-      value = row.value;
+    var key = row.key;
+    var value = row.value;
     if (Buffer.isBuffer(value)) {
       value = value.toString('ucs2'); // Chrome/Safari store as BLOB
     }
@@ -361,7 +363,8 @@ function queryDatabaseB2G() {
 }
 
 function queryDatabase() {
-  var query, params;
+  var query;
+  var params;
 
   if (args.b === 'b2g') {
     query = 'SELECT scope, key, value FROM webappsstore2 WHERE scope like ?';

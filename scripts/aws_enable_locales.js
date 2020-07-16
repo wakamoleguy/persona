@@ -4,10 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const exec = require('child_process').exec,
-  fs = require('fs'),
-  optimist = require('optimist'),
-  path = require('path');
+const exec = require('child_process').exec;
+const fs = require('fs');
+const optimist = require('optimist');
+const path = require('path');
 
 const argv = optimist
   .usage(

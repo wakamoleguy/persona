@@ -12,10 +12,10 @@ require('./lib/test_env.js');
 // disable email throttling so we can stage the same email twice without delay
 process.env['MIN_TIME_BETWEEN_EMAILS_MS'] = 0;
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
 
 var suite = vows.describe('double-stage-updates-password');
 
@@ -24,8 +24,8 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const EMAIL = 'test@example.com',
-  SITE = 'http://rp.example.com';
+const EMAIL = 'test@example.com';
+const SITE = 'http://rp.example.com';
 
 var token;
 

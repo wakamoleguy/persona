@@ -7,17 +7,17 @@
 /*jshint sub: true */
 
 const
-path = require('path'),
-assert = require('../lib/asserts.js'),
-utils = require('../lib/utils.js'),
-restmail = require('../lib/restmail.js'),
-persona_urls = require('../lib/urls.js'),
-CSS = require('../pages/css.js'),
-dialog = require('../pages/dialog.js'),
-runner = require('../lib/runner.js'),
-testSetup = require('../lib/test-setup.js'),
-user = require('../lib/user.js'),
-NEW_PASSWORD = "password";
+path = require('path');
+const assert = require('../lib/asserts.js');
+const utils = require('../lib/utils.js');
+const restmail = require('../lib/restmail.js');
+const persona_urls = require('../lib/urls.js');
+const CSS = require('../pages/css.js');
+const dialog = require('../pages/dialog.js');
+const runner = require('../lib/runner.js');
+const testSetup = require('../lib/test-setup.js');
+const user = require('../lib/user.js');
+const NEW_PASSWORD = "password";
 
 var browser;
 var verificationBrowser;

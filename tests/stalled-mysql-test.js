@@ -8,14 +8,14 @@ require('./lib/test_env.js');
 
 if (process.env['NODE_ENV'] != 'test_mysql') process.exit(0);
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  temp = require('temp'),
-  fs = require('fs'),
-  jwcrypto = require('browserid-crypto'),
-  path = require('path');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const temp = require('temp');
+const fs = require('fs');
+const jwcrypto = require('browserid-crypto');
+const path = require('path');
 
 var suite = vows.describe('forgotten-email');
 
@@ -298,12 +298,14 @@ suite.addBatch({
 
 // now let's test apis that require an assertion, and only after verifying
 // that, hit the database
-const TEST_DOMAIN = 'example.domain',
-  TEST_EMAIL = 'testuser@' + TEST_DOMAIN,
-  TEST_ORIGIN = 'http://127.0.0.1:10002',
-  TEST_FIRST_ACCT = 'testuser@fake.domain';
+const TEST_DOMAIN = 'example.domain';
+const TEST_EMAIL = 'testuser@' + TEST_DOMAIN;
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_FIRST_ACCT = 'testuser@fake.domain';
 
-var g_keypair, g_cert, g_assertion;
+var g_keypair;
+var g_cert;
+var g_assertion;
 
 suite.addBatch({
   'generating a keypair': {

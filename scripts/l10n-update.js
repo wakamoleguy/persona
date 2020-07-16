@@ -13,10 +13,10 @@
  *        ~root/resources/static/i18n
  */
 
-const mkdirp = require('mkdirp'),
-  fs = require('fs'),
-  path = require('path'),
-  child_process = require('child_process');
+const mkdirp = require('mkdirp');
+const fs = require('fs');
+const path = require('path');
+const child_process = require('child_process');
 
 const existsSync = fs.existsSync || path.existsSync;
 

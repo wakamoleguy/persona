@@ -6,11 +6,11 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  fs = require('fs'),
-  path = require('path'),
-  version = require('../lib/version.js');
+const assert = require('assert');
+const vows = require('vows');
+const fs = require('fs');
+const path = require('path');
+const version = require('../lib/version.js');
 
 var suite = vows.describe('software-version');
 suite.options.error = false;

@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const fs = require('fs'),
-  path = require('path'),
-  templates = require('../lib/templates'),
-  cachify = require('connect-cachify'),
-  config = require('../lib/configuration');
+const fs = require('fs');
+const path = require('path');
+const templates = require('../lib/templates');
+const cachify = require('connect-cachify');
+const config = require('../lib/configuration');
 
 cachify.setup(
   {},

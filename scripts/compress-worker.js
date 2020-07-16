@@ -2,18 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const cachify = require('connect-cachify'),
-  config = require('../lib/configuration.js'),
-  fs = require('fs'),
-  jsp = require('uglify-js').parser,
-  logger = require('../lib/logging/logging.js').logger,
-  pro = require('uglify-js').uglify,
-  uglifycss = require('uglifycss'),
-  mkdirp = require('mkdirp'),
-  connect_fonts = require('connect-fonts'),
-  connect_fonts_opensans = require('connect-fonts-opensans'),
-  connect_fonts_feurasans = require('connect-fonts-feurasans'),
-  path = require('path');
+const cachify = require('connect-cachify');
+const config = require('../lib/configuration.js');
+const fs = require('fs');
+const jsp = require('uglify-js').parser;
+const logger = require('../lib/logging/logging.js').logger;
+const pro = require('uglify-js').uglify;
+const uglifycss = require('uglifycss');
+const mkdirp = require('mkdirp');
+const connect_fonts = require('connect-fonts');
+const connect_fonts_opensans = require('connect-fonts-opensans');
+const connect_fonts_feurasans = require('connect-fonts-feurasans');
+const path = require('path');
 
 var font_middleware = connect_fonts.setup({
   fonts: [connect_fonts_opensans, connect_fonts_feurasans],
@@ -45,9 +45,9 @@ function compressResource(staticPath, name, files, cb) {
   }
 
   function extract_copyright(code) {
-    var tok = jsp.tokenizer(code),
-      toks,
-      ret = '';
+    var tok = jsp.tokenizer(code);
+    var toks;
+    var ret = '';
     toks = tok().comments_before;
 
     if (toks.length >= 1) {

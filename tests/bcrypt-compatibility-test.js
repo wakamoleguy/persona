@@ -6,10 +6,10 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  config = require('../lib/configuration.js'),
-  bcrypt = require('bcrypt');
+const assert = require('assert');
+const vows = require('vows');
+const config = require('../lib/configuration.js');
+const bcrypt = require('bcrypt');
 
 var suite = vows.describe('bcrypt-compatibility');
 

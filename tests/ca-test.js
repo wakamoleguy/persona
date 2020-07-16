@@ -6,10 +6,10 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  ca = require('../lib/keysigner/ca.js'),
-  jwcrypto = require('browserid-crypto');
+const assert = require('assert');
+const vows = require('vows');
+const ca = require('../lib/keysigner/ca.js');
+const jwcrypto = require('browserid-crypto');
 
 // algorithms
 require('browserid-crypto/lib/algs/rs');

@@ -6,9 +6,9 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  secrets = require('../lib/secrets');
+const assert = require('assert');
+const vows = require('vows');
+const secrets = require('../lib/secrets');
 
 var suite = vows.describe('secrets');
 

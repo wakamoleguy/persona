@@ -6,11 +6,11 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  wsapi = require('./lib/wsapi.js'),
-  primary = require('./lib/primary.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const wsapi = require('./lib/wsapi.js');
+const primary = require('./lib/primary.js');
 
 var suite = vows.describe('primary-then-secondary');
 
@@ -19,9 +19,9 @@ start_stop.addStartupBatches(suite);
 // this test verifies that a user who has only authenticated with
 // an assertion from their primary, may not call restricted apis
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_EMAIL = 'testuser2@' + TEST_DOMAIN,
-  TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_DOMAIN = 'example.domain';
+const TEST_EMAIL = 'testuser2@' + TEST_DOMAIN;
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
 
 var primaryUser = new primary({
   email: TEST_EMAIL,

@@ -16,8 +16,8 @@ if (!process.env['CONFIG_FILES']) {
   );
 }
 
-const configuration = require('../lib/configuration.js'),
-  db = require('../lib/db.js');
+const configuration = require('../lib/configuration.js');
+const db = require('../lib/db.js');
 
 var dbCfg = configuration.get('database');
 

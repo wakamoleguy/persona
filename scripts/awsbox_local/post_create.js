@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const fs = require('fs'),
-  temp = require('temp'),
-  scp = require('./scp').scp,
-  defaultPlatform = require('../../automation-tests/config/sauce-platforms')
-    .defaultPlatform;
+const fs = require('fs');
+const temp = require('temp');
+const scp = require('./scp').scp;
+const defaultPlatform = require('../../automation-tests/config/sauce-platforms')
+  .defaultPlatform;
 
 function getFromEnv(name, defaultValue) {
   var envValue = process.env[name];
@@ -18,9 +18,9 @@ function getFromEnv(name, defaultValue) {
   return typeof envValue === 'undefined' ? defaultValue : envValue;
 }
 
-var host = getFromEnv('AWS_IP_ADDRESS'),
-  user = 'app@' + host,
-  target = user + ':sauce.json';
+var host = getFromEnv('AWS_IP_ADDRESS');
+var user = 'app@' + host;
+var target = user + ':sauce.json';
 
 function copyConfig(done) {
   temp.open({}, function (err, temp_file) {

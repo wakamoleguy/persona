@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const wcli = require('../lib/wsapi_client.js'),
-  jwcrypto = require('browserid-crypto'),
-  assert = require('assert'),
-  https = require('https'),
-  querystring = require('querystring'),
-  urlparse = require('urlparse');
+const wcli = require('../lib/wsapi_client.js');
+const jwcrypto = require('browserid-crypto');
+const assert = require('assert');
+const https = require('https');
+const querystring = require('querystring');
+const urlparse = require('urlparse');
 
 require('browserid-crypto/lib/algs/ds');
 

@@ -7,15 +7,15 @@
 /*jshint sub: true */
 
 const
-assert = require('../../lib/asserts.js'),
-CSS = require('../../pages/css.js'),
-path = require('path'),
-persona_urls = require('../../lib/urls.js'),
-restmail = require('../../lib/restmail.js'),
-runner = require('../../lib/runner.js'),
-testSetup = require('../../lib/test-setup.js');
+assert = require('../../lib/asserts.js');
+const CSS = require('../../pages/css.js');
+const path = require('path');
+const persona_urls = require('../../lib/urls.js');
+const restmail = require('../../lib/restmail.js');
+const runner = require('../../lib/runner.js');
+const testSetup = require('../../lib/test-setup.js');
 
-var browser, testUser, testIdp, noAuthTestUser;
+var browser; var testUser; var testIdp; var noAuthTestUser;
 
 runner.run(module, {
   "setup": function(done) {

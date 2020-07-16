@@ -6,12 +6,12 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  vows = require('vows'),
-  start_stop = require('./lib/start-stop.js'),
-  secondary = require('./lib/secondary.js'),
-  wsapi = require('./lib/wsapi.js'),
-  secrets = require('../lib/secrets.js');
+const assert = require('assert');
+const vows = require('vows');
+const start_stop = require('./lib/start-stop.js');
+const secondary = require('./lib/secondary.js');
+const wsapi = require('./lib/wsapi.js');
+const secrets = require('../lib/secrets.js');
 
 var suite = vows.describe('email-addition-status');
 
@@ -22,10 +22,10 @@ suite.options.error = false;
 
 start_stop.addStartupBatches(suite);
 
-const TEST_EMAIL_FIRST = secrets.weakGenerate(12) + '@somedomain.com',
-  TEST_EMAIL_ADDED = secrets.weakGenerate(12) + '@otherdomain.com',
-  TEST_PASSWORD = 'thisismypassword',
-  TEST_SITE = 'http://fakesite.com';
+const TEST_EMAIL_FIRST = secrets.weakGenerate(12) + '@somedomain.com';
+const TEST_EMAIL_ADDED = secrets.weakGenerate(12) + '@otherdomain.com';
+const TEST_PASSWORD = 'thisismypassword';
+const TEST_SITE = 'http://fakesite.com';
 
 function jsonParse(str) {
   try {

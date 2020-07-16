@@ -6,14 +6,14 @@
 
 require('./lib/test_env.js');
 
-const assert = require('assert'),
-  db = require('../lib/db.js'),
-  email = require('../lib/email.js'),
-  jwcrypto = require('browserid-crypto'),
-  primary = require('./lib/primary.js'),
-  start_stop = require('./lib/start-stop.js'),
-  vows = require('vows'),
-  wsapi = require('./lib/wsapi.js');
+const assert = require('assert');
+const db = require('../lib/db.js');
+const email = require('../lib/email.js');
+const jwcrypto = require('browserid-crypto');
+const primary = require('./lib/primary.js');
+const start_stop = require('./lib/start-stop.js');
+const vows = require('vows');
+const wsapi = require('./lib/wsapi.js');
 
 var suite = vows.describe('forgotten-email');
 
@@ -27,9 +27,9 @@ start_stop.addStartupBatches(suite);
 // var 'token'
 var token;
 
-const TEST_DOMAIN = 'example.domain',
-  TEST_EMAIL = 'testuser@' + TEST_DOMAIN,
-  TEST_ORIGIN = 'http://127.0.0.1:10002';
+const TEST_DOMAIN = 'example.domain';
+const TEST_EMAIL = 'testuser@' + TEST_DOMAIN;
+const TEST_ORIGIN = 'http://127.0.0.1:10002';
 
 var primaryUser = new primary({
   email: TEST_EMAIL,

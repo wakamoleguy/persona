@@ -1,6 +1,6 @@
-var vows = require('vows'),
-    path = require('path'),
-    assert = require('assert');
+var vows = require('vows');
+    var path = require('path');
+    var assert = require('assert');
 
 module.exports = function(spec, mod, opts) {
   opts = opts || {};
